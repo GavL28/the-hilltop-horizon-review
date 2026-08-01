@@ -59,7 +59,7 @@ body {
 .logo-icon {
   width: 300px;
   height: auto;
-  margin-bottom: 8px;
+  margin-bottom: -20px;
   opacity: 1; /* Changed from 0.9 to 1 for solid color */
   /* Adds a white glow behind the SVG icon */
   filter: drop-shadow(0px 0px 8px rgba(255, 255, 255, 1));
@@ -402,8 +402,8 @@ body {
 }
 
 .staff-photo-large {
-  width: 160px;
-  height: 160px;
+  width: 280px;
+  height: 280px;
   border-radius: 50%;
   background-color: rgba(0, 0, 0, 0.04);
   border: 1px dashed var(--accent-border);
@@ -413,4 +413,22 @@ body {
 .staff-bio-full {
   line-height: 1.9;
   font-size: 1.05rem;
+}
+
+/* --- Readability Fixes for Individual Staff Profiles --- */
+
+/* Fixes the large staff name */
+.staff-detail-header h2 {
+  color: #000000 !important;
+  font-weight: 700;
+  text-shadow: 0 2px 12px rgba(255, 255, 255, 0.9), 0 0 5px rgba(255, 255, 255, 1);
+}
+
+/* Fixes the pronouns, grade, role, and the full biography text */
+.staff-detail-header p,
+.staff-detail-header h4,
+.staff-bio-full {
+  color: #000000 !important;
+  font-weight: 500;
+  text-shadow: 0 1px 10px rgba(255, 255, 255, 0.9);
 }
