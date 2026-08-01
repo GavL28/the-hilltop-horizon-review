@@ -162,10 +162,18 @@ body {
 
 /* Hero & Poem Styles */
 .hero-banner {
-  text-align: center;
-  margin-bottom: 60px;
-  padding-bottom: 40px;
+  /* The "0.4" at the end of the rgba values controls the brightness. */
+  /* Change it to 0.6 to make it even brighter, or 0.2 for less brightness. */
+  background: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)), 
+              url('/inkandstain.png');
+  background-size: cover;
+  background-position: center;
+  
+  /* Keep your existing padding and other styles below */
+  padding: 80px 20px; 
+  border-radius: 8px;
   border-bottom: 1px solid var(--accent-border);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
 .hero-description {
