@@ -85,6 +85,48 @@ export default function App() {
               </p>
             </div>
             
+            {/* NEW: Welcome Note */}
+            <div className="content-box" style={{ textAlign: 'center' }}>
+              <h2 className="section-title">From the Editors' Desk</h2>
+              <p style={{ maxWidth: '700px', margin: '0 auto', marginBottom: '20px' }}>
+                Welcome to the digital home of Ink & Stain. In a world increasingly driven by fleeting digital trends, we wanted to carve out a quiet, intentional space for young voices. Whether you write in the margins of your notebooks, type late into the night, or sketch on scrap paper, this journal is a testament to the raw and the profoundly human. 
+              </p>
+              <p style={{ fontStyle: 'italic', color: 'var(--text-muted)' }}>
+                — Gavin & Tawanda, Co-Editors-in-Chief
+              </p>
+            </div>
+
+            {/* NEW: Split Column Section for Prompts & News */}
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px', marginBottom: '40px' }}>
+              
+              {/* Monthly Prompt Box */}
+              <div className="content-box" style={{ flex: '1 1 300px', marginBottom: '0' }}>
+                <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.6rem', marginBottom: '15px' }}>Monthly Prompt</h3>
+                <h4 style={{ color: 'var(--accent-ink)', marginBottom: '10px', fontSize: '1.1rem' }}>August: "Echoes & Aftermath"</h4>
+                <p style={{ fontSize: '0.95rem', marginBottom: '25px', color: 'var(--text-muted)' }}>
+                  This month, we are looking for pieces that explore what gets left behind. The ringing in your ears after a loud concert, the shadow of a childhood memory, or the stubborn stain of spilled ink on a pristine desk.
+                </p>
+                <button className="btn-primary" onClick={() => setActiveTab('submit-guidelines')}>
+                  Submit for this Prompt
+                </button>
+              </div>
+
+              {/* Announcements Box */}
+              <div className="content-box" style={{ flex: '1 1 300px', marginBottom: '0' }}>
+                <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.6rem', marginBottom: '15px' }}>Announcements</h3>
+                <ul style={{ paddingLeft: '20px', fontSize: '0.95rem', color: 'var(--text-muted)', display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                  <li>
+                    <strong style={{ color: 'var(--text-main)' }}>Issue I Submissions:</strong> We are officially open for poetry, prose, and visual art. Read our guidelines to submit.
+                  </li>
+                  <li>
+                    <strong style={{ color: 'var(--text-main)' }}>Readers Wanted:</strong> We are expanding our masthead! If you have a sharp eye for literature, apply to join our editorial team.
+                  </li>
+                </ul>
+              </div>
+
+            </div>
+            
+            {/* EXISTING: Featured Poem */}
             <h2 className="section-title">Featured Work</h2>
             <div className="featured-poem">
               <h3 className="poem-title">Sample Piece</h3>
