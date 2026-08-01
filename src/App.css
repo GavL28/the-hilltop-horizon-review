@@ -57,7 +57,7 @@ body {
 }
 
 .logo-icon {
-  width: 150px;
+  width: 300px;
   height: auto;
   margin-bottom: 8px;
   opacity: 1; /* Changed from 0.9 to 1 for solid color */
@@ -168,10 +168,13 @@ body {
 
 .section-title {
   font-family: var(--font-heading);
-  font-size: 2rem;
+  font-size: 2.2rem; 
   text-align: center;
   margin-bottom: 30px;
-  font-weight: 400;
+  font-weight: 700; /* Makes the font much thicker */
+  color: #000000; /* Forces the text to be pure black */
+  /* Adds a bright white glow behind the text so it stands out against any dark ink spots */
+  text-shadow: 0 2px 12px rgba(255, 255, 255, 0.9), 0 0 5px rgba(255, 255, 255, 1);
 }
 
 /* Hero & Poem Styles */

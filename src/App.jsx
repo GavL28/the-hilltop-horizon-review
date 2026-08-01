@@ -3,7 +3,7 @@ import './App.css';
 
 // Centralized Staff Data Array
 const staffData = [
-  { id: 'gavin', name: 'Gavin Liu', pronouns: 'He/Him', grade: 'Junior', role: 'Co-Editor in Chief', shortBio: 'Dedicated to fostering a welcoming community for young writers.', fullBio: 'Full biography coming soon...' },
+  { id: 'gavin', name: 'Gavin Liu', pronouns: 'He/Him', grade: 'Junior', role: 'Co-Editor in Chief', shortBio: 'Dedicated to fostering a welcoming community for young writers.', fullBio: 'Full biography coming soon...', photo: '/gavinliu.png' },
   { id: 'tawanda', name: 'Tawanda Sibanda', pronouns: 'He/Him', grade: 'Senior', role: 'Co-Editor in Chief & Internal Operations Secretary', shortBio: 'Passionate about organizing and streamlining literary operations.', fullBio: 'Full biography coming soon...' },
   { id: 'tallulah', name: 'Tallulah Dolan', pronouns: 'She/Her', grade: 'Junior', role: 'Fiction Editor & External Operations Secretary', shortBio: 'An avid reader and writer of contemporary fiction.', fullBio: 'Full biography coming soon...' },
   { id: 'grey', name: 'Grey Raymonds', pronouns: 'He/Him', grade: 'Senior', role: 'Poetry Editor', shortBio: 'Specializes in free verse and deeply emotional works.', fullBio: 'Full biography coming soon...' },
@@ -167,7 +167,15 @@ Red upon white cloth`}
             <div className="staff-grid">
               {staffData.map((staff) => (
                 <div key={staff.id} className="staff-card" onClick={() => handleStaffClick(staff)}>
-                  <div className="staff-photo-placeholder"></div>
+
+                  {/* NEW PHOTO LOGIC HERE */}
+                  {staff.photo ? (
+                    <img src={staff.photo} alt={staff.name} className="staff-photo-placeholder" style={{ objectFit: 'cover', border: 'none' }} />
+                  ) : (
+                    <div className="staff-photo-placeholder"></div>
+                  )}
+                  {/* END NEW PHOTO LOGIC */}
+
                   <h3 className="staff-name">{staff.name}</h3>
                   <p className="staff-meta">{staff.pronouns} • {staff.grade}</p>
                   <p className="staff-role">{staff.role}</p>
@@ -187,7 +195,13 @@ Red upon white cloth`}
             </button>
             
             <div className="staff-detail-header">
-              <div className="staff-photo-large"></div>
+
+              {/* NEW PHOTO LOGIC HERE */}
+              {selectedStaff.photo && (
+                <img src={selectedStaff.photo} alt={selectedStaff.name} className="staff-photo-large" style={{ objectFit: 'cover', border: 'none' }} />
+              )}
+              {/* END NEW PHOTO LOGIC */}
+
               <div>
                 <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '2.5rem', marginBottom: '8px' }}>
                   {selectedStaff.name}
