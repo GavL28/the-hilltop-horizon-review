@@ -60,21 +60,29 @@ body {
   width: 50px;
   height: 50px;
   margin-bottom: 8px;
-  opacity: 0.9;
+  opacity: 1; /* Changed from 0.9 to 1 for solid color */
+  /* Adds a white glow behind the SVG icon */
+  filter: drop-shadow(0px 0px 8px rgba(255, 255, 255, 1));
 }
 
 .site-title {
   font-family: var(--font-heading);
-  font-size: 2.5rem;
-  font-weight: 400;
+  font-size: 2.8rem; /* Slightly larger */
+  font-weight: 700; /* Makes the font much thicker and bolder */
+  color: #000000; /* Pure black for maximum contrast */
   letter-spacing: -0.02em;
+  /* Adds a soft white glow behind the text to separate it from the ink background */
+  text-shadow: 0 2px 15px rgba(255, 255, 255, 0.9), 0 0 5px rgba(255, 255, 255, 1);
 }
 
 .site-subtitle {
   font-style: italic;
-  color: var(--text-muted);
-  font-size: 0.95rem;
+  color: #000000; /* Changed from muted gray to pure black */
+  font-weight: 600; /* Made bolder */
+  font-size: 1.05rem;
   margin-top: 4px;
+  /* Adds a smaller white glow to the subtitle */
+  text-shadow: 0 1px 10px rgba(255, 255, 255, 0.9);
 }
 
 /* Navigation & Dropdowns */
@@ -182,15 +190,13 @@ body {
 }
 
 .featured-poem {
-  background-color: #FFFFFF;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
-  padding: 50px;
-  border-radius: 4px;
-  border: 1px solid var(--accent-border);
+  background-color: transparent;
+  padding: 40px 20px;
+  border: none;
+  box-shadow: none;
   max-width: 550px;
   margin: 0 auto;
   text-align: center;
-  box-shadow: 2px 4px 15px rgba(0,0,0,0.04);
 }
 
 .poem-title {
@@ -237,13 +243,11 @@ body {
 
 /* Forms & Guidelines */
 .content-box {
-  background-color: #FFFFFF;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
-  padding: 50px;
-  border: 1px solid var(--accent-border);
-  border-radius: 4px;
+  background-color: transparent;
+  padding: 40px 20px; /* Adjusted padding since there are no visible borders */
+  border: none;
+  box-shadow: none;
   margin-bottom: 30px;
-  box-shadow: 2px 4px 15px rgba(0,0,0,0.04);
 }
 
 .form-group {

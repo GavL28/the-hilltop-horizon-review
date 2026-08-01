@@ -20,7 +20,7 @@ export default function App() {
       <header className="site-header">
         <div className="container">
           <a href="#" className="logo-container" onClick={() => setActiveTab('home')}>
-            <InkLogo />
+            <img src="/inkandstain_icon.png" alt="Ink & Stain Logo" className="logo-icon" />
             <h1 className="site-title">Ink & Stain</h1>
             <p className="site-subtitle">an international youth literary magazine</p>
           </a>
