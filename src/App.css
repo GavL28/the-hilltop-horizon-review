@@ -20,6 +20,8 @@
 
 body {
   background-color: var(--bg-color);
+  /* Inline SVG noise texture that simulates paper grain - never 404s */
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.06'/%3E%3C/svg%3E");
   color: var(--text-main);
   font-family: var(--font-body);
   line-height: 1.7;
@@ -174,13 +176,15 @@ body {
 }
 
 .featured-poem {
-  background-color: var(--card-bg);
-  padding: 40px;
+  background-color: #FFFFFF;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+  padding: 50px;
   border-radius: 4px;
   border: 1px solid var(--accent-border);
   max-width: 550px;
   margin: 0 auto;
   text-align: center;
+  box-shadow: 2px 4px 15px rgba(0,0,0,0.04);
 }
 
 .poem-title {
@@ -227,11 +231,13 @@ body {
 
 /* Forms & Guidelines */
 .content-box {
-  background: var(--card-bg);
-  padding: 40px;
+  background-color: #FFFFFF;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+  padding: 50px;
   border: 1px solid var(--accent-border);
   border-radius: 4px;
   margin-bottom: 30px;
+  box-shadow: 2px 4px 15px rgba(0,0,0,0.04);
 }
 
 .form-group {
