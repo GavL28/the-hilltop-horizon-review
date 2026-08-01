@@ -21,9 +21,8 @@ const staffData = [
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('home');
-  const [selectedStaff, setSelectedStaff] = useState(null); // Tracks which staff member to display
+  const [selectedStaff, setSelectedStaff] = useState(null);
 
-  // Helper function to handle staff clicks
   const handleStaffClick = (staff) => {
     setSelectedStaff(staff);
     setActiveTab('staff-detail');
@@ -42,7 +41,7 @@ export default function App() {
         </div>
       </header>
 
-      {/* Navigation Bar with Subtabs */}
+      {/* Navigation Bar */}
       <nav className="nav-bar">
         <ul className="nav-list">
           <li className="nav-item">
@@ -82,7 +81,7 @@ export default function App() {
         </ul>
       </nav>
 
-      {/* Main Dynamic Content Area */}
+      {/* Main Content Area */}
       <main className="main-content container">
 
         {/* HOME TAB */}
@@ -104,29 +103,17 @@ export default function App() {
               </p>
             </div>
 
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px', marginBottom: '40px' }}>
-              <div className="content-box" style={{ flex: '1 1 300px', marginBottom: '0' }}>
-                <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.6rem', marginBottom: '15px' }}>Monthly Prompt</h3>
-                <h4 style={{ color: 'var(--accent-ink)', marginBottom: '10px', fontSize: '1.1rem' }}>August: "Echoes & Aftermath"</h4>
-                <p style={{ fontSize: '0.95rem', marginBottom: '25px', color: 'var(--text-muted)' }}>
-                  This month, we are looking for pieces that explore what gets left behind. The ringing in your ears after a loud concert, the shadow of a childhood memory, or the stubborn stain of spilled ink on a pristine desk.
-                </p>
-                <button className="btn-primary" onClick={() => setActiveTab('submit-guidelines')}>
-                  Submit for this Prompt
-                </button>
-              </div>
-
-              <div className="content-box" style={{ flex: '1 1 300px', marginBottom: '0' }}>
-                <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.6rem', marginBottom: '15px' }}>Announcements</h3>
-                <ul style={{ paddingLeft: '20px', fontSize: '0.95rem', color: 'var(--text-muted)', display: 'flex', flexDirection: 'column', gap: '15px' }}>
-                  <li>
-                    <strong style={{ color: 'var(--text-main)' }}>Issue I Submissions:</strong> We are officially open for poetry, prose, and visual art. Read our guidelines to submit.
-                  </li>
-                  <li>
-                    <strong style={{ color: 'var(--text-main)' }}>Readers Wanted:</strong> We are expanding our masthead! If you have a sharp eye for literature, apply to join our editorial team.
-                  </li>
-                </ul>
-              </div>
+            {/* Announcements Box */}
+            <div className="content-box" style={{ maxWidth: '700px', margin: '0 auto 40px auto' }}>
+              <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.6rem', marginBottom: '15px', textAlign: 'center' }}>Announcements</h3>
+              <ul style={{ paddingLeft: '20px', fontSize: '0.95rem', color: 'var(--text-main)', display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                <li>
+                  <strong>Issue I Submissions:</strong> We are officially open for poetry, prose, and visual art. Read our guidelines to submit.
+                </li>
+                <li>
+                  <strong>Editors Wanted:</strong> We are expanding our masthead! If you have a sharp eye for literature, check our "Join Us" page to apply.
+                </li>
+              </ul>
             </div>
             
             <h2 className="section-title">Featured Work</h2>
@@ -156,26 +143,22 @@ Red upon white cloth`}
           </div>
         )}
 
-        {/* --- MAIN STAFF DIRECTORY GRID --- */}
+        {/* STAFF DIRECTORY GRID */}
         {activeTab === 'about-staff' && (
           <div>
             <h2 className="section-title">Editorial Board</h2>
             <p style={{ textAlign: 'center', marginBottom: '10px', color: 'var(--text-muted)' }}>
-              Our masthead consists of 14 dedicated high school editors worldwide.
+              Our masthead consists of 14 dedicated high school editors worldwide. Click any profile to learn more.
             </p>
             
             <div className="staff-grid">
               {staffData.map((staff) => (
                 <div key={staff.id} className="staff-card" onClick={() => handleStaffClick(staff)}>
-
-                  {/* NEW PHOTO LOGIC HERE */}
                   {staff.photo ? (
                     <img src={staff.photo} alt={staff.name} className="staff-photo-placeholder" style={{ objectFit: 'cover', border: 'none' }} />
                   ) : (
                     <div className="staff-photo-placeholder"></div>
                   )}
-                  {/* END NEW PHOTO LOGIC */}
-
                   <h3 className="staff-name">{staff.name}</h3>
                   <p className="staff-meta">{staff.pronouns} • {staff.grade}</p>
                   <p className="staff-role">{staff.role}</p>
@@ -187,7 +170,7 @@ Red upon white cloth`}
           </div>
         )}
 
-        {/* --- INDIVIDUAL STAFF PROFILE VIEW --- */}
+        {/* INDIVIDUAL STAFF PROFILE VIEW */}
         {activeTab === 'staff-detail' && selectedStaff && (
           <div className="content-box">
             <button className="btn-back" onClick={() => setActiveTab('about-staff')}>
@@ -195,29 +178,22 @@ Red upon white cloth`}
             </button>
             
             <div className="staff-detail-header">
-
-              {/* NEW PHOTO LOGIC HERE */}
-              {selectedStaff.photo && (
+              {selectedStaff.photo ? (
                 <img src={selectedStaff.photo} alt={selectedStaff.name} className="staff-photo-large" style={{ objectFit: 'cover', border: 'none' }} />
+              ) : (
+                <div className="staff-photo-large"></div>
               )}
-              {/* END NEW PHOTO LOGIC */}
-
               <div>
-                <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '2.5rem', marginBottom: '8px' }}>
-                  {selectedStaff.name}
-                </h2>
+                <h2>{selectedStaff.name}</h2>
                 <p style={{ fontSize: '1.1rem', color: 'var(--text-muted)', fontStyle: 'italic', marginBottom: '15px' }}>
                   {selectedStaff.pronouns} • {selectedStaff.grade}
                 </p>
-                <h4 style={{ fontSize: '1.2rem', color: 'var(--accent-ink)', fontWeight: '600' }}>
-                  {selectedStaff.role}
-                </h4>
+                <h4>{selectedStaff.role}</h4>
               </div>
             </div>
 
             <div className="staff-bio-full">
               <p>{selectedStaff.fullBio}</p>
-              {/* Once you get the real bios, you can add multiple paragraphs here based on the selectedStaff data */}
             </div>
           </div>
         )}
@@ -273,8 +249,28 @@ Red upon white cloth`}
 
         {/* CONTACT TAB */}
         {activeTab === 'contact' && (
-          <div className="content-box" style={{ maxWidth: '600px', margin: '0 auto' }}>
+          <div className="content-box" style={{ maxWidth: '650px', margin: '0 auto' }}>
             <h2 className="section-title">Contact Us</h2>
+            
+            {/* Official Email & Social Media Placeholders */}
+            <div style={{ textAlign: 'center', marginBottom: '40px', paddingBottom: '30px', borderBottom: '1px solid var(--accent-border)' }}>
+              <p style={{ marginBottom: '12px', fontSize: '1.05rem' }}>
+                <strong>Official Email:</strong> <a href="mailto:contact@inkandstainlit.com" style={{ color: 'var(--text-main)' }}>contact@inkandstainlit.com</a>
+              </p>
+              <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '15px' }}>Connect with us on social media:</p>
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', fontSize: '0.95rem' }}>
+                <a href="#" style={{ color: 'var(--text-main)', textDecoration: 'none' }}>Instagram</a>
+                <span>•</span>
+                <a href="#" style={{ color: 'var(--text-main)', textDecoration: 'none' }}>X (Twitter)</a>
+                <span>•</span>
+                <a href="#" style={{ color: 'var(--text-main)', textDecoration: 'none' }}>Facebook</a>
+                <span>•</span>
+                <a href="#" style={{ color: 'var(--text-main)', textDecoration: 'none' }}>TikTok</a>
+              </div>
+            </div>
+
+            <p style={{ textAlign: 'center', marginBottom: '25px', color: 'var(--text-muted)' }}>Or send us a direct message below:</p>
+            
             <form onSubmit={(e) => { e.preventDefault(); alert('Message sent!'); }}>
               <div className="form-group">
                 <label>Name</label>
@@ -295,11 +291,65 @@ Red upon white cloth`}
 
         {/* JOIN US TAB */}
         {activeTab === 'join' && (
-          <div className="content-box" style={{ textAlign: 'center' }}>
+          <div className="content-box" style={{ maxWidth: '800px', margin: '0 auto' }}>
             <h2 className="section-title">Join Our Team</h2>
-            <p>Interested in joining our international team of high school readers and editors?</p>
-            <br />
-            <button className="btn-primary">Apply as a Reader</button>
+            <p style={{ textAlign: 'center', marginBottom: '30px', color: 'var(--text-muted)' }}>
+              Ink & Stain is entirely run by high schoolers. We look for passionate, dedicated individuals who want to help shape our global literary community. Open to students ages 14–19.
+            </p>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '30px', marginBottom: '40px' }}>
+              <div>
+                <h4 style={{ fontSize: '1.2rem', marginBottom: '5px' }}>Poetry Editor</h4>
+                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Reviews and selects poetry submissions, evaluates lyrical quality, and curates monthly poetic features.</p>
+              </div>
+              <div>
+                <h4 style={{ fontSize: '1.2rem', marginBottom: '5px' }}>Fiction Editor</h4>
+                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Reads short stories and flash fiction submissions, evaluating narrative arc, character development, and prose style.</p>
+              </div>
+              <div>
+                <h4 style={{ fontSize: '1.2rem', marginBottom: '5px' }}>Nonfiction Editor</h4>
+                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Evaluates personal essays, memoirs, and creative nonfiction pieces for emotional resonance and clarity.</p>
+              </div>
+              <div>
+                <h4 style={{ fontSize: '1.2rem', marginBottom: '5px' }}>Art Editor</h4>
+                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Curates digital and traditional visual artwork to accompany literary pieces and feature independent youth artists.</p>
+              </div>
+              <div>
+                <h4 style={{ fontSize: '1.2rem', marginBottom: '5px' }}>Photography Editor</h4>
+                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Selects striking photographic works for publication across issues and online showcases.</p>
+              </div>
+              <div>
+                <h4 style={{ fontSize: '1.2rem', marginBottom: '5px' }}>Internal Operations Secretary</h4>
+                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Manages internal team schedules, meeting notes, communication channels, and administrative workflows.</p>
+              </div>
+              <div>
+                <h4 style={{ fontSize: '1.2rem', marginBottom: '5px' }}>External Operations Secretary</h4>
+                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Coordinates outreach with partner literary magazines, schools, and external literary organizations.</p>
+              </div>
+              <div>
+                <h4 style={{ fontSize: '1.2rem', marginBottom: '5px' }}>Website Manager</h4>
+                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Maintains web infrastructure, uploads new issues, tests user interfaces, and ensures smooth site performance.</p>
+              </div>
+              <div>
+                <h4 style={{ fontSize: '1.2rem', marginBottom: '5px' }}>Social Media Director</h4>
+                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Runs social channels, designs promotional graphics, and engages with the online young writer community.</p>
+              </div>
+              <div>
+                <h4 style={{ fontSize: '1.2rem', marginBottom: '5px' }}>International Representatives</h4>
+                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Builds regional networks, promotes submissions, and coordinates translation or regional features abroad.</p>
+              </div>
+              <div>
+                <h4 style={{ fontSize: '1.2rem', marginBottom: '5px' }}>Director of Policy and Standards</h4>
+                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Ensures adherence to magazine guidelines, ethical standards, plagiarism checks, and AI-free policies.</p>
+              </div>
+            </div>
+
+            <div style={{ textAlign: 'center' }}>
+              <p style={{ marginBottom: '15px', fontStyle: 'italic' }}>Ready to apply?</p>
+              <a href="#" className="btn-primary" style={{ textDecoration: 'none', display: 'inline-block' }}>
+                Open Application Form (Google Form) →
+              </a>
+            </div>
           </div>
         )}
 
