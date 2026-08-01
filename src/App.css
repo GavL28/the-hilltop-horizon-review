@@ -19,9 +19,15 @@
 }
 
 body {
-  background-color: var(--bg-color);
-  /* Inline SVG noise texture that simulates paper grain - never 404s */
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.06'/%3E%3C/svg%3E");
+  /* The linear-gradient acts as a brightening overlay. 
+     Increase 0.5 to 0.7 for a brighter effect, or lower to 0.3 for darker. */
+  background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), 
+              url('/inkandstain.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed; /* Keeps the background still while scrolling */
+  background-repeat: no-repeat;
+  
   color: var(--text-main);
   font-family: var(--font-body);
   line-height: 1.7;
@@ -162,18 +168,10 @@ body {
 
 /* Hero & Poem Styles */
 .hero-banner {
-  /* The "0.4" at the end of the rgba values controls the brightness. */
-  /* Change it to 0.6 to make it even brighter, or 0.2 for less brightness. */
-  background: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)), 
-              url('/inkandstain.png');
-  background-size: cover;
-  background-position: center;
-  
-  /* Keep your existing padding and other styles below */
-  padding: 80px 20px; 
-  border-radius: 8px;
+  text-align: center;
+  margin-bottom: 60px;
+  padding: 60px 20px 40px; 
   border-bottom: 1px solid var(--accent-border);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
 .hero-description {
