@@ -672,18 +672,25 @@ Red upon white cloth`}
                     Format your text, add headers, links, or images visually below:
                   </p>
                   
-                  {/* Standard textarea that TinyMCE will transform */}
-                  <textarea
-                    id="my-expressive-editor"
+                  <Editor
+                    apiKey='no-api-key'
                     value={newIssueHtml}
-                    onChange={(e) => setNewIssueHtml(e.target.value)}
-                    style={{ display: 'none' }}
-                  />
-
-                  {/* TinyMCE Self-Hosted Initializer */}
-                  <EditorInit 
-                    value={newIssueHtml} 
-                    onChange={(content) => setNewIssueHtml(content)} 
+                    onEditorChange={(content) => setNewIssueHtml(content)}
+                    init={{
+                      license_key: 'gpl', // <--- Add this line here
+                      height: 400,
+                      menubar: false,
+                      plugins: [
+                        'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                        'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                        'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
+                      ],
+                      toolbar: 'undo redo | formatselect | ' +
+                        'bold italic backcolor | alignleft aligncenter ' +
+                        'alignright alignjustify | bullist numlist outdent indent | ' +
+                        'removeformat | help',
+                      content_style: 'body { font-family:Lora,Georgia,serif; font-size:16px }'
+                    }}
                   />
                 </div>
 
