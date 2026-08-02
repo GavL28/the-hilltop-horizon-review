@@ -267,11 +267,18 @@ body {
 .form-control {
   width: 100%;
   padding: 12px;
+  color: #000000 !important; /* Forces the typed text to be solid black */
+  background-color: #ffffff !important; /* Ensures the input box has a solid white background */
   border: 1px solid var(--accent-border);
-  background-color: var(--bg-color);
   font-family: var(--font-body);
   font-size: 0.95rem;
   border-radius: 4px;
+}
+
+/* Makes the placeholder text (like "Your Name") visible but slightly gray so it doesn't look like typed text */
+.form-control::placeholder {
+  color: #555555 !important;
+  opacity: 1; 
 }
 
 .form-control:focus {
