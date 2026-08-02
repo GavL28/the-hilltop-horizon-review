@@ -454,7 +454,7 @@ Red upon white cloth`}
         )}
 
         {/* ADMIN TAB */}
-        {activeTab === 'admin' && isAdminLoggedIn && (
+        {activeTab === 'admin' && (
           <div className="content-box" style={{ maxWidth: '800px', margin: '0 auto' }}>
             <h2 className="section-title">Editor / Admin Dashboard</h2>
             
