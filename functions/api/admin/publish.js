@@ -39,6 +39,7 @@ export async function onRequestPost(context) {
         },
         body: JSON.stringify({
           from: 'Ink & Stain <noreply@inkandstainlit.com>',
+          to: 'baganokodo2022@gmail.com',
           bcc: emailList, // Use BCC to protect subscriber privacy
           subject: `New Issue Published: ${title}`,
           html: `<h2>The wait is over!</h2><p>${title} is now live on our website.</p><p><a href="https://yourwebsite.com">Read it now</a></p>`
