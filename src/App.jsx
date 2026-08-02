@@ -673,11 +673,10 @@ Red upon white cloth`}
                   </p>
                   
                   <Editor
-                    apiKey='no-api-key'
+                    apiKey='jhc05j47yf1ne408wtb8i3c6380mgcoqiayxub89shoy1r77' // You can use 'no-api-key' for free local testing, or get a free key from tiny.cloud later
                     value={newIssueHtml}
                     onEditorChange={(content) => setNewIssueHtml(content)}
                     init={{
-                      license_key: 'gpl', // <--- Add this line here
                       height: 400,
                       menubar: false,
                       plugins: [
