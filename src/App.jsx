@@ -467,7 +467,15 @@ Red upon white cloth`}
                   body: JSON.stringify({ password: adminPassword })
                 });
                 if (res.ok) setIsAdminLoggedIn(true);
-                else alert('Access Denied');
+                else {
+                  // Extract the real error message from the backend
+                  try {
+                    const errorData = await res.json();
+                    alert(`Access Denied: ${errorData.error}`);
+                  } catch (err) {
+                    alert(`Server Error: Check your browser's network tab or Cloudflare logs.`);
+                  }
+                }
               }}>
                 <div className="form-group">
                   <label>Admin Password</label>
