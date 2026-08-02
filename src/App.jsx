@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react'; // Ensure useRef is imported at the top!
 import './App.css';
 import { Turnstile } from '@marsidev/react-turnstile';
 import { Editor } from '@tinymce/tinymce-react';
@@ -20,6 +20,36 @@ const staffData = [
   { id: 'che', name: 'Che Holts', pronouns: 'He/Him', grade: 'Junior', role: 'Photography Editor', shortBio: 'Capturing moments that speak louder than words.', fullBio: 'Full biography coming soon...' },
   { id: 'rubbi', name: 'Rubbi Chen', pronouns: 'She/Her', grade: 'Senior', role: 'International Representative (China)', shortBio: 'Fostering literary connections across international borders.', fullBio: 'Full biography coming soon...' },
 ];
+
+function EditorInit({ value, onChange }) {
+  const editorRef = useRef(null);
+
+  useEffect(() => {
+    if (window.tinymce) {
+      window.tinymce.init({
+        selector: '#my-expressive-editor',
+        height: 400,
+        menubar: false,
+        plugins: ['lists', 'link', 'image', 'code', 'table'],
+        toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist | code',
+        setup: (editor) => {
+          editorRef.current = editor;
+          editor.on('Change KeyUp', () => {
+            onChange(editor.getContent());
+          });
+        }
+      });
+    }
+
+    return () => {
+      if (window.tinymce) {
+        window.tinymce.remove('#my-expressive-editor');
+      }
+    };
+  }, []);
+
+  return null;
+}
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('home');
@@ -642,24 +672,18 @@ Red upon white cloth`}
                     Format your text, add headers, links, or images visually below:
                   </p>
                   
-                  <Editor
-                    apiKey='jhc05j47yf1ne408wtb8i3c6380mgcoqiayxub89shoy1r77' // You can use 'no-api-key' for free local testing, or get a free key from tiny.cloud later
+                  {/* Standard textarea that TinyMCE will transform */}
+                  <textarea
+                    id="my-expressive-editor"
                     value={newIssueHtml}
-                    onEditorChange={(content) => setNewIssueHtml(content)}
-                    init={{
-                      height: 400,
-                      menubar: false,
-                      plugins: [
-                        'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-                        'searchreplace', 'visualblocks', 'code', 'fullscreen',
-                        'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
-                      ],
-                      toolbar: 'undo redo | formatselect | ' +
-                        'bold italic backcolor | alignleft aligncenter ' +
-                        'alignright alignjustify | bullist numlist outdent indent | ' +
-                        'removeformat | help',
-                      content_style: 'body { font-family:Lora,Georgia,serif; font-size:16px }'
-                    }}
+                    onChange={(e) => setNewIssueHtml(e.target.value)}
+                    style={{ display: 'none' }}
+                  />
+
+                  {/* TinyMCE Self-Hosted Initializer */}
+                  <EditorInit 
+                    value={newIssueHtml} 
+                    onChange={(content) => setNewIssueHtml(content)} 
                   />
                 </div>
 
