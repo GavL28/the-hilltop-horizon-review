@@ -140,10 +140,13 @@ export default function App() {
                   borderLeft: '4px solid var(--text-main)',
                   padding: '15px 20px',
                   marginBottom: '30px',
-                  fontStyle: 'italic'
+                  fontStyle: 'italic',
+                  display: 'flex',
+                  alignItems: 'center'
                 }}>
-                📢 <strong>Latest Update:</strong> {announcement}
-              </div>
+                  <span className="loud-speaker">📢</span> 
+                  <span><strong>Latest Update:</strong> {announcement}</span>
+                </div>
               )}
 
               <p className="hero-description">
