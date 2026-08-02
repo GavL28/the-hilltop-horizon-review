@@ -1,8 +1,9 @@
 export async function onRequestPost(context) {
     try {
       const inputData = await context.request.json();
-      const { email, token } = inputData;
-  
+      const { token } = inputData;
+      const email = (inputData.email || '').toLowerCase().trim();  
+
       // 1. Verify Turnstile Captcha token
       if (!token) {
         return new Response(JSON.stringify({ success: false, error: 'Captcha token missing' }), {
