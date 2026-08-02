@@ -43,6 +43,7 @@ export default function App() {
   // --- New State for Dynamic Content ---
   const [currentIssue, setCurrentIssue] = useState(null);
   const [pastIssues, setPastIssues] = useState([]);
+  const [selectedIssue, setSelectedIssue] = useState(null); // <-- Add this new line!
   const [announcement, setAnnouncement] = useState('');
   const [isContentLoading, setIsContentLoading] = useState(true);
 
@@ -256,60 +257,89 @@ Red upon white cloth`}
         )}
 
         {/* ISSUES TAB */}
-        {(activeTab === 'issues' || activeTab === 'issues-current' || activeTab === 'issues-archive') && (
+        {(activeTab === 'issues' || activeTab === 'issues-current') && (
           <div className="content-box fade-in">
             <h2 className="section-title">Current Issue</h2>
             
-            {/* 1. Loading State */}
-            {isContentLoading && (
-              <p style={{ textAlign: 'center', fontStyle: 'italic', color: 'var(--text-muted)' }}>
-                Loading latest issue...
-              </p>
-            )}
+            {isContentLoading && <p style={{ textAlign: 'center', fontStyle: 'italic', color: 'var(--text-muted)' }}>Loading latest issue...</p>}
 
-            {/* 2. Success State (Issue Exists) */}
             {!isContentLoading && currentIssue && (
               <div style={{ marginBottom: '50px' }}>
-                <h3 style={{ 
-                  fontSize: '1.8rem', 
-                  marginBottom: '20px', 
-                  borderBottom: '1px solid var(--accent-border)', 
-                  paddingBottom: '10px' 
-                }}>
+                <h3 style={{ fontSize: '1.8rem', marginBottom: '20px', borderBottom: '1px solid var(--accent-border)', paddingBottom: '10px' }}>
                   {currentIssue.title}
                 </h3>
-                
-                <div 
-                  className="issue-content"
-                  dangerouslySetInnerHTML={{ __html: currentIssue.content_html }} 
-                  style={{ lineHeight: '1.8' }}
-                />
+                <div className="issue-content" dangerouslySetInnerHTML={{ __html: currentIssue.content_html }} style={{ lineHeight: '1.8' }} />
               </div>
             )}
 
-            {/* 3. Empty State (No Issue) */}
             {!isContentLoading && !currentIssue && (
-              <p style={{ textAlign: 'center', fontStyle: 'italic', color: 'var(--text-muted)' }}>
-                No active issue is currently published. Check back soon!
-              </p>
+              <p style={{ textAlign: 'center', fontStyle: 'italic', color: 'var(--text-muted)' }}>No active issue is currently published. Check back soon!</p>
+            )}
+          </div>
+        )}
+
+        {/* 2. PAST ISSUES ARCHIVE (Clickable List) */}
+        {activeTab === 'issues-archive' && (
+          <div className="content-box fade-in">
+            <h2 className="section-title">Past Issues Archive</h2>
+            
+            {isContentLoading && <p style={{ textAlign: 'center', fontStyle: 'italic', color: 'var(--text-muted)' }}>Loading archive...</p>}
+            
+            {!isContentLoading && pastIssues.length === 0 && (
+              <p style={{ textAlign: 'center', fontStyle: 'italic', color: 'var(--text-muted)' }}>No past issues available yet.</p>
             )}
 
-            {/* Past Issues Archive Section */}
-            {!isContentLoading && pastIssues && pastIssues.length > 0 && (
-              <div style={{ marginTop: '50px', paddingTop: '30px', borderTop: '2px dashed var(--accent-border)' }}>
-                <h3 style={{ fontSize: '1.5rem', marginBottom: '20px' }}>Past Issues Archive</h3>
-                <ul style={{ listStyleType: 'none', padding: 0 }}>
-                  {pastIssues.map((issue) => (
-                    <li key={issue.id} style={{ marginBottom: '10px', padding: '10px', backgroundColor: 'var(--accent-bg)', borderRadius: '4px' }}>
-                      <strong>{issue.title}</strong> — 
-                      <span style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginLeft: '10px' }}>
-                        Published {new Date(issue.published_at).toLocaleDateString()}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+            {!isContentLoading && pastIssues.length > 0 && (
+              <ul style={{ listStyleType: 'none', padding: 0 }}>
+                {pastIssues.map((issue) => (
+                  <li 
+                    key={issue.id} 
+                    onClick={() => {
+                      setSelectedIssue(issue);
+                      setActiveTab('issue-detail');
+                    }}
+                    style={{ 
+                      marginBottom: '15px', 
+                      padding: '15px', 
+                      backgroundColor: 'var(--accent-bg)', 
+                      borderRadius: '4px',
+                      cursor: 'pointer',
+                      border: '1px solid transparent',
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.border = '1px solid var(--text-main)'}
+                    onMouseLeave={(e) => e.currentTarget.style.border = '1px solid transparent'}
+                  >
+                    <strong style={{ fontSize: '1.2rem', color: 'var(--text-main)' }}>{issue.title}</strong>
+                    <span style={{ color: 'var(--text-muted)', fontSize: '0.9rem', display: 'block', marginTop: '5px' }}>
+                      Published {new Date(issue.published_at).toLocaleDateString()}
+                    </span>
+                  </li>
+                ))}
+              </ul>
             )}
+          </div>
+        )}
+
+        {/* 3. PAST ISSUE READER (Viewing a specific clicked issue) */}
+        {activeTab === 'issue-detail' && selectedIssue && (
+          <div className="content-box fade-in">
+            <button 
+              className="btn-back" 
+              onClick={() => setActiveTab('issues-archive')}
+              style={{ marginBottom: '20px', background: 'none', border: 'none', color: 'var(--text-main)', cursor: 'pointer', fontStyle: 'italic' }}
+            >
+              ← Back to Archive
+            </button>
+            
+            <h3 style={{ fontSize: '1.8rem', marginBottom: '20px', borderBottom: '1px solid var(--accent-border)', paddingBottom: '10px' }}>
+              {selectedIssue.title}
+            </h3>
+            
+            <div 
+              className="issue-content"
+              dangerouslySetInnerHTML={{ __html: selectedIssue.content_html }} 
+              style={{ lineHeight: '1.8' }}
+            />
           </div>
         )}
 

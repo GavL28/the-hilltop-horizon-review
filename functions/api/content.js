@@ -9,7 +9,7 @@ export async function onRequestGet(context) {
   
       // 2. Fetch all past issues
       const { results: pastIssues } = await db.prepare(
-        'SELECT id, title, published_at FROM issues WHERE is_current = 0 ORDER BY published_at DESC'
+        'SELECT id, title, content_html, published_at FROM issues WHERE is_current = 0 ORDER BY published_at DESC'
       ).all();
   
       // 3. Fetch the most recent announcement
