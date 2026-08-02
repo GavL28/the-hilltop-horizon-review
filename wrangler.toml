@@ -1,4 +1,5 @@
-name = "ink-and-stain"
+# wrangler.toml
+name = 'gavin-website'
 compatibility_date = "2026-08-01"
 
 [assets]
