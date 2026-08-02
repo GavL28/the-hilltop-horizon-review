@@ -31,6 +31,15 @@ export default function App() {
   const [subCaptchaToken, setSubCaptchaToken] = useState('');
   const [subActionType, setSubActionType] = useState('subscribe');
 
+  // Admin Login State
+  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
+  const [adminPassword, setAdminPassword] = useState('');
+  
+  // Editor States
+  const [newIssueTitle, setNewIssueTitle] = useState('');
+  const [newIssueHtml, setNewIssueHtml] = useState('');
+  const [newAnnouncement, setNewAnnouncement] = useState('');
+
   const handleStaffClick = (staff) => {
     setSelectedStaff(staff);
     setActiveTab('staff-detail');
@@ -444,11 +453,85 @@ Red upon white cloth`}
           </div>
         )}
 
+        {/* ADMIN TAB */}
+        {activeTab === 'admin' && isAdminLoggedIn && (
+          <div className="content-box" style={{ maxWidth: '800px', margin: '0 auto' }}>
+            <h2 className="section-title">Editor / Admin Dashboard</h2>
+            
+            {!isAdminLoggedIn ? (
+              <form onSubmit={async (e) => {
+                e.preventDefault();
+                const res = await fetch('/api/admin/login', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ password: adminPassword })
+                });
+                if (res.ok) setIsAdminLoggedIn(true);
+                else alert('Access Denied');
+              }}>
+                <div className="form-group">
+                  <label>Admin Password</label>
+                  <input type="password" value={adminPassword} onChange={(e) => setAdminPassword(e.target.value)} className="form-control" required />
+                </div>
+                <button type="submit" className="btn-primary" style={{ marginTop: '10px' }}>Login</button>
+              </form>
+            ) : (
+              <form onSubmit={async (e) => {
+                e.preventDefault();
+                if (!confirm('Are you sure? This will archive the current issue, update the home page, and email ALL subscribers.')) return;
+
+                const res = await fetch('/api/admin/publish', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ 
+                    title: newIssueTitle, 
+                    contentHtml: newIssueHtml, 
+                    announcementMessage: newAnnouncement 
+                  })
+                });
+
+                if (res.ok) {
+                  alert('Issue published and emails sent successfully!');
+                  setNewIssueTitle('');
+                  setNewIssueHtml('');
+                  setNewAnnouncement('');
+                } else {
+                  alert('Failed to publish.');
+                }
+              }}>
+                <div className="form-group">
+                  <label>New Issue Title (e.g., Issue II: Shadows)</label>
+                  <input type="text" value={newIssueTitle} onChange={(e) => setNewIssueTitle(e.target.value)} className="form-control" required />
+                </div>
+                
+                <div className="form-group">
+                  <label>Home Page Announcement Message</label>
+                  <input type="text" value={newAnnouncement} onChange={(e) => setNewAnnouncement(e.target.value)} className="form-control" required 
+                         placeholder="e.g., Issue II is officially out! Read it under the Issues tab." />
+                </div>
+
+                <div className="form-group">
+                  <label>Issue Content (Raw HTML Editor)</label>
+                  <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '10px' }}>
+                    Use standard HTML tags here (`&lt;h3&gt;`, `&lt;p&gt;`, `&lt;br&gt;`, `&lt;img src="..."&gt;`) to layout the poems and artwork.
+                  </p>
+                  <textarea value={newIssueHtml} onChange={(e) => setNewIssueHtml(e.target.value)} className="form-control" rows="20" style={{ fontFamily: 'monospace' }} required></textarea>
+                </div>
+
+                <button type="submit" className="btn-primary" style={{ marginTop: '15px', backgroundColor: '#d9534f', borderColor: '#d9534f' }}>
+                  Publish Issue & Broadcast Email
+                </button>
+              </form>
+            )}
+          </div>
+        )}
+
       </main>
 
       {/* Footer */}
+      {/* Footer */}
       <footer className="site-footer">
-        <div className="container">
+        <div className="container" onDoubleClick={() => setActiveTab('admin')}>
           <p>&copy; {new Date().getFullYear()} Ink & Stain Literary Magazine. All rights reserved.</p>
         </div>
       </footer>
