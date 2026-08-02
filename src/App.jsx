@@ -256,7 +256,7 @@ Red upon white cloth`}
         )}
 
         {/* ISSUES TAB */}
-        {activeTab === 'issues' && (
+        {(activeTab === 'issues' || activeTab === 'issues-current' || activeTab === 'issues-archive') && (
           <div className="content-box fade-in">
             <h2 className="section-title">Current Issue</h2>
             
