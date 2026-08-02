@@ -52,6 +52,7 @@ export default function App() {
       try {
         const res = await fetch('/api/content');
         const data = await res.json();
+        console.log("API Data Loaded:", data); // Add this line!
         if (data.success) {
           setCurrentIssue(data.currentIssue);
           setPastIssues(data.pastIssues || []);
@@ -259,29 +260,42 @@ Red upon white cloth`}
           <div className="content-box fade-in">
             <h2 className="section-title">Current Issue</h2>
             
-            {isContentLoading ? (
-              <p style={{ textAlign: 'center', fontStyle: 'italic', color: 'var(--text-muted)' }}>Loading latest issue...</p>
-            ) : currentIssue ? (
+            {/* 1. Loading State */}
+            {isContentLoading && (
+              <p style={{ textAlign: 'center', fontStyle: 'italic', color: 'var(--text-muted)' }}>
+                Loading latest issue...
+              </p>
+            )}
+
+            {/* 2. Success State (Issue Exists) */}
+            {!isContentLoading && currentIssue && (
               <div style={{ marginBottom: '50px' }}>
-                <h3 style={{ fontSize: '1.8rem', marginBottom: '20px', borderBottom: '1px solid var(--accent-border)', paddingBottom: '10px' }}>
+                <h3 style={{ 
+                  fontSize: '1.8rem', 
+                  marginBottom: '20px', 
+                  borderBottom: '1px solid var(--accent-border)', 
+                  paddingBottom: '10px' 
+                }}>
                   {currentIssue.title}
                 </h3>
                 
-                {/* Renders the raw HTML created in the Admin dashboard */}
                 <div 
                   className="issue-content"
                   dangerouslySetInnerHTML={{ __html: currentIssue.content_html }} 
                   style={{ lineHeight: '1.8' }}
                 />
               </div>
-            ) : (
+            )}
+
+            {/* 3. Empty State (No Issue) */}
+            {!isContentLoading && !currentIssue && (
               <p style={{ textAlign: 'center', fontStyle: 'italic', color: 'var(--text-muted)' }}>
                 No active issue is currently published. Check back soon!
               </p>
             )}
 
             {/* Past Issues Archive Section */}
-            {pastIssues.length > 0 && (
+            {!isContentLoading && pastIssues && pastIssues.length > 0 && (
               <div style={{ marginTop: '50px', paddingTop: '30px', borderTop: '2px dashed var(--accent-border)' }}>
                 <h3 style={{ fontSize: '1.5rem', marginBottom: '20px' }}>Past Issues Archive</h3>
                 <ul style={{ listStyleType: 'none', padding: 0 }}>
