@@ -1,0 +1,4 @@
+[env.production]
+d1_databases = [
+  { binding = "DB", database_name = "gavin_website", database_id = "99542bae-9e11-4c53-b547-86f60a9e863d" }
+]

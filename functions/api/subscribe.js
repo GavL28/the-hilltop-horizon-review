@@ -1,9 +1,9 @@
 export async function onRequestPost(context) {
     try {
       const inputData = await context.request.json();
-      const { token, name, email, message } = inputData;
+      const { name, email, country, token } = inputData;
   
-      // 1. Ensure token is provided
+      // 1. Verify Turnstile Captcha token first
       if (!token) {
         return new Response(JSON.stringify({ success: false, error: 'Captcha token missing' }), {
           status: 400,
@@ -11,34 +11,39 @@ export async function onRequestPost(context) {
         });
       }
   
-      // 2. Prepare payload for Cloudflare siteverify API
-      const secretKey = context.env.TURNSTILE_SECRET_KEY; // Stored securely in Cloudflare Environment Variables
+      const secretKey = context.env.TURNSTILE_SECRET_KEY;
       const verifyUrl = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
-  
       const formData = new URLSearchParams();
       formData.append('secret', secretKey);
       formData.append('response', token);
   
-      // 3. Call Cloudflare's siteverify endpoint
-      const result = await fetch(verifyUrl, {
-        body: formData,
-        method: 'POST',
-      });
+      const captchaResult = await fetch(verifyUrl, { body: formData, method: 'POST' });
+      const captchaOutcome = await captchaResult.json();
   
-      const outcome = await result.json();
-  
-      // 4. Check if verification succeeded
-      if (!outcome.success) {
+      if (!captchaOutcome.success) {
         return new Response(JSON.stringify({ success: false, error: 'Captcha verification failed' }), {
           status: 403,
           headers: { 'Content-Type': 'application/json' },
         });
       }
   
-      // 5. Captcha passed! Proceed to save data to database or send email
-      // TODO: Insert your database saving logic here (e.g., Cloudflare D1)
+      // 2. Check for duplicate email in D1 Database
+      const db = context.env.DB;
+      const subscriberId = crypto.randomUUID();
+      
+      // UPSERT: If email exists, update name, country, and reactivate. If not, insert new.
+      await db.prepare(`
+        INSERT INTO subscribers (id, name, email, country, is_active) 
+        VALUES (?, ?, ?, ?, 1)
+        ON CONFLICT(email) DO UPDATE SET 
+          name = excluded.name,
+          country = excluded.country,
+          is_active = 1
+      `)
+      .bind(subscriberId, name, email, country)
+      .run();
   
-      return new Response(JSON.stringify({ success: true, message: 'Form submitted successfully!' }), {
+      return new Response(JSON.stringify({ success: true, message: 'Subscribed successfully!' }), {
         status: 200,
         headers: { 'Content-Type': 'application/json' },
       });
