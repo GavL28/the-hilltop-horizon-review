@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react'; // Ensure useRef is imported at the top!
 import './App.css';
 import { Turnstile } from '@marsidev/react-turnstile';
 import { Editor } from '@tinymce/tinymce-react';
@@ -20,6 +20,36 @@ const staffData = [
   { id: 'che', name: 'Che Holts', pronouns: 'He/Him', grade: 'Junior', role: 'Photography Editor', shortBio: 'Capturing moments that speak louder than words.', fullBio: 'Full biography coming soon...' },
   { id: 'rubbi', name: 'Rubbi Chen', pronouns: 'She/Her', grade: 'Senior', role: 'International Representative (China)', shortBio: 'Fostering literary connections across international borders.', fullBio: 'Full biography coming soon...' },
 ];
+
+function EditorInit({ value, onChange }) {
+  const editorRef = useRef(null);
+
+  useEffect(() => {
+    if (window.tinymce) {
+      window.tinymce.init({
+        selector: '#my-expressive-editor',
+        height: 400,
+        menubar: false,
+        plugins: ['lists', 'link', 'image', 'code', 'table'],
+        toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist | code',
+        setup: (editor) => {
+          editorRef.current = editor;
+          editor.on('Change KeyUp', () => {
+            onChange(editor.getContent());
+          });
+        }
+      });
+    }
+
+    return () => {
+      if (window.tinymce) {
+        window.tinymce.remove('#my-expressive-editor');
+      }
+    };
+  }, []);
+
+  return null;
+}
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('home');
