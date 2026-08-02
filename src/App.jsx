@@ -40,6 +40,32 @@ export default function App() {
   const [newIssueHtml, setNewIssueHtml] = useState('');
   const [newAnnouncement, setNewAnnouncement] = useState('');
 
+  // --- New State for Dynamic Content ---
+  const [currentIssue, setCurrentIssue] = useState(null);
+  const [pastIssues, setPastIssues] = useState([]);
+  const [announcement, setAnnouncement] = useState('');
+  const [isContentLoading, setIsContentLoading] = useState(true);
+
+  // Fetch content on page load
+  useEffect(() => {
+    async function fetchContent() {
+      try {
+        const res = await fetch('/api/content');
+        const data = await res.json();
+        if (data.success) {
+          setCurrentIssue(data.currentIssue);
+          setPastIssues(data.pastIssues || []);
+          if (data.announcement) setAnnouncement(data.announcement.message);
+        }
+      } catch (err) {
+        console.error("Failed to fetch site content:", err);
+      } finally {
+        setIsContentLoading(false);
+      }
+    }
+    fetchContent();
+  }, []);
+
   const handleStaffClick = (staff) => {
     setSelectedStaff(staff);
     setActiveTab('staff-detail');
@@ -105,11 +131,24 @@ export default function App() {
         {activeTab === 'home' && (
           <div>
             <div className="hero-banner">
+              {/* Dynamic Announcement Banner */}
+              {announcement && (
+                <div style={{
+                  backgroundColor: 'var(--accent-bg)',
+                  borderLeft: '4px solid var(--text-main)',
+                  padding: '15px 20px',
+                  marginBottom: '30px',
+                  fontStyle: 'italic'
+                }}>
+                📢 <strong>Latest Update:</strong> {announcement}
+              </div>
+              )}
+
               <p className="hero-description">
                 We are an international youth literary magazine, run by high schoolers, for high schoolers.
               </p>
             </div>
-            
+
             <div className="content-box" style={{ textAlign: 'center' }}>
               <h2 className="section-title">From the Editors' Desk</h2>
               <p style={{ maxWidth: '700px', margin: '0 auto', marginBottom: '20px' }}>
@@ -215,18 +254,48 @@ Red upon white cloth`}
           </div>
         )}
 
-        {/* ISSUES SUBTABS */}
-        {activeTab === 'issues-current' && (
-          <div className="content-box" style={{ textAlign: 'center' }}>
+        {/* ISSUES TAB */}
+        {activeTab === 'issues' && (
+          <div className="content-box fade-in">
             <h2 className="section-title">Current Issue</h2>
-            <p>Issue I — Coming Soon.</p>
-          </div>
-        )}
+            
+            {isContentLoading ? (
+              <p style={{ textAlign: 'center', fontStyle: 'italic', color: 'var(--text-muted)' }}>Loading latest issue...</p>
+            ) : currentIssue ? (
+              <div style={{ marginBottom: '50px' }}>
+                <h3 style={{ fontSize: '1.8rem', marginBottom: '20px', borderBottom: '1px solid var(--accent-border)', paddingBottom: '10px' }}>
+                  {currentIssue.title}
+                </h3>
+                
+                {/* Renders the raw HTML created in the Admin dashboard */}
+                <div 
+                  className="issue-content"
+                  dangerouslySetInnerHTML={{ __html: currentIssue.content_html }} 
+                  style={{ lineHeight: '1.8' }}
+                />
+              </div>
+            ) : (
+              <p style={{ textAlign: 'center', fontStyle: 'italic', color: 'var(--text-muted)' }}>
+                No active issue is currently published. Check back soon!
+              </p>
+            )}
 
-        {activeTab === 'issues-archive' && (
-          <div className="content-box" style={{ textAlign: 'center' }}>
-            <h2 className="section-title">Past Issues Archive</h2>
-            <p>Archived releases will appear here after publication.</p>
+            {/* Past Issues Archive Section */}
+            {pastIssues.length > 0 && (
+              <div style={{ marginTop: '50px', paddingTop: '30px', borderTop: '2px dashed var(--accent-border)' }}>
+                <h3 style={{ fontSize: '1.5rem', marginBottom: '20px' }}>Past Issues Archive</h3>
+                <ul style={{ listStyleType: 'none', padding: 0 }}>
+                  {pastIssues.map((issue) => (
+                    <li key={issue.id} style={{ marginBottom: '10px', padding: '10px', backgroundColor: 'var(--accent-bg)', borderRadius: '4px' }}>
+                      <strong>{issue.title}</strong> — 
+                      <span style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginLeft: '10px' }}>
+                        Published {new Date(issue.published_at).toLocaleDateString()}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         )}
 
