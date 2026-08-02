@@ -23,11 +23,13 @@ const staffData = [
 export default function App() {
   const [activeTab, setActiveTab] = useState('home');
   const [selectedStaff, setSelectedStaff] = useState(null);
-  // Contact Form State
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
-  const [captchaToken, setCaptchaToken] = useState('');
+
+  // Subscription Form State
+  const [subName, setSubName] = useState('');
+  const [subEmail, setSubEmail] = useState('');
+  const [subCountry, setSubCountry] = useState('');
+  const [subCaptchaToken, setSubCaptchaToken] = useState('');
+  const [subActionType, setSubActionType] = useState('subscribe');
 
   const handleStaffClick = (staff) => {
     setSelectedStaff(staff);
@@ -275,33 +277,39 @@ Red upon white cloth`}
               </div>
             </div>
 
-            <p style={{ textAlign: 'center', marginBottom: '25px', color: 'var(--text-muted)' }}>Or send us a direct message below:</p>
+            <p style={{ textAlign: 'center', marginBottom: '25px', color: 'var(--text-muted)' }}>
+              Subscribe to receive notifications when a new issue drops:
+            </p>
             
             <form onSubmit={async (e) => {
               e.preventDefault();
-              if (!captchaToken) {
+              if (!subCaptchaToken) {
                 alert('Please complete the captcha verification.');
                 return;
               }
 
+              // Determine the correct endpoint based on which button was clicked
+              const endpoint = subActionType === 'subscribe' ? '/api/subscribe' : '/api/unsubscribe';
+
               try {
-                const response = await fetch('/api/submit', {
+                const response = await fetch(endpoint, {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ name, email, message, token: captchaToken }),
+                  // Unsubscribe only strictly needs the email and token, but sending the whole payload is fine
+                  body: JSON.stringify({ name: subName, email: subEmail, country: subCountry, token: subCaptchaToken }),
                 });
 
                 const data = await response.json();
                 if (data.success) {
-                  alert('Message sent successfully!');
-                  setName('');
-                  setEmail('');
-                  setMessage('');
+                  alert(subActionType === 'subscribe' ? 'Subscribed successfully!' : 'Unsubscribed successfully.');
+                  setSubName('');
+                  setSubEmail('');
+                  setSubCountry('');
                 } else {
                   alert('Error: ' + data.error);
                 }
               } catch (err) {
-                alert('An error occurred while sending your message.');
+                alert(`An error occurred while trying to ${subActionType}.`);
               }
             }}>
               <div className="form-group">
@@ -309,39 +317,66 @@ Red upon white cloth`}
                 <input 
                   type="text" 
                   className="form-control" 
-                  value={name} 
-                  onChange={(e) => setName(e.target.value)} 
-                  required 
+                  value={subName} 
+                  onChange={(e) => setSubName(e.target.value)} 
+                  required={subActionType === 'subscribe'} // Only required for subscribing
                 />
               </div>
               <div className="form-group">
-                <label>Email</label>
+                <label>Email Address</label>
                 <input 
                   type="email" 
                   className="form-control" 
-                  value={email} 
-                  onChange={(e) => setEmail(e.target.value)} 
+                  value={subEmail} 
+                  onChange={(e) => setSubEmail(e.target.value)} 
                   required 
                 />
               </div>
               <div className="form-group">
-                <label>Message</label>
-                <textarea 
+                <label>Country</label>
+                <input 
+                  type="text" 
                   className="form-control" 
-                  rows="5" 
-                  value={message} 
-                  onChange={(e) => setMessage(e.target.value)} 
-                  required 
-                ></textarea>
+                  value={subCountry} 
+                  onChange={(e) => setSubCountry(e.target.value)} 
+                  required={subActionType === 'subscribe'} // Only required for subscribing
+                />
               </div>
               <div style={{ margin: '20px 0', display: 'flex', justifyContent: 'center' }}>
                 <Turnstile 
                   siteKey="0x4AAAAAAEEHPVvPPOVCCORz" 
-                  onSuccess={(token) => setCaptchaToken(token)} 
+                  onSuccess={(token) => setSubCaptchaToken(token)} 
                 />
               </div>
-              <button type="submit" className="btn-primary" style={{ marginTop: '15px' }}>Send Message</button>
+              
+              {/* Button Group */}
+              <div style={{ display: 'flex', gap: '15px', justifyContent: 'center', marginTop: '15px' }}>
+                <button 
+                  type="submit" 
+                  className="btn-primary" 
+                  onClick={() => setSubActionType('subscribe')}
+                >
+                  Subscribe
+                </button>
+                <button 
+                  type="submit" 
+                  className="btn-secondary" 
+                  onClick={() => setSubActionType('unsubscribe')}
+                  style={{ 
+                    background: 'transparent', 
+                    border: '1px solid var(--text-main)', 
+                    color: 'var(--text-main)',
+                    padding: '10px 20px',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                    fontFamily: 'var(--font-heading)'
+                  }}
+                >
+                  Unsubscribe
+                </button>
+              </div>
             </form>
+
           </div>
         )}
 
