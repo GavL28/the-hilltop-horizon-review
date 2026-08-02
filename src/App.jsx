@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
+import { Turnstile } from '@marsidev/react-turnstile';
 
 // Centralized Staff Data Array
 const staffData = [
@@ -22,6 +23,11 @@ const staffData = [
 export default function App() {
   const [activeTab, setActiveTab] = useState('home');
   const [selectedStaff, setSelectedStaff] = useState(null);
+  // Contact Form State
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
+  const [captchaToken, setCaptchaToken] = useState('');
 
   const handleStaffClick = (staff) => {
     setSelectedStaff(staff);
@@ -271,18 +277,68 @@ Red upon white cloth`}
 
             <p style={{ textAlign: 'center', marginBottom: '25px', color: 'var(--text-muted)' }}>Or send us a direct message below:</p>
             
-            <form onSubmit={(e) => { e.preventDefault(); alert('Message sent!'); }}>
+            <form onSubmit={async (e) => {
+              e.preventDefault();
+              if (!captchaToken) {
+                alert('Please complete the captcha verification.');
+                return;
+              }
+
+              try {
+                const response = await fetch('/api/submit', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ name, email, message, token: captchaToken }),
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                  alert('Message sent successfully!');
+                  setName('');
+                  setEmail('');
+                  setMessage('');
+                } else {
+                  alert('Error: ' + data.error);
+                }
+              } catch (err) {
+                alert('An error occurred while sending your message.');
+              }
+            }}>
               <div className="form-group">
                 <label>Name</label>
-                <input type="text" className="form-control" required />
+                <input 
+                  type="text" 
+                  className="form-control" 
+                  value={name} 
+                  onChange={(e) => setName(e.target.value)} 
+                  required 
+                />
               </div>
               <div className="form-group">
                 <label>Email</label>
-                <input type="email" className="form-control" required />
+                <input 
+                  type="email" 
+                  className="form-control" 
+                  value={email} 
+                  onChange={(e) => setEmail(e.target.value)} 
+                  required 
+                />
               </div>
               <div className="form-group">
                 <label>Message</label>
-                <textarea className="form-control" rows="5" required></textarea>
+                <textarea 
+                  className="form-control" 
+                  rows="5" 
+                  value={message} 
+                  onChange={(e) => setMessage(e.target.value)} 
+                  required 
+                ></textarea>
+              </div>
+              <div style={{ margin: '20px 0', display: 'flex', justifyContent: 'center' }}>
+                <Turnstile 
+                  siteKey="0x4AAAAAAEEHPVvPPOVCCORz" 
+                  onSuccess={(token) => setCaptchaToken(token)} 
+                />
               </div>
               <button type="submit" className="btn-primary" style={{ marginTop: '15px' }}>Send Message</button>
             </form>
