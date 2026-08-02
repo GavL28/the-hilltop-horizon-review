@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import { Turnstile } from '@marsidev/react-turnstile';
+import { Editor } from '@tinymce/tinymce-react';
 
 // Centralized Staff Data Array
 const staffData = [
@@ -132,23 +133,24 @@ export default function App() {
         {/* HOME TAB */}
         {activeTab === 'home' && (
           <div>
-            <div className="hero-banner">
-              {/* Dynamic Announcement Banner */}
-              {announcement && (
-                <div style={{
-                  backgroundColor: 'var(--accent-bg)',
-                  borderLeft: '4px solid var(--text-main)',
-                  padding: '15px 20px',
-                  marginBottom: '30px',
-                  fontStyle: 'italic',
-                  display: 'flex',
-                  alignItems: 'center'
-                }}>
-                  <span className="loud-speaker">📢</span> 
-                  <span><strong>Latest Update:</strong> {announcement}</span>
-                </div>
-              )}
 
+            {/* Dynamic Announcement Banner */}
+            {announcement && (
+              <div style={{
+                backgroundColor: 'var(--accent-bg)',
+                borderLeft: '4px solid var(--text-main)',
+                padding: '15px 20px',
+                marginBottom: '30px',
+                fontStyle: 'italic',
+                display: 'flex',
+                alignItems: 'center'
+              }}>
+                <span className="loud-speaker">📢</span> 
+                <span><strong>Latest Update:</strong> {announcement}</span>
+              </div>
+            )}
+
+            <div className="hero-banner">
               <p className="hero-description">
                 We are an international youth literary magazine, run by high schoolers, for high schoolers.
               </p>
@@ -635,11 +637,30 @@ Red upon white cloth`}
                 </div>
 
                 <div className="form-group">
-                  <label>Issue Content (Raw HTML Editor)</label>
+                  <label>Issue Content (WYSIWYG Editor)</label>
                   <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '10px' }}>
-                    Use standard HTML tags here (`&lt;h3&gt;`, `&lt;p&gt;`, `&lt;br&gt;`, `&lt;img src="..."&gt;`) to layout the poems and artwork.
+                    Format your text, add headers, links, or images visually below:
                   </p>
-                  <textarea value={newIssueHtml} onChange={(e) => setNewIssueHtml(e.target.value)} className="form-control" rows="20" style={{ fontFamily: 'monospace' }} required></textarea>
+                  
+                  <Editor
+                    apiKey='no-api-key' // You can use 'no-api-key' for free local testing, or get a free key from tiny.cloud later
+                    value={newIssueHtml}
+                    onEditorChange={(content) => setNewIssueHtml(content)}
+                    init={{
+                      height: 400,
+                      menubar: false,
+                      plugins: [
+                        'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                        'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                        'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
+                      ],
+                      toolbar: 'undo redo | formatselect | ' +
+                        'bold italic backcolor | alignleft aligncenter ' +
+                        'alignright alignjustify | bullist numlist outdent indent | ' +
+                        'removeformat | help',
+                      content_style: 'body { font-family:Lora,Georgia,serif; font-size:16px }'
+                    }}
+                  />
                 </div>
 
                 <button type="submit" className="btn-primary" style={{ marginTop: '15px', backgroundColor: '#d9534f', borderColor: '#d9534f' }}>
