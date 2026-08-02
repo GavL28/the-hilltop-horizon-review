@@ -443,9 +443,11 @@ body {
 /* --- Loud Megaphone Animation --- */
 .loud-speaker {
   display: inline-block;
-  font-size: 1.8rem; /* Makes the icon significantly larger */
+  font-size: 1.8rem; 
   margin-right: 12px;
-  animation: shout 3s infinite; /* Loops the animation every 3 seconds */
+  color: #D9381E; /* A vivid literary red/crimson */
+  filter: drop-shadow(0 0 6px rgba(217, 56, 30, 0.6)); /* Adds a matching bright glow */
+  animation: shout 3s infinite; 
   transform-origin: center left;
 }
 
