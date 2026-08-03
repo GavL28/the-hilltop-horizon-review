@@ -24,6 +24,7 @@ const staffData = [
 function EditorInit({ value, onChange }) {
   const editorRef = useRef(null);
 
+  // 1. Initialize the editor
   useEffect(() => {
     if (window.tinymce) {
       window.tinymce.init({
@@ -46,7 +47,14 @@ function EditorInit({ value, onChange }) {
         window.tinymce.remove('#my-expressive-editor');
       }
     };
-  }, []);
+  }, []); // Only runs once on mount
+
+  // 2. NEW: Watch for external changes (like picking an older issue from a dropdown)
+  useEffect(() => {
+    if (editorRef.current && value !== editorRef.current.getContent()) {
+      editorRef.current.setContent(value || '');
+    }
+  }, [value]);
 
   return null;
 }
@@ -70,6 +78,7 @@ export default function App() {
   const [newIssueTitle, setNewIssueTitle] = useState('');
   const [newIssueHtml, setNewIssueHtml] = useState('');
   const [newAnnouncement, setNewAnnouncement] = useState('');
+  const [editingIssueId, setEditingIssueId] = useState('new'); // <-- Add this new line
 
   // --- New State for Dynamic Content ---
   const [currentIssue, setCurrentIssue] = useState(null);
@@ -634,37 +643,99 @@ Red upon white cloth`}
             ) : (
               <form onSubmit={async (e) => {
                 e.preventDefault();
-                if (!confirm('Are you sure? This will archive the current issue, update the home page, and email ALL subscribers.')) return;
+                
+                // BRANCH A: Create New Issue
+                if (editingIssueId === 'new') {
+                  if (!confirm('Are you sure? This will archive the current issue, update the home page, and email ALL subscribers.')) return;
+  
+                  const res = await fetch('/api/admin/publish', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                      title: newIssueTitle, 
+                      contentHtml: newIssueHtml, 
+                      announcementMessage: newAnnouncement 
+                    })
+                  });
+  
+                  if (res.ok) {
+                    alert('Issue published and emails sent successfully!');
+                    setNewIssueTitle('');
+                    setNewIssueHtml('');
+                    setNewAnnouncement('');
+                  } else {
+                    alert('Failed to publish.');
+                  }
 
-                const res = await fetch('/api/admin/publish', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ 
-                    title: newIssueTitle, 
-                    contentHtml: newIssueHtml, 
-                    announcementMessage: newAnnouncement 
-                  })
-                });
-
-                if (res.ok) {
-                  alert('Issue published and emails sent successfully!');
-                  setNewIssueTitle('');
-                  setNewIssueHtml('');
-                  setNewAnnouncement('');
+                // BRANCH B: Edit Existing Issue
                 } else {
-                  alert('Failed to publish.');
+                  if (!confirm('Are you sure you want to save changes to this existing issue? (No emails will be sent)')) return;
+                  
+                  const res = await fetch('/api/admin/update', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                      id: editingIssueId,
+                      title: newIssueTitle, 
+                      contentHtml: newIssueHtml
+                    })
+                  });
+  
+                  if (res.ok) {
+                    alert('Issue updated successfully! Refresh the page to see changes.');
+                  } else {
+                    alert('Failed to update issue.');
+                  }
                 }
               }}>
+
+                {/* --- Mode Selector Dropdown --- */}
+                <div className="form-group" style={{ marginBottom: '30px', paddingBottom: '20px', borderBottom: '2px dashed var(--accent-border)' }}>
+                  <label style={{ fontWeight: 'bold', color: 'var(--text-main)' }}>Editor Action</label>
+                  <select 
+                    className="form-control"
+                    value={editingIssueId}
+                    onChange={(e) => {
+                      const selectedId = e.target.value;
+                      setEditingIssueId(selectedId);
+                      
+                      if (selectedId === 'new') {
+                        setNewIssueTitle('');
+                        setNewIssueHtml('');
+                        setNewAnnouncement('');
+                      } else {
+                        // Gather all loaded issues to search through
+                        const allIssues = currentIssue ? [currentIssue, ...pastIssues] : pastIssues;
+                        const targetIssue = allIssues.find(i => i.id === selectedId);
+                        if (targetIssue) {
+                          setNewIssueTitle(targetIssue.title);
+                          setNewIssueHtml(targetIssue.content_html);
+                          setNewAnnouncement(''); // Announcements are only for new issues
+                        }
+                      }
+                    }}
+                  >
+                    <option value="new">🌟 Publish a Brand New Issue</option>
+                    {currentIssue && <option value={currentIssue.id}>✏️ Edit Current: {currentIssue.title}</option>}
+                    {pastIssues && pastIssues.map(issue => (
+                      <option key={issue.id} value={issue.id}>✏️ Edit Archive: {issue.title}</option>
+                    ))}
+                  </select>
+                </div>
+
                 <div className="form-group">
-                  <label>New Issue Title (e.g., Issue II: Shadows)</label>
+                  <label>{editingIssueId === 'new' ? 'New Issue Title (e.g., Issue II: Shadows)' : 'Edit Issue Title'}</label>
                   <input type="text" value={newIssueTitle} onChange={(e) => setNewIssueTitle(e.target.value)} className="form-control" required />
                 </div>
                 
-                <div className="form-group">
-                  <label>Home Page Announcement Message</label>
-                  <input type="text" value={newAnnouncement} onChange={(e) => setNewAnnouncement(e.target.value)} className="form-control" required 
-                         placeholder="e.g., Issue II is officially out! Read it under the Issues tab." />
-                </div>
+                {/* Only show the announcement field if we are making a NEW issue */}
+                {editingIssueId === 'new' && (
+                  <div className="form-group">
+                    <label>Home Page Announcement Message</label>
+                    <input type="text" value={newAnnouncement} onChange={(e) => setNewAnnouncement(e.target.value)} className="form-control" required={editingIssueId === 'new'} 
+                           placeholder="e.g., Issue II is officially out! Read it under the Issues tab." />
+                  </div>
+                )}
 
                 <div className="form-group">
                   <label>Issue Content (WYSIWYG Editor)</label>
@@ -673,7 +744,7 @@ Red upon white cloth`}
                   </p>
                   
                   <Editor
-                    apiKey='jhc05j47yf1ne408wtb8i3c6380mgcoqiayxub89shoy1r77' // You can use 'no-api-key' for free local testing, or get a free key from tiny.cloud later
+                    apiKey='jhc05j47yf1ne408wtb8i3c6380mgcoqiayxub89shoy1r77' 
                     value={newIssueHtml}
                     onEditorChange={(content) => setNewIssueHtml(content)}
                     init={{
@@ -693,8 +764,8 @@ Red upon white cloth`}
                   />
                 </div>
 
-                <button type="submit" className="btn-primary" style={{ marginTop: '15px', backgroundColor: '#d9534f', borderColor: '#d9534f' }}>
-                  Publish Issue & Broadcast Email
+                <button type="submit" className="btn-primary" style={{ marginTop: '15px', backgroundColor: editingIssueId === 'new' ? '#d9534f' : '#0275d8', borderColor: editingIssueId === 'new' ? '#d9534f' : '#0275d8' }}>
+                  {editingIssueId === 'new' ? 'Publish Issue & Broadcast Email' : 'Save Changes (Silent)'}
                 </button>
               </form>
             )}
