@@ -501,7 +501,7 @@ Red upon white cloth`}
               </div>
               <div style={{ margin: '20px 0', display: 'flex', justifyContent: 'center' }}>
                 <Turnstile 
-                  siteKey="0x4AAAAAAEEHPVvPPOVCCORz" 
+                  siteKey="0x4AAAAAAEEsA5qQZtd99Uc8" 
                   onSuccess={(token) => setSubCaptchaToken(token)} 
                 />
               </div>
