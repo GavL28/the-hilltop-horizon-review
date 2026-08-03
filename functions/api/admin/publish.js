@@ -38,8 +38,8 @@ export async function onRequestPost(context) {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          from: 'Ink & Stain <noreply@inkandstainlit.com>',
-          to: 'baganokodo2022@gmail.com',
+          from: 'The Hilltop Horizon Review <noreply@thehilltophorizonreview.com>',
+          to: 'gavinliu20162025@gmail.com',
           bcc: emailList, // Use BCC to protect subscriber privacy
           subject: `New Issue Published: ${title}`,
           html: `<h2>The wait is over!</h2><p>${title} is now live on our website.</p><p><a href="https://yourwebsite.com">Read it now</a></p>`
