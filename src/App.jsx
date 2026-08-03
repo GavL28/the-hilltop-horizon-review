@@ -673,7 +673,7 @@ Red upon white cloth`}
                   </p>
                   
                   <Editor
-                    apiKey='jhc05j47yf1ne408wtb8i3c6380mgcoqiayxub89shoy1r77' // You can use 'no-api-key' for free local testing, or get a free key from tiny.cloud later
+                    apiKey='vi6do892krmboei0izctd0jz9q98379bnrr3h3g7fcejsi5h' // You can use 'no-api-key' for free local testing, or get a free key from tiny.cloud later
                     value={newIssueHtml}
                     onEditorChange={(content) => setNewIssueHtml(content)}
                     init={{
