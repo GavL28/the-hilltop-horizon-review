@@ -611,224 +611,222 @@ Red upon white cloth`}
 
         {/* ADMIN TAB */}
         {activeTab === 'admin' && (
-          <div className="content-box" style={{ maxWidth: '800px', margin: '0 auto' }}>
-            <h2 className="section-title">Editor / Admin Dashboard</h2>
-            
-            {!isAdminLoggedIn ? (
-              <form onSubmit={async (e) => {
-                e.preventDefault();
-                const res = await fetch('/api/admin/login', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ password: adminPassword })
-                });
-                if (res.ok) setIsAdminLoggedIn(true);
-                else {
-                  // Extract the real error message from the backend
-                  try {
-                    const errorData = await res.json();
-                    alert(`Access Denied: ${errorData.error}`);
-                  } catch (err) {
-                    alert(`Server Error: Check your browser's network tab or Cloudflare logs.`);
-                  }
-                }
-              }}>
-                <div className="form-group">
-                  <label>Admin Password</label>
-                  <input type="password" value={adminPassword} onChange={(e) => setAdminPassword(e.target.value)} className="form-control" required />
-                </div>
-                <button type="submit" className="btn-primary" style={{ marginTop: '10px' }}>Login</button>
-              </form>
-            ) : (
-              <div>
-                <div style={{ display: 'flex', gap: '10px', marginBottom: '25px' }}>
-                  <button
-                    type="button"
-                    className="btn-primary"
-                    onClick={() => setAdminMode('publish')}
-                    style={{
-                      backgroundColor: adminMode === 'publish' ? 'var(--text-main)' : 'transparent',
-                      color: adminMode === 'publish' ? 'var(--bg-main)' : 'var(--text-main)',
-                      border: '1px solid var(--text-main)',
-                    }}
-                  >
-                    Publish New Issue
-                  </button>
-                  <button
-                    type="button"
-                    className="btn-primary"
-                    onClick={() => setAdminMode('edit')}
-                    style={{
-                      backgroundColor: adminMode === 'edit' ? 'var(--text-main)' : 'transparent',
-                      color: adminMode === 'edit' ? 'var(--bg-main)' : 'var(--text-main)',
-                      border: '1px solid var(--text-main)',
-                    }}
-                  >
-                    Edit Existing Issue
-                  </button>
-                </div>
+                  <div className="content-box" style={{ maxWidth: '800px', margin: '0 auto' }}>
+                    <h2 className="section-title">Editor / Admin Dashboard</h2>
+                    
+                    {!isAdminLoggedIn ? (
+                      <form onSubmit={async (e) => {
+                        e.preventDefault();
+                        const res = await fetch('/api/admin/login', {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({ password: adminPassword })
+                        });
+                        if (res.ok) setIsAdminLoggedIn(true);
+                        else {
+                          try {
+                            const errorData = await res.json();
+                            alert(`Access Denied: ${errorData.error}`);
+                          } catch (err) {
+                            alert(`Server Error: Check your browser's network tab or Cloudflare logs.`);
+                          }
+                        }
+                      }}>
+                        <div className="form-group">
+                          <label>Admin Password</label>
+                          <input type="password" value={adminPassword} onChange={(e) => setAdminPassword(e.target.value)} className="form-control" required />
+                        </div>
+                        <button type="submit" className="btn-primary" style={{ marginTop: '10px' }}>Login</button>
+                      </form>
+                    ) : (
+                      <div>
+                        <div style={{ display: 'flex', gap: '10px', marginBottom: '25px' }}>
+                          <button
+                            type="button"
+                            className="btn-primary"
+                            onClick={() => setAdminMode('publish')}
+                            style={{
+                              backgroundColor: adminMode === 'publish' ? 'var(--text-main)' : 'transparent',
+                              color: adminMode === 'publish' ? 'var(--bg-main)' : 'var(--text-main)',
+                              border: '1px solid var(--text-main)',
+                            }}
+                          >
+                            Publish New Issue
+                          </button>
+                          <button
+                            type="button"
+                            className="btn-primary"
+                            onClick={() => setAdminMode('edit')}
+                            style={{
+                              backgroundColor: adminMode === 'edit' ? 'var(--text-main)' : 'transparent',
+                              color: adminMode === 'edit' ? 'var(--bg-main)' : 'var(--text-main)',
+                              border: '1px solid var(--text-main)',
+                            }}
+                          >
+                            Edit Existing Issue
+                          </button>
+                        </div>
 
-                {adminMode === 'publish' ? (
-              <form onSubmit={async (e) => {
-                e.preventDefault();
-                if (!confirm('Are you sure? This will archive the current issue, update the home page, and email ALL subscribers.')) return;
+                        {adminMode === 'publish' ? (
+                          <form onSubmit={async (e) => {
+                            e.preventDefault();
+                            if (!confirm('Are you sure? This will archive the current issue, update the home page, and email ALL subscribers.')) return;
 
-                const res = await fetch('/api/admin/publish', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ 
-                    title: newIssueTitle, 
-                    contentHtml: newIssueHtml, 
-                    announcementMessage: newAnnouncement 
-                  })
-                });
+                            const res = await fetch('/api/admin/publish', {
+                              method: 'POST',
+                              headers: { 'Content-Type': 'application/json' },
+                              body: JSON.stringify({ 
+                                title: newIssueTitle, 
+                                contentHtml: newIssueHtml, 
+                                announcementMessage: newAnnouncement 
+                              })
+                            });
 
-                if (res.ok) {
-                  alert('Issue published and emails sent successfully!');
-                  setNewIssueTitle('');
-                  setNewIssueHtml('');
-                  setNewAnnouncement('');
-                  await refreshSiteContent();
-                } else {
-                  alert('Failed to publish.');
-                }
-              }}>
-                <div className="form-group">
-                  <label>New Issue Title (e.g., Issue II: Shadows)</label>
-                  <input type="text" value={newIssueTitle} onChange={(e) => setNewIssueTitle(e.target.value)} className="form-control" required />
-                </div>
-                
-                <div className="form-group">
-                  <label>Home Page Announcement Message</label>
-                  <input type="text" value={newAnnouncement} onChange={(e) => setNewAnnouncement(e.target.value)} className="form-control" required 
-                         placeholder="e.g., Issue II is officially out! Read it under the Issues tab." />
-                </div>
+                            if (res.ok) {
+                              alert('Issue published and emails sent successfully!');
+                              setNewIssueTitle('');
+                              setNewIssueHtml('');
+                              setNewAnnouncement('');
+                              await refreshSiteContent();
+                            } else {
+                              alert('Failed to publish.');
+                            }
+                          }}>
+                            <div className="form-group">
+                              <label>New Issue Title (e.g., Issue II: Shadows)</label>
+                              <input type="text" value={newIssueTitle} onChange={(e) => setNewIssueTitle(e.target.value)} className="form-control" required />
+                            </div>
+                            
+                            <div className="form-group">
+                              <label>Home Page Announcement Message</label>
+                              <input type="text" value={newAnnouncement} onChange={(e) => setNewAnnouncement(e.target.value)} className="form-control" required 
+                                    placeholder="e.g., Issue II is officially out! Read it under the Issues tab." />
+                            </div>
 
-                <div className="form-group">
-                  <label>Issue Content (WYSIWYG Editor)</label>
-                  <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '10px' }}>
-                    Format your text, add headers, links, or images visually below:
-                  </p>
-                  
-                  <Editor
-                    apiKey='vi6do892krmboei0izctd0jz9q98379bnrr3h3g7fcejsi5h'
-                    value={newIssueHtml}
-                    onEditorChange={(content) => setNewIssueHtml(content)}
-                    init={TINYMCE_INIT}
-                  />
-                </div>
+                            <div className="form-group">
+                              <label>Issue Content (WYSIWYG Editor)</label>
+                              <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '10px' }}>
+                                Format your text, add headers, links, or images visually below:
+                              </p>
+                              
+                              <Editor
+                                apiKey='vi6do892krmboei0izctd0jz9q98379bnrr3h3g7fcejsi5h'
+                                value={newIssueHtml}
+                                onEditorChange={(content) => setNewIssueHtml(content)}
+                                init={TINYMCE_INIT}
+                              />
+                            </div>
 
-                <button type="submit" className="btn-primary" style={{ marginTop: '15px', backgroundColor: '#d9534f', borderColor: '#d9534f' }}>
-                  Publish Issue & Broadcast Email
-                </button>
-              </form>
-                ) : (
-              <form onSubmit={async (e) => {
-                e.preventDefault();
-                if (!editingIssueId) {
-                  alert('Please select an issue to edit.');
-                  return;
-                }
+                            <button type="submit" className="btn-primary" style={{ marginTop: '15px', backgroundColor: '#d9534f', borderColor: '#d9534f' }}>
+                              Publish Issue & Broadcast Email
+                            </button>
+                          </form>
+                        ) : (
+                          <form onSubmit={async (e) => {
+                            e.preventDefault();
+                            if (!editingIssueId) {
+                              alert('Please select an issue to edit.');
+                              return;
+                            }
 
-                const res = await fetch('/api/admin/update-issue', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({
-                    issueId: editingIssueId,
-                    title: editIssueTitle,
-                    contentHtml: editIssueHtml,
-                  }),
-                });
+                            const res = await fetch('/api/admin/update-issue', {
+                              method: 'POST',
+                              headers: { 'Content-Type': 'application/json' },
+                              body: JSON.stringify({
+                                issueId: editingIssueId,
+                                title: editIssueTitle,
+                                contentHtml: editIssueHtml,
+                              }),
+                            });
 
-                const data = await res.json();
-                if (res.ok) {
-                  alert('Issue updated successfully.');
-                  const refreshed = await refreshSiteContent();
-                  if (refreshed?.success && selectedIssue?.id === editingIssueId) {
-                    const updated = [
-                      ...(refreshed.currentIssue ? [refreshed.currentIssue] : []),
-                      ...(refreshed.pastIssues || []),
-                    ].find((i) => i.id === editingIssueId);
-                    if (updated) setSelectedIssue(updated);
-                  }
-                } else {
-                  alert(`Failed to save: ${data.error || 'Unknown error'}`);
-                }
-              }}>
-                <div className="form-group">
-                  <label>Select Issue to Edit</label>
-                  {allIssuesForAdmin.length === 0 ? (
-                    <p style={{ fontStyle: 'italic', color: 'var(--text-muted)' }}>No published issues yet.</p>
-                  ) : (
-                    <select
-                      className="form-control"
-                      value={editingIssueId}
-                      onChange={(e) => handleSelectIssueToEdit(e.target.value)}
-                      required
-                    >
-                      <option value="">— Choose an issue —</option>
-                      {allIssuesForAdmin.map((issue) => (
-                        <option key={issue.id} value={issue.id}>
-                          {issue.title}
-                          {issue.isCurrent ? ' (Current)' : ''}
-                          {!issue.isCurrent && issue.published_at
-                            ? ` — ${new Date(issue.published_at).toLocaleDateString()}`
-                            : ''}
-                        </option>
-                      ))}
-                    </select>
-                  )}
-                </div>
+                            const data = await res.json();
+                            if (res.ok) {
+                              alert('Issue updated successfully.');
+                              const refreshed = await refreshSiteContent();
+                              if (refreshed?.success && selectedIssue?.id === editingIssueId) {
+                                const updated = [
+                                  ...(refreshed.currentIssue ? [refreshed.currentIssue] : []),
+                                  ...(refreshed.pastIssues || []),
+                                ].find((i) => i.id === editingIssueId);
+                                if (updated) setSelectedIssue(updated);
+                              }
+                            } else {
+                              alert(`Failed to save: ${data.error || 'Unknown error'}`);
+                            }
+                          }}>
+                            <div className="form-group">
+                              <label>Select Issue to Edit</label>
+                              {allIssuesForAdmin.length === 0 ? (
+                                <p style={{ fontStyle: 'italic', color: 'var(--text-muted)' }}>No published issues yet.</p>
+                              ) : (
+                                <select
+                                  className="form-control"
+                                  value={editingIssueId}
+                                  onChange={(e) => handleSelectIssueToEdit(e.target.value)}
+                                  required
+                                >
+                                  <option value="">— Choose an issue —</option>
+                                  {allIssuesForAdmin.map((issue) => (
+                                    <option key={issue.id} value={issue.id}>
+                                      {issue.title}
+                                      {issue.isCurrent ? ' (Current)' : ''}
+                                      {!issue.isCurrent && issue.published_at
+                                        ? ` — ${new Date(issue.published_at).toLocaleDateString()}`
+                                        : ''}
+                                    </option>
+                                  ))}
+                                </select>
+                              )}
+                            </div>
 
-                {editingIssueId && (
-                  <>
-                    <div className="form-group">
-                      <label>Issue Title</label>
-                      <input
-                        type="text"
-                        value={editIssueTitle}
-                        onChange={(e) => setEditIssueTitle(e.target.value)}
-                        className="form-control"
-                        required
-                      />
-                    </div>
+                            {editingIssueId && (
+                              <>
+                                <div className="form-group">
+                                  <label>Issue Title</label>
+                                  <input
+                                    type="text"
+                                    value={editIssueTitle}
+                                    onChange={(e) => setEditIssueTitle(e.target.value)}
+                                    className="form-control"
+                                    required
+                                  />
+                                </div>
 
-                    <div className="form-group">
-                      <label>Issue Content (WYSIWYG Editor)</label>
-                      <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '10px' }}>
-                        Fix typos or formatting below. Saving will not email subscribers.
-                      </p>
+                                <div className="form-group">
+                                  <label>Issue Content (WYSIWYG Editor)</label>
+                                  <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '10px' }}>
+                                    Fix typos or formatting below. Saving will not email subscribers.
+                                  </p>
 
-                      <Editor
-                        key={editingIssueId}
-                        apiKey='vi6do892krmboei0izctd0jz9q98379bnrr3h3g7fcejsi5h'
-                        value={editIssueHtml}
-                        onEditorChange={(content) => setEditIssueHtml(content)}
-                        init={TINYMCE_INIT}
-                      />
-                    </div>
+                                  <Editor
+                                    key={editingIssueId}
+                                    apiKey='vi6do892krmboei0izctd0jz9q98379bnrr3h3g7fcejsi5h'
+                                    value={editIssueHtml}
+                                    onEditorChange={(content) => setEditIssueHtml(content)}
+                                    init={TINYMCE_INIT}
+                                  />
+                                </div>
 
-                    <button type="submit" className="btn-primary" style={{ marginTop: '15px' }}>
-                      Save Changes
-                    </button>
-                  </>
+                                <button type="submit" className="btn-primary" style={{ marginTop: '15px' }}>
+                                  Save Changes
+                                </button>
+                              </>
+                            )}
+                          </form>
+                        )}
+                      </div>
+                    )}
+                  </div>
                 )}
-              </form>
-                )}
-              </div>
-            )}
-          </div>
-        )}
 
-      </main>
+              </main>
 
-      {/* Footer */}
-      {/* Footer */}
-      <footer className="site-footer">
-        <div className="container" onDoubleClick={() => setActiveTab('admin')}>
-          <p>&copy; {new Date().getFullYear()} Ink & Stain Literary Magazine. All rights reserved.</p>
-        </div>
-      </footer>
-    </div>
-  );
-}
+              {/* Footer */}
+              <footer className="site-footer">
+                <div className="container" onDoubleClick={() => setActiveTab('admin')}>
+                  <p>&copy; {new Date().getFullYear()} Ink & Stain Literary Magazine. All rights reserved.</p>
+                </div>
+              </footer>
+            </div>
+          );
+        }
