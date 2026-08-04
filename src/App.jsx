@@ -35,6 +35,43 @@ const TINYMCE_INIT = {
     'removeformat | help',
   content_style: 'body { font-family:Lora,Georgia,serif; font-size:16px }',
 };
+function EditorInit({ value, onChange }) {
+  const editorRef = useRef(null);
+
+  // 1. Initialize the editor
+  useEffect(() => {
+    if (window.tinymce) {
+      window.tinymce.init({
+        selector: '#my-expressive-editor',
+        height: 400,
+        menubar: false,
+        plugins: ['lists', 'link', 'image', 'code', 'table'],
+        toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist | code',
+        setup: (editor) => {
+          editorRef.current = editor;
+          editor.on('Change KeyUp', () => {
+            onChange(editor.getContent());
+          });
+        }
+      });
+    }
+
+    return () => {
+      if (window.tinymce) {
+        window.tinymce.remove('#my-expressive-editor');
+      }
+    };
+  }, []); // Only runs once on mount
+
+  // 2. NEW: Watch for external changes (like picking an older issue from a dropdown)
+  useEffect(() => {
+    if (editorRef.current && value !== editorRef.current.getContent()) {
+      editorRef.current.setContent(value || '');
+    }
+  }, [value]);
+
+  return null;
+}
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('home');
@@ -55,6 +92,7 @@ export default function App() {
   const [newIssueTitle, setNewIssueTitle] = useState('');
   const [newIssueHtml, setNewIssueHtml] = useState('');
   const [newAnnouncement, setNewAnnouncement] = useState('');
+  const [editingIssueId, setEditingIssueId] = useState('new'); // <-- Add this new line
 
   // Admin edit existing issue
   const [adminMode, setAdminMode] = useState('publish');
@@ -826,7 +864,149 @@ Red upon white cloth`}
                 <div className="container" onDoubleClick={() => setActiveTab('admin')}>
                   <p>&copy; {new Date().getFullYear()} Ink & Stain Literary Magazine. All rights reserved.</p>
                 </div>
-              </footer>
-            </div>
-          );
-        }
+                <button type="submit" className="btn-primary" style={{ marginTop: '10px' }}>Login</button>
+              </form>
+            ) : (
+              <form onSubmit={async (e) => {
+                e.preventDefault();
+                
+                // BRANCH A: Create New Issue
+                if (editingIssueId === 'new') {
+                  if (!confirm('Are you sure? This will archive the current issue, update the home page, and email ALL subscribers.')) return;
+  
+                  const res = await fetch('/api/admin/publish', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                      title: newIssueTitle, 
+                      contentHtml: newIssueHtml, 
+                      announcementMessage: newAnnouncement 
+                    })
+                  });
+  
+                  if (res.ok) {
+                    alert('Issue published and emails sent successfully!');
+                    setNewIssueTitle('');
+                    setNewIssueHtml('');
+                    setNewAnnouncement('');
+                  } else {
+                    alert('Failed to publish.');
+                  }
+
+                // BRANCH B: Edit Existing Issue
+                } else {
+                  if (!confirm('Are you sure you want to save changes to this existing issue? (No emails will be sent)')) return;
+                  
+                  const res = await fetch('/api/admin/update', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                      id: editingIssueId,
+                      title: newIssueTitle, 
+                      contentHtml: newIssueHtml
+                    })
+                  });
+  
+                  if (res.ok) {
+                    alert('Issue updated successfully! Refresh the page to see changes.');
+                  } else {
+                    alert('Failed to update issue.');
+                  }
+                }
+              }}>
+
+                {/* --- Mode Selector Dropdown --- */}
+                <div className="form-group" style={{ marginBottom: '30px', paddingBottom: '20px', borderBottom: '2px dashed var(--accent-border)' }}>
+                  <label style={{ fontWeight: 'bold', color: 'var(--text-main)' }}>Editor Action</label>
+                  <select 
+                    className="form-control"
+                    value={editingIssueId}
+                    onChange={(e) => {
+                      const selectedId = e.target.value;
+                      setEditingIssueId(selectedId);
+                      
+                      if (selectedId === 'new') {
+                        setNewIssueTitle('');
+                        setNewIssueHtml('');
+                        setNewAnnouncement('');
+                      } else {
+                        // Gather all loaded issues to search through
+                        const allIssues = currentIssue ? [currentIssue, ...pastIssues] : pastIssues;
+                        const targetIssue = allIssues.find(i => i.id === selectedId);
+                        if (targetIssue) {
+                          setNewIssueTitle(targetIssue.title);
+                          setNewIssueHtml(targetIssue.content_html);
+                          setNewAnnouncement(''); // Announcements are only for new issues
+                        }
+                      }
+                    }}
+                  >
+                    <option value="new">🌟 Publish a Brand New Issue</option>
+                    {currentIssue && <option value={currentIssue.id}>✏️ Edit Current: {currentIssue.title}</option>}
+                    {pastIssues && pastIssues.map(issue => (
+                      <option key={issue.id} value={issue.id}>✏️ Edit Archive: {issue.title}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <label>{editingIssueId === 'new' ? 'New Issue Title (e.g., Issue II: Shadows)' : 'Edit Issue Title'}</label>
+                  <input type="text" value={newIssueTitle} onChange={(e) => setNewIssueTitle(e.target.value)} className="form-control" required />
+                </div>
+                
+                {/* Only show the announcement field if we are making a NEW issue */}
+                {editingIssueId === 'new' && (
+                  <div className="form-group">
+                    <label>Home Page Announcement Message</label>
+                    <input type="text" value={newAnnouncement} onChange={(e) => setNewAnnouncement(e.target.value)} className="form-control" required={editingIssueId === 'new'} 
+                           placeholder="e.g., Issue II is officially out! Read it under the Issues tab." />
+                  </div>
+                )}
+
+                <div className="form-group">
+                  <label>Issue Content (WYSIWYG Editor)</label>
+                  <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '10px' }}>
+                    Format your text, add headers, links, or images visually below:
+                  </p>
+                  
+                  <Editor
+                    apiKey='jhc05j47yf1ne408wtb8i3c6380mgcoqiayxub89shoy1r77' 
+                    value={newIssueHtml}
+                    onEditorChange={(content) => setNewIssueHtml(content)}
+                    init={{
+                      height: 400,
+                      menubar: false,
+                      plugins: [
+                        'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                        'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                        'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
+                      ],
+                      toolbar: 'undo redo | formatselect | ' +
+                        'bold italic backcolor | alignleft aligncenter ' +
+                        'alignright alignjustify | bullist numlist outdent indent | ' +
+                        'removeformat | help',
+                      content_style: 'body { font-family:Lora,Georgia,serif; font-size:16px }'
+                    }}
+                  />
+                </div>
+
+                <button type="submit" className="btn-primary" style={{ marginTop: '15px', backgroundColor: editingIssueId === 'new' ? '#d9534f' : '#0275d8', borderColor: editingIssueId === 'new' ? '#d9534f' : '#0275d8' }}>
+                  {editingIssueId === 'new' ? 'Publish Issue & Broadcast Email' : 'Save Changes (Silent)'}
+                </button>
+              </form>
+            )}
+          </div>
+        )}
+
+      </main>
+
+      {/* Footer */}
+      {/* Footer */}
+      <footer className="site-footer">
+        <div className="container" onDoubleClick={() => setActiveTab('admin')}>
+          <p>&copy; {new Date().getFullYear()} Ink & Stain Literary Magazine. All rights reserved.</p>
+        </div>
+      </footer>
+    </div>
+  );
+}
