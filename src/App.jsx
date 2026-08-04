@@ -646,9 +646,11 @@ Red upon white cloth`}
                             className="btn-primary"
                             onClick={() => setAdminMode('publish')}
                             style={{
-                              backgroundColor: adminMode === 'publish' ? 'var(--text-main)' : 'transparent',
-                              color: adminMode === 'publish' ? 'var(--bg-main)' : 'var(--text-main)',
-                              border: '1px solid var(--text-main)',
+                              backgroundColor: adminMode === 'publish' ? '#337ab7' : '#fff',
+                              color: adminMode === 'publish' ? '#fff' : '#337ab7',
+                              border: '1px solid #337ab7',
+                              padding: '5px 10px',
+                              borderRadius: '4px'
                             }}
                           >
                             Publish New Issue
@@ -658,9 +660,11 @@ Red upon white cloth`}
                             className="btn-primary"
                             onClick={() => setAdminMode('edit')}
                             style={{
-                              backgroundColor: adminMode === 'edit' ? 'var(--text-main)' : 'transparent',
-                              color: adminMode === 'edit' ? 'var(--bg-main)' : 'var(--text-main)',
-                              border: '1px solid var(--text-main)',
+                              backgroundColor: adminMode === 'edit' ? '#337ab7' : '#fff',
+                              color: adminMode === 'edit' ? '#fff' : '#337ab7',
+                              border: '1px solid #337ab7',
+                              padding: '5px 10px',
+                              borderRadius: '4px'
                             }}
                           >
                             Edit Existing Issue
