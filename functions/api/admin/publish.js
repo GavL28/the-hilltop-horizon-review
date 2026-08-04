@@ -1,13 +1,9 @@
+import { requireAdmin } from '../../lib/admin-auth.js';
+
 export async function onRequestPost(context) {
-    // 1. Verify Admin Session Cookie
-    const cookieHeader = context.request.headers.get('Cookie') || '';
-    const match = cookieHeader.match(/admin_token=([^;]+)/);
-    if (!match) return new Response('Unauthorized', { status: 401 });
-  
-    const token = match[1];
-    const session = await context.env.DB.prepare('SELECT * FROM admin_sessions WHERE token = ? AND expires_at > CURRENT_TIMESTAMP').bind(token).first();
-    if (!session) return new Response('Invalid or expired session', { status: 401 });
-  
+    const auth = await requireAdmin(context);
+    if (auth.error) return auth.error;
+
     const { title, contentHtml, announcementMessage } = await context.request.json();
   
     // 2. Database Transaction: Archive old, insert new issue & announcement
