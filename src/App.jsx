@@ -118,7 +118,6 @@ export default function App() {
       <header className="site-header">
         <div className="container">
           <a href="#" className="logo-container" onClick={() => setActiveTab('home')}>
-            <img src="/inkandstain_icon.png" alt="The Hilltop Horizon Review Logo" className="logo-icon" />
             <h1 className="site-title">The Hilltop Horizon Review</h1>
             <p className="site-subtitle">an international youth literary magazine</p>
           </a>
@@ -197,7 +196,7 @@ export default function App() {
             <div className="content-box" style={{ textAlign: 'center' }}>
               <h2 className="section-title">From the Editors' Desk</h2>
               <p style={{ maxWidth: '700px', margin: '0 auto', marginBottom: '20px' }}>
-                Welcome to the digital home of Ink & Stain. In a world increasingly driven by fleeting digital trends, we wanted to carve out a quiet, intentional space for young voices. Whether you write in the margins of your notebooks, type late into the night, or sketch on scrap paper, this journal is a testament to the raw and the profoundly human. 
+                Welcome to the digital home of The Hilltop Horizon Review! Run by a team of devoted and eager young writers, we seek to build a world-wide community for young writers to chase their dreams.
               </p>
               <p style={{ fontStyle: 'italic', color: 'var(--text-muted)' }}>
                 — Gavin & Tawanda, Co-Editors-in-Chief
@@ -209,10 +208,10 @@ export default function App() {
               <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.6rem', marginBottom: '15px', textAlign: 'center' }}>Announcements</h3>
               <ul style={{ paddingLeft: '20px', fontSize: '0.95rem', color: 'var(--text-main)', display: 'flex', flexDirection: 'column', gap: '15px' }}>
                 <li>
-                  <strong>Issue I Submissions:</strong> We are officially open for poetry, prose, and visual art. Read our guidelines to submit.
+                  <strong>Issue I Submissions:</strong> We are officially open for poetry, fiction, nonfiction, art, and photography. Issue 1 is for Reynolds 2026 alumni only. Read our guidelines to submit.
                 </li>
                 <li>
-                  <strong>Editors Wanted:</strong> We are expanding our masthead! If you have a sharp eye for literature, check our "Join Us" page to apply.
+                  <strong>Editors Wanted:</strong> We are expanding our team! If you have a sharp eye for literature, check our "Join Us" page to apply.
                 </li>
               </ul>
             </div>
@@ -232,7 +231,7 @@ Red upon white cloth`}
         {/* ABOUT SUBTABS */}
         {activeTab === 'about-litmag' && (
           <div className="content-box">
-            <h2 className="section-title">About Ink & Stain</h2>
+            <h2 className="section-title">About The Hilltop Horizon Review</h2>
             <p>We are an international youth literary magazine, run by high schoolers, for high schoolers.</p>
           </div>
         )}
@@ -416,7 +415,7 @@ Red upon white cloth`}
             <h4 style={{ fontFamily: 'var(--font-heading)', marginTop: '15px' }}>Does it cost money to submit?</h4>
             <p style={{ marginBottom: '15px' }}>No, submissions are completely free.</p>
             <h4 style={{ fontFamily: 'var(--font-heading)', marginTop: '15px' }}>Can I submit multiple pieces?</h4>
-            <p>Please check the monthly prompt guidelines for genre-specific submission limits.</p>
+            <p>Yes, but each genre has its specific limits.</p>
           </div>
         )}
 
@@ -428,7 +427,7 @@ Red upon white cloth`}
             {/* Official Email & Social Media Placeholders */}
             <div style={{ textAlign: 'center', marginBottom: '40px', paddingBottom: '30px', borderBottom: '1px solid var(--accent-border)' }}>
               <p style={{ marginBottom: '12px', fontSize: '1.05rem' }}>
-                <strong>Official Email:</strong> <a href="mailto:contact@inkandstainlit.com" style={{ color: 'var(--text-main)' }}>contact@inkandstainlit.com</a>
+                <strong>Official Email:</strong> <a href="mailto:contact@hilltophorizonreview.com" style={{ color: 'var(--text-main)' }}>contact@hilltophorizonreview.com</a>
               </p>
               <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '15px' }}>Connect with us on social media:</p>
               <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', fontSize: '0.95rem' }}>
@@ -550,7 +549,7 @@ Red upon white cloth`}
           <div className="content-box" style={{ maxWidth: '800px', margin: '0 auto' }}>
             <h2 className="section-title">Join Our Team</h2>
             <p style={{ textAlign: 'center', marginBottom: '30px', color: 'var(--text-muted)' }}>
-              Ink & Stain is entirely run by high schoolers. We look for passionate, dedicated individuals who want to help shape our global literary community. Open to students ages 14–19.
+              The Hilltop Horizon Review is entirely run by high schoolers. We look for passionate, dedicated individuals who want to help shape our global literary community. Open to students ages 14–19.
             </p>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '30px', marginBottom: '40px' }}>
@@ -828,7 +827,7 @@ Red upon white cloth`}
               {/* Footer */}
               <footer className="site-footer">
                 <div className="container" onDoubleClick={() => setActiveTab('admin')}>
-                  <p>&copy; {new Date().getFullYear()} Ink & Stain Literary Magazine. All rights reserved.</p>
+                  <p>&copy; {new Date().getFullYear()} The Hilltop Horizon Review Literary Magazine. All rights reserved.</p>
                 </div>
               </footer>
             </div>
