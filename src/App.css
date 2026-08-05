@@ -44,9 +44,6 @@ body {
   height: auto;
   margin-bottom: -20px;
   opacity: 1; /* Changed from 0.9 to 1 for solid color */
-  background-image: url('https://raw.githubusercontent.com/GavL28/the-hilltop-horizon-review/main/public/logo.png'); /* Update this URL */
-  background-size: contain;
-  background-position: center;
   /* Adds a white glow behind the SVG icon */
   filter: drop-shadow(0px 0px 8px rgba(255, 255, 255, 1));
 }
