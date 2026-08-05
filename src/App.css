@@ -59,6 +59,7 @@ body {
 }
 
 .site-subtitle {
+  font-family: var(--font-heading);
   font-style: italic;
   color: #808080; /* Light Gray */
   font-weight: 600; /* Made bolder */
