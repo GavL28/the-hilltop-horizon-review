@@ -18,7 +18,7 @@ const staffData = [
   { id: 'juliana', name: 'Juliana Grindel', pronouns: 'She/Her', grade: 'Senior', role: 'Fiction Editor', shortBio: 'Juliana Grindel is a fiction writer, musician, fencer, and artist from Cheshire, Connecticut.', fullBio: 'Juliana Grindel is a fiction writer, musician, fencer, and artist from Cheshire, Connecticut. She has been writing since middle school, and focuses on speculative and flash fiction with psychological themes. Her goal in writing is to write a long form piece of psychological fiction. When she is not writing, she spends her free time playing clarinet, reading, or collecting blind boxes. ', photo: '/Juliana Grindel.jpeg' },
   { id: 'mia-s', name: 'Mia Song', pronouns: 'She/Her', grade: 'Senior', role: 'Fiction Editor & Website Manager', shortBio: 'Weaving stories both in prose and in web code.', fullBio: 'Full biography coming soon...' },
   { id: 'che', name: 'Che Holts', pronouns: 'He/Him', grade: 'Junior', role: 'Photography Editor', shortBio: 'Che is Californian fiction writer, and athlete. He will tend to draw most inspiration from comic books and indie music.', fullBio: 'Che is Californian fiction writer, and athlete. He will tend to draw most inspiration from comic books and indie music. He started writing in fifth grade during lockdown just because he could and killed time. He loves and cherishes his pet beetles  lovingly named Hamster and Dinosaur. Aspires and hopes  to one day  write a superhero novel that can be taught in schools and make people more excited about writing.' },
-  { id: 'rubbi', name: 'Rubbi Chen', pronouns: 'She/Her', grade: 'Senior', role: 'International Representative (China)', shortBio: 'Fostering literary connections across international borders.', fullBio: 'Full biography coming soon...' },
+  { id: 'rubbi', name: 'Rubbi Chen', pronouns: 'She/Her', grade: 'Senior', role: 'International Representative (China)', shortBio: 'Rubbi is a fiction writer from Shanghai, China. Normally she writes some teenage queer romance, body horror (especially splatterpunk!) and suspense fiction.', fullBio: 'Rubbi is a fiction writer from Shanghai, China. Normally she writes some teenage queer romance, body horror (especially splatterpunk!) and suspense fiction. She started writing in primary school and her first work was a yaoi smut. Except for writing, she claims to have no other artistic talent, so she spends most of her time doing anthropology and queer studies research, advocating for women’s rights, watching women’s hockey, fantasizing about her future wife, and being a cat mom. ', photo: '/Rubbi Chen.jpg' },
 ];
 
 const TINYMCE_INIT = {
@@ -221,7 +221,7 @@ export default function App() {
               <h3 className="poem-title">Sample Piece</h3>
               <p className="poem-body">
                 {`Spurts of violent blue
-Shining of teasing steel too
+Shining of teasing steel through
 Red upon white cloth`}
               </p>
             </div>
