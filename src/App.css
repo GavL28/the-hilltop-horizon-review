@@ -23,7 +23,7 @@ body {
 }
 
 .container {
-  max-width: 900px;
+  max-width: 1600px;
   margin: 0 auto;
   padding: 0 20px;
 }
@@ -166,7 +166,7 @@ body {
   text-align: center;
   margin-bottom: 60px;
   padding: 60px 20px 40px; 
-  border-bottom: 0px solid var(--accent-border);
+  border-bottom: 1px solid var(--accent-border);
 }
 
 .hero-description {
