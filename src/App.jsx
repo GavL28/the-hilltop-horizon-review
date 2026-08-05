@@ -118,7 +118,7 @@ export default function App() {
       <header className="site-header">
         <div className="container">
           <a href="#" className="logo-container" onClick={() => setActiveTab('home')}>
-            <img src="https://raw.githubusercontent.com/GavL28/the-hilltop-horizon-review/main/public/The Hilltop Horizon Review.logo.png" alt="Logo" />
+            <img src="https://raw.githubusercontent.com/GavL28/the-hilltop-horizon-review/public/The Hilltop Horizon Review.logo.png" alt="Logo" />
           </a>
           <div className="site-title">The Hilltop Horizon Review</div>
           <div className="site-subtitle">an international youth literary magazine</div>
