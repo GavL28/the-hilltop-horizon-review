@@ -101,6 +101,7 @@ export default function App() {
 
   // Admin edit existing issue
   const [adminMode, setAdminMode] = useState('publish');
+  const [showIssueManager, setShowIssueManager] = useState(false);
   const [editingIssueId, setEditingIssueId] = useState('');
   const [editIssueTitle, setEditIssueTitle] = useState('');
   const [editIssueHtml, setEditIssueHtml] = useState('');
@@ -253,6 +254,11 @@ export default function App() {
             <ul className="dropdown">
               <li><button className="dropdown-link" onClick={() => setActiveTab('announcements')}>Announcements</button></li>
               <li><button className="dropdown-link" onClick={() => setActiveTab('announcements-archive')}>Past Announcements</button></li>
+            </ul>
+          </li>
+          <li className="nav-item">
+            <button className="nav-link" onClick={() => setActiveTab('selected-works')}>Issues / Selected Works ▾</button>
+            <ul className="dropdown">
               <li><button className="dropdown-link" onClick={() => setActiveTab('selected-works')}>Selected Works</button></li>
               <li><button className="dropdown-link" onClick={() => setActiveTab('digital-magazine')}>Digital Magazine</button></li>
             </ul>
@@ -1028,6 +1034,25 @@ Red upon white cloth`}
                       </form>
                     ) : (
                       <div>
+                        <button
+                          type="button"
+                          className="btn-primary"
+                          onClick={() => setShowIssueManager(!showIssueManager)}
+                          style={{
+                            backgroundColor: '#fff',
+                            color: '#337ab7',
+                            border: '1px solid #337ab7',
+                            padding: '8px 14px',
+                            borderRadius: '4px',
+                            marginBottom: '20px',
+                            cursor: 'pointer'
+                          }}
+                        >
+                          {showIssueManager ? '▾' : '▸'} Issue Publishing & Editing
+                        </button>
+
+                        {showIssueManager && (
+                        <>
                         <div style={{ display: 'flex', gap: '10px', marginBottom: '25px' }}>
                           <button
                             type="button"
@@ -1196,6 +1221,8 @@ Red upon white cloth`}
                               </>
                             )}
                           </form>
+                        )}
+                        </>
                         )}
 
                         <hr style={{ margin: '30px 0', border: 'none', borderTop: '1px solid var(--accent-border)' }} />
