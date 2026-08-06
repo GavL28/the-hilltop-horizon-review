@@ -21,17 +21,8 @@ const staffData = [
   { id: 'rubbi', name: 'Rubbi Chen', pronouns: 'She/Her', grade: 'Senior', role: 'International Representative (China)', shortBio: 'Rubbi is a fiction writer from Shanghai, China. Normally she writes some teenage queer romance, body horror (especially splatterpunk!) and suspense fiction.', fullBio: 'Rubbi is a fiction writer from Shanghai, China. Normally she writes some teenage queer romance, body horror (especially splatterpunk!) and suspense fiction. She started writing in primary school and her first work was a yaoi smut. Except for writing, she claims to have no other artistic talent, so she spends most of her time doing anthropology and queer studies research, advocating for women’s rights, watching women’s hockey, fantasizing about her future wife, and being a cat mom. ', photo: '/Rubbi Chen.jpg' },
 ];
 
-// Selected Works placeholder data — replace with real pieces as issues are published
+// Genres used by Selected Works (section subheadings)
 const SELECTED_WORKS_GENRES = ['Poetry', 'Fiction', 'Nonfiction', 'Art', 'Photography'];
-const selectedWorksData = [
-  {
-    id: 'issue-1',
-    title: 'Issue 1',
-    pieces: [
-      { id: 'i1-p1', title: 'Example', author: 'John Smith', genre: 'Poetry', content: 'example piece' },
-    ],
-  },
-];
 
 const TINYMCE_INIT = {
   height: 400,
@@ -114,6 +105,35 @@ export default function App() {
   const [editIssueTitle, setEditIssueTitle] = useState('');
   const [editIssueHtml, setEditIssueHtml] = useState('');
 
+  // Digital magazine edition admin state
+  const [digitalEditions, setDigitalEditions] = useState([]);
+  const [adminDigitalMode, setAdminDigitalMode] = useState('add');
+  const [digitalTitle, setDigitalTitle] = useState('');
+  const [digitalUrl, setDigitalUrl] = useState('');
+  const [editDigitalId, setEditDigitalId] = useState('');
+  const [editDigitalTitle, setEditDigitalTitle] = useState('');
+  const [editDigitalUrl, setEditDigitalUrl] = useState('');
+
+  // Selected works state (fetched from /api/content)
+  const [selectedWorks, setSelectedWorks] = useState([]);
+
+  // Selected works admin state
+  const [adminSWMode, setAdminSWMode] = useState('add-issue');
+  const [swIssueTitle, setSwIssueTitle] = useState('');
+  const [editSWIssueId, setEditSWIssueId] = useState('');
+  const [editSWIssueTitle, setEditSWIssueTitle] = useState('');
+  const [swPieceIssueId, setSwPieceIssueId] = useState('');
+  const [swPieceTitle, setSwPieceTitle] = useState('');
+  const [swPieceAuthor, setSwPieceAuthor] = useState('');
+  const [swPieceGenre, setSwPieceGenre] = useState('Poetry');
+  const [swPieceContent, setSwPieceContent] = useState('');
+  const [editSWPieceId, setEditSWPieceId] = useState('');
+  const [editSWPieceIssueId, setEditSWPieceIssueId] = useState('');
+  const [editSWPieceTitle, setEditSWPieceTitle] = useState('');
+  const [editSWPieceAuthor, setEditSWPieceAuthor] = useState('');
+  const [editSWPieceGenre, setEditSWPieceGenre] = useState('Poetry');
+  const [editSWPieceContent, setEditSWPieceContent] = useState('');
+
   // --- New State for Dynamic Content ---
   const [currentIssue, setCurrentIssue] = useState(null);
   const [pastIssues, setPastIssues] = useState([]);
@@ -128,6 +148,8 @@ export default function App() {
       if (data.success) {
         setCurrentIssue(data.currentIssue);
         setPastIssues(data.pastIssues || []);
+        setDigitalEditions(data.digitalEditions || []);
+        setSelectedWorks(data.selectedWorks || []);
         if (data.announcement) setAnnouncement(data.announcement.message);
       }
       return data;
@@ -452,11 +474,11 @@ Red upon white cloth`}
             <p style={{ textAlign: 'center', marginBottom: '20px', color: 'var(--text-muted)' }}>
               Browse the pieces selected for publication, organized by issue. Click an issue to view its selected works.
             </p>
-            {selectedWorksData.length === 0 && (
+            {selectedWorks.length === 0 && (
               <p style={{ textAlign: 'center', fontStyle: 'italic', color: 'var(--text-muted)' }}>No issues available yet.</p>
             )}
             <ul style={{ listStyleType: 'none', padding: 0 }}>
-              {selectedWorksData.map((issue) => (
+              {selectedWorks.map((issue) => (
                 <li
                   key={issue.id}
                   onClick={() => {
@@ -577,13 +599,24 @@ Red upon white cloth`}
             <p style={{ marginBottom: '30px', color: 'var(--text-muted)' }}>
               Read each issue in our interactive digital magazine edition.
             </p>
-            <a
-              href="#"
-              className="btn-primary"
-              style={{ textDecoration: 'none', display: 'inline-block', fontSize: '1.1rem', padding: '15px 30px' }}
-            >
-              Issue One Digital Magazine Edition →
-            </a>
+            {digitalEditions.length === 0 ? (
+              <p style={{ fontStyle: 'italic', color: 'var(--text-muted)' }}>No digital editions available yet. Check back soon!</p>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', alignItems: 'center' }}>
+                {digitalEditions.map((edition) => (
+                  <a
+                    key={edition.id}
+                    href={edition.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-primary"
+                    style={{ textDecoration: 'none', display: 'inline-block', fontSize: '1.1rem', padding: '15px 30px' }}
+                  >
+                    {edition.title} →
+                  </a>
+                ))}
+              </div>
+            )}
           </div>
         )}
 
@@ -1153,6 +1186,723 @@ Red upon white cloth`}
                               </>
                             )}
                           </form>
+                        )}
+
+                        <hr style={{ margin: '30px 0', border: 'none', borderTop: '1px solid var(--accent-border)' }} />
+                        <h3 style={{ fontFamily: 'var(--font-heading)', marginBottom: '15px' }}>Digital Magazine Editions</h3>
+
+                        <div style={{ display: 'flex', gap: '10px', marginBottom: '25px', flexWrap: 'wrap' }}>
+                          <button
+                            type="button"
+                            className="btn-primary"
+                            onClick={() => setAdminDigitalMode('add')}
+                            style={{
+                              backgroundColor: adminDigitalMode === 'add' ? '#337ab7' : '#fff',
+                              color: adminDigitalMode === 'add' ? '#fff' : '#337ab7',
+                              border: '1px solid #337ab7',
+                              padding: '5px 10px',
+                              borderRadius: '4px'
+                            }}
+                          >
+                            Add Digital Magazine Edition
+                          </button>
+                          <button
+                            type="button"
+                            className="btn-primary"
+                            onClick={() => setAdminDigitalMode('edit')}
+                            style={{
+                              backgroundColor: adminDigitalMode === 'edit' ? '#337ab7' : '#fff',
+                              color: adminDigitalMode === 'edit' ? '#fff' : '#337ab7',
+                              border: '1px solid #337ab7',
+                              padding: '5px 10px',
+                              borderRadius: '4px'
+                            }}
+                          >
+                            Edit Digital Magazine Edition
+                          </button>
+                          <button
+                            type="button"
+                            className="btn-primary"
+                            onClick={() => setAdminDigitalMode('delete')}
+                            style={{
+                              backgroundColor: adminDigitalMode === 'delete' ? '#337ab7' : '#fff',
+                              color: adminDigitalMode === 'delete' ? '#fff' : '#337ab7',
+                              border: '1px solid #337ab7',
+                              padding: '5px 10px',
+                              borderRadius: '4px'
+                            }}
+                          >
+                            Delete Digital Magazine Edition
+                          </button>
+                        </div>
+
+                        {adminDigitalMode === 'add' && (
+                          <form onSubmit={async (e) => {
+                            e.preventDefault();
+                            const res = await fetch('/api/admin/digital-editions/add', {
+                              method: 'POST',
+                              headers: { 'Content-Type': 'application/json' },
+                              body: JSON.stringify({ title: digitalTitle, url: digitalUrl }),
+                            });
+                            const data = await res.json();
+                            if (res.ok) {
+                              alert('Digital magazine edition added.');
+                              setDigitalTitle('');
+                              setDigitalUrl('');
+                              await refreshSiteContent();
+                            } else {
+                              alert(`Failed to add: ${data.error || 'Unknown error'}`);
+                            }
+                          }}>
+                            <div className="form-group">
+                              <label>Button Title</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                value={digitalTitle}
+                                onChange={(e) => setDigitalTitle(e.target.value)}
+                                required
+                                placeholder="e.g., Issue One Digital Magazine Edition"
+                              />
+                            </div>
+                            <div className="form-group">
+                              <label>Edition URL</label>
+                              <input
+                                type="url"
+                                className="form-control"
+                                value={digitalUrl}
+                                onChange={(e) => setDigitalUrl(e.target.value)}
+                                required
+                                placeholder="https://..."
+                              />
+                            </div>
+                            <button type="submit" className="btn-primary" style={{ marginTop: '10px' }}>Add Edition</button>
+                          </form>
+                        )}
+
+                        {adminDigitalMode === 'edit' && (
+                          <form onSubmit={async (e) => {
+                            e.preventDefault();
+                            if (!editDigitalId) {
+                              alert('Please select an edition to edit.');
+                              return;
+                            }
+                            const res = await fetch('/api/admin/digital-editions/edit', {
+                              method: 'POST',
+                              headers: { 'Content-Type': 'application/json' },
+                              body: JSON.stringify({ id: editDigitalId, title: editDigitalTitle, url: editDigitalUrl }),
+                            });
+                            const data = await res.json();
+                            if (res.ok) {
+                              alert('Digital magazine edition updated.');
+                              await refreshSiteContent();
+                            } else {
+                              alert(`Failed to update: ${data.error || 'Unknown error'}`);
+                            }
+                          }}>
+                            <div className="form-group">
+                              <label>Select Edition to Edit</label>
+                              {digitalEditions.length === 0 ? (
+                                <p style={{ fontStyle: 'italic', color: 'var(--text-muted)' }}>No digital editions yet.</p>
+                              ) : (
+                                <select
+                                  className="form-control"
+                                  value={editDigitalId}
+                                  onChange={(e) => {
+                                    const edition = digitalEditions.find((x) => x.id === e.target.value);
+                                    setEditDigitalId(edition?.id || '');
+                                    setEditDigitalTitle(edition?.title || '');
+                                    setEditDigitalUrl(edition?.url || '');
+                                  }}
+                                  required
+                                >
+                                  <option value="">— Choose an edition —</option>
+                                  {digitalEditions.map((edition) => (
+                                    <option key={edition.id} value={edition.id}>{edition.title}</option>
+                                  ))}
+                                </select>
+                              )}
+                            </div>
+                            {editDigitalId && (
+                              <>
+                                <div className="form-group">
+                                  <label>Button Title</label>
+                                  <input
+                                    type="text"
+                                    className="form-control"
+                                    value={editDigitalTitle}
+                                    onChange={(e) => setEditDigitalTitle(e.target.value)}
+                                    required
+                                  />
+                                </div>
+                                <div className="form-group">
+                                  <label>Edition URL</label>
+                                  <input
+                                    type="url"
+                                    className="form-control"
+                                    value={editDigitalUrl}
+                                    onChange={(e) => setEditDigitalUrl(e.target.value)}
+                                    required
+                                  />
+                                </div>
+                                <button type="submit" className="btn-primary" style={{ marginTop: '10px' }}>Save Changes</button>
+                              </>
+                            )}
+                          </form>
+                        )}
+
+                        {adminDigitalMode === 'delete' && (
+                          <div>
+                            {digitalEditions.length === 0 ? (
+                              <p style={{ fontStyle: 'italic', color: 'var(--text-muted)' }}>No digital editions to delete.</p>
+                            ) : (
+                              <ul style={{ listStyleType: 'none', padding: 0 }}>
+                                {digitalEditions.map((edition) => (
+                                  <li
+                                    key={edition.id}
+                                    style={{
+                                      display: 'flex',
+                                      justifyContent: 'space-between',
+                                      alignItems: 'center',
+                                      padding: '12px 15px',
+                                      backgroundColor: 'var(--accent-bg)',
+                                      borderRadius: '4px',
+                                      marginBottom: '10px'
+                                    }}
+                                  >
+                                    <div style={{ minWidth: 0 }}>
+                                      <strong>{edition.title}</strong>
+                                      <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', wordBreak: 'break-all' }}>{edition.url}</div>
+                                    </div>
+                                    <button
+                                      type="button"
+                                      className="btn-primary"
+                                      style={{
+                                        backgroundColor: '#d9534f',
+                                        borderColor: '#d9534f',
+                                        color: '#fff',
+                                        padding: '5px 12px',
+                                        borderRadius: '4px',
+                                        marginLeft: '15px',
+                                        flexShrink: 0
+                                      }}
+                                      onClick={async () => {
+                                        if (!confirm(`Delete "${edition.title}"?`)) return;
+                                        const res = await fetch('/api/admin/digital-editions/delete', {
+                                          method: 'POST',
+                                          headers: { 'Content-Type': 'application/json' },
+                                          body: JSON.stringify({ id: edition.id }),
+                                        });
+                                        const data = await res.json();
+                                        if (res.ok) {
+                                          alert('Digital magazine edition deleted.');
+                                          if (editDigitalId === edition.id) {
+                                            setEditDigitalId('');
+                                            setEditDigitalTitle('');
+                                            setEditDigitalUrl('');
+                                          }
+                                          await refreshSiteContent();
+                                        } else {
+                                          alert(`Failed to delete: ${data.error || 'Unknown error'}`);
+                                        }
+                                      }}
+                                    >
+                                      Delete
+                                    </button>
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
+                          </div>
+                        )}
+
+                        <hr style={{ margin: '30px 0', border: 'none', borderTop: '1px solid var(--accent-border)' }} />
+                        <h3 style={{ fontFamily: 'var(--font-heading)', marginBottom: '15px' }}>Selected Works</h3>
+
+                        <div style={{ display: 'flex', gap: '10px', marginBottom: '25px', flexWrap: 'wrap' }}>
+                          {['add-issue', 'edit-issue', 'delete-issue', 'add-piece', 'edit-piece', 'delete-piece'].map((mode) => {
+                            const labels = {
+                              'add-issue': 'Add Issue',
+                              'edit-issue': 'Edit Issue Title',
+                              'delete-issue': 'Delete Issue',
+                              'add-piece': 'Add Piece',
+                              'edit-piece': 'Edit Piece',
+                              'delete-piece': 'Delete Piece',
+                            };
+                            return (
+                              <button
+                                key={mode}
+                                type="button"
+                                className="btn-primary"
+                                onClick={() => setAdminSWMode(mode)}
+                                style={{
+                                  backgroundColor: adminSWMode === mode ? '#337ab7' : '#fff',
+                                  color: adminSWMode === mode ? '#fff' : '#337ab7',
+                                  border: '1px solid #337ab7',
+                                  padding: '5px 10px',
+                                  borderRadius: '4px'
+                                }}
+                              >
+                                {labels[mode]}
+                              </button>
+                            );
+                          })}
+                        </div>
+
+                        {adminSWMode === 'add-issue' && (
+                          <form onSubmit={async (e) => {
+                            e.preventDefault();
+                            const res = await fetch('/api/admin/selected-works/issues/add', {
+                              method: 'POST',
+                              headers: { 'Content-Type': 'application/json' },
+                              body: JSON.stringify({ title: swIssueTitle }),
+                            });
+                            const data = await res.json();
+                            if (res.ok) {
+                              alert('Issue added.');
+                              setSwIssueTitle('');
+                              await refreshSiteContent();
+                            } else {
+                              alert(`Failed to add: ${data.error || 'Unknown error'}`);
+                            }
+                          }}>
+                            <div className="form-group">
+                              <label>Issue Title</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                value={swIssueTitle}
+                                onChange={(e) => setSwIssueTitle(e.target.value)}
+                                required
+                                placeholder="e.g., Issue 1"
+                              />
+                            </div>
+                            <button type="submit" className="btn-primary" style={{ marginTop: '10px' }}>Add Issue</button>
+                          </form>
+                        )}
+
+                        {adminSWMode === 'edit-issue' && (
+                          <form onSubmit={async (e) => {
+                            e.preventDefault();
+                            if (!editSWIssueId) {
+                              alert('Please select an issue to edit.');
+                              return;
+                            }
+                            const res = await fetch('/api/admin/selected-works/issues/edit', {
+                              method: 'POST',
+                              headers: { 'Content-Type': 'application/json' },
+                              body: JSON.stringify({ id: editSWIssueId, title: editSWIssueTitle }),
+                            });
+                            const data = await res.json();
+                            if (res.ok) {
+                              alert('Issue title updated.');
+                              await refreshSiteContent();
+                            } else {
+                              alert(`Failed to update: ${data.error || 'Unknown error'}`);
+                            }
+                          }}>
+                            <div className="form-group">
+                              <label>Select Issue</label>
+                              {selectedWorks.length === 0 ? (
+                                <p style={{ fontStyle: 'italic', color: 'var(--text-muted)' }}>No issues yet.</p>
+                              ) : (
+                                <select
+                                  className="form-control"
+                                  value={editSWIssueId}
+                                  onChange={(e) => {
+                                    const issue = selectedWorks.find((x) => x.id === e.target.value);
+                                    setEditSWIssueId(issue?.id || '');
+                                    setEditSWIssueTitle(issue?.title || '');
+                                  }}
+                                  required
+                                >
+                                  <option value="">— Choose an issue —</option>
+                                  {selectedWorks.map((issue) => (
+                                    <option key={issue.id} value={issue.id}>{issue.title}</option>
+                                  ))}
+                                </select>
+                              )}
+                            </div>
+                            {editSWIssueId && (
+                              <>
+                                <div className="form-group">
+                                  <label>Issue Title</label>
+                                  <input
+                                    type="text"
+                                    className="form-control"
+                                    value={editSWIssueTitle}
+                                    onChange={(e) => setEditSWIssueTitle(e.target.value)}
+                                    required
+                                  />
+                                </div>
+                                <button type="submit" className="btn-primary" style={{ marginTop: '10px' }}>Save Changes</button>
+                              </>
+                            )}
+                          </form>
+                        )}
+
+                        {adminSWMode === 'delete-issue' && (
+                          <div>
+                            {selectedWorks.length === 0 ? (
+                              <p style={{ fontStyle: 'italic', color: 'var(--text-muted)' }}>No issues to delete.</p>
+                            ) : (
+                              <ul style={{ listStyleType: 'none', padding: 0 }}>
+                                {selectedWorks.map((issue) => (
+                                  <li
+                                    key={issue.id}
+                                    style={{
+                                      display: 'flex',
+                                      justifyContent: 'space-between',
+                                      alignItems: 'center',
+                                      padding: '12px 15px',
+                                      backgroundColor: 'var(--accent-bg)',
+                                      borderRadius: '4px',
+                                      marginBottom: '10px'
+                                    }}
+                                  >
+                                    <div>
+                                      <strong>{issue.title}</strong>
+                                      <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+                                        {issue.pieces.length} piece{issue.pieces.length === 1 ? '' : 's'}
+                                      </div>
+                                    </div>
+                                    <button
+                                      type="button"
+                                      className="btn-primary"
+                                      style={{
+                                        backgroundColor: '#d9534f',
+                                        borderColor: '#d9534f',
+                                        color: '#fff',
+                                        padding: '5px 12px',
+                                        borderRadius: '4px',
+                                        marginLeft: '15px'
+                                      }}
+                                      onClick={async () => {
+                                        if (!confirm(`Delete "${issue.title}" and all of its pieces?`)) return;
+                                        const res = await fetch('/api/admin/selected-works/issues/delete', {
+                                          method: 'POST',
+                                          headers: { 'Content-Type': 'application/json' },
+                                          body: JSON.stringify({ id: issue.id }),
+                                        });
+                                        const data = await res.json();
+                                        if (res.ok) {
+                                          alert('Issue deleted.');
+                                          if (selectedWorksIssue?.id === issue.id) setSelectedWorksIssue(null);
+                                          if (editSWIssueId === issue.id) {
+                                            setEditSWIssueId('');
+                                            setEditSWIssueTitle('');
+                                          }
+                                          await refreshSiteContent();
+                                        } else {
+                                          alert(`Failed to delete: ${data.error || 'Unknown error'}`);
+                                        }
+                                      }}
+                                    >
+                                      Delete
+                                    </button>
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
+                          </div>
+                        )}
+
+                        {adminSWMode === 'add-piece' && (
+                          <form onSubmit={async (e) => {
+                            e.preventDefault();
+                            if (!swPieceIssueId) {
+                              alert('Please select an issue.');
+                              return;
+                            }
+                            const res = await fetch('/api/admin/selected-works/pieces/add', {
+                              method: 'POST',
+                              headers: { 'Content-Type': 'application/json' },
+                              body: JSON.stringify({
+                                issueId: swPieceIssueId,
+                                title: swPieceTitle,
+                                author: swPieceAuthor,
+                                genre: swPieceGenre,
+                                content: swPieceContent,
+                              }),
+                            });
+                            const data = await res.json();
+                            if (res.ok) {
+                              alert('Piece added.');
+                              setSwPieceTitle('');
+                              setSwPieceAuthor('');
+                              setSwPieceContent('');
+                              await refreshSiteContent();
+                            } else {
+                              alert(`Failed to add: ${data.error || 'Unknown error'}`);
+                            }
+                          }}>
+                            <div className="form-group">
+                              <label>Issue</label>
+                              {selectedWorks.length === 0 ? (
+                                <p style={{ fontStyle: 'italic', color: 'var(--text-muted)' }}>
+                                  No issues yet. Add an issue first.
+                                </p>
+                              ) : (
+                                <select
+                                  className="form-control"
+                                  value={swPieceIssueId}
+                                  onChange={(e) => setSwPieceIssueId(e.target.value)}
+                                  required
+                                >
+                                  <option value="">— Choose an issue —</option>
+                                  {selectedWorks.map((issue) => (
+                                    <option key={issue.id} value={issue.id}>{issue.title}</option>
+                                  ))}
+                                </select>
+                              )}
+                            </div>
+                            <div className="form-group">
+                              <label>Piece Title</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                value={swPieceTitle}
+                                onChange={(e) => setSwPieceTitle(e.target.value)}
+                                required
+                              />
+                            </div>
+                            <div className="form-group">
+                              <label>Author</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                value={swPieceAuthor}
+                                onChange={(e) => setSwPieceAuthor(e.target.value)}
+                                required
+                              />
+                            </div>
+                            <div className="form-group">
+                              <label>Genre / Section</label>
+                              <select
+                                className="form-control"
+                                value={swPieceGenre}
+                                onChange={(e) => setSwPieceGenre(e.target.value)}
+                                required
+                              >
+                                {SELECTED_WORKS_GENRES.map((genre) => (
+                                  <option key={genre} value={genre}>{genre}</option>
+                                ))}
+                              </select>
+                            </div>
+                            <div className="form-group">
+                              <label>Piece Content</label>
+                              <textarea
+                                className="form-control"
+                                rows={8}
+                                value={swPieceContent}
+                                onChange={(e) => setSwPieceContent(e.target.value)}
+                                required
+                                placeholder="Paste the piece here. Line breaks are preserved."
+                              />
+                            </div>
+                            <button type="submit" className="btn-primary" style={{ marginTop: '10px' }}>Add Piece</button>
+                          </form>
+                        )}
+
+                        {adminSWMode === 'edit-piece' && (
+                          <form onSubmit={async (e) => {
+                            e.preventDefault();
+                            if (!editSWPieceId) {
+                              alert('Please select a piece to edit.');
+                              return;
+                            }
+                            const res = await fetch('/api/admin/selected-works/pieces/edit', {
+                              method: 'POST',
+                              headers: { 'Content-Type': 'application/json' },
+                              body: JSON.stringify({
+                                id: editSWPieceId,
+                                issueId: editSWPieceIssueId,
+                                title: editSWPieceTitle,
+                                author: editSWPieceAuthor,
+                                genre: editSWPieceGenre,
+                                content: editSWPieceContent,
+                              }),
+                            });
+                            const data = await res.json();
+                            if (res.ok) {
+                              alert('Piece updated.');
+                              await refreshSiteContent();
+                            } else {
+                              alert(`Failed to update: ${data.error || 'Unknown error'}`);
+                            }
+                          }}>
+                            <div className="form-group">
+                              <label>Select Piece</label>
+                              {selectedWorks.flatMap((issue) => issue.pieces).length === 0 ? (
+                                <p style={{ fontStyle: 'italic', color: 'var(--text-muted)' }}>No pieces yet.</p>
+                              ) : (
+                                <select
+                                  className="form-control"
+                                  value={editSWPieceId}
+                                  onChange={(e) => {
+                                    const piece = selectedWorks
+                                      .flatMap((issue) => issue.pieces.map((p) => ({ ...p, issueId: issue.id })))
+                                      .find((p) => p.id === e.target.value);
+                                    setEditSWPieceId(piece?.id || '');
+                                    setEditSWPieceIssueId(piece?.issueId || '');
+                                    setEditSWPieceTitle(piece?.title || '');
+                                    setEditSWPieceAuthor(piece?.author || '');
+                                    setEditSWPieceGenre(piece?.genre || 'Poetry');
+                                    setEditSWPieceContent(piece?.content || '');
+                                  }}
+                                  required
+                                >
+                                  <option value="">— Choose a piece —</option>
+                                  {selectedWorks.map((issue) => (
+                                    <optgroup key={issue.id} label={issue.title}>
+                                      {issue.pieces.map((piece) => (
+                                        <option key={piece.id} value={piece.id}>{piece.title} — {piece.author}</option>
+                                      ))}
+                                    </optgroup>
+                                  ))}
+                                </select>
+                              )}
+                            </div>
+                            {editSWPieceId && (
+                              <>
+                                <div className="form-group">
+                                  <label>Issue</label>
+                                  <select
+                                    className="form-control"
+                                    value={editSWPieceIssueId}
+                                    onChange={(e) => setEditSWPieceIssueId(e.target.value)}
+                                    required
+                                  >
+                                    {selectedWorks.map((issue) => (
+                                      <option key={issue.id} value={issue.id}>{issue.title}</option>
+                                    ))}
+                                  </select>
+                                </div>
+                                <div className="form-group">
+                                  <label>Piece Title</label>
+                                  <input
+                                    type="text"
+                                    className="form-control"
+                                    value={editSWPieceTitle}
+                                    onChange={(e) => setEditSWPieceTitle(e.target.value)}
+                                    required
+                                  />
+                                </div>
+                                <div className="form-group">
+                                  <label>Author</label>
+                                  <input
+                                    type="text"
+                                    className="form-control"
+                                    value={editSWPieceAuthor}
+                                    onChange={(e) => setEditSWPieceAuthor(e.target.value)}
+                                    required
+                                  />
+                                </div>
+                                <div className="form-group">
+                                  <label>Genre / Section</label>
+                                  <select
+                                    className="form-control"
+                                    value={editSWPieceGenre}
+                                    onChange={(e) => setEditSWPieceGenre(e.target.value)}
+                                    required
+                                  >
+                                    {SELECTED_WORKS_GENRES.map((genre) => (
+                                      <option key={genre} value={genre}>{genre}</option>
+                                    ))}
+                                  </select>
+                                </div>
+                                <div className="form-group">
+                                  <label>Piece Content</label>
+                                  <textarea
+                                    className="form-control"
+                                    rows={8}
+                                    value={editSWPieceContent}
+                                    onChange={(e) => setEditSWPieceContent(e.target.value)}
+                                    required
+                                  />
+                                </div>
+                                <button type="submit" className="btn-primary" style={{ marginTop: '10px' }}>Save Changes</button>
+                              </>
+                            )}
+                          </form>
+                        )}
+
+                        {adminSWMode === 'delete-piece' && (
+                          <div>
+                            {selectedWorks.flatMap((issue) => issue.pieces).length === 0 ? (
+                              <p style={{ fontStyle: 'italic', color: 'var(--text-muted)' }}>No pieces to delete.</p>
+                            ) : (
+                              <ul style={{ listStyleType: 'none', padding: 0 }}>
+                                {selectedWorks.map((issue) => (
+                                  <li key={issue.id}>
+                                    <p style={{ fontWeight: 'bold', marginBottom: '8px', marginTop: '15px' }}>{issue.title}</p>
+                                    {issue.pieces.length === 0 ? (
+                                      <p style={{ fontStyle: 'italic', color: 'var(--text-muted)', fontSize: '0.9rem' }}>No pieces.</p>
+                                    ) : (
+                                      <ul style={{ listStyleType: 'none', padding: 0 }}>
+                                        {issue.pieces.map((piece) => (
+                                          <li
+                                            key={piece.id}
+                                            style={{
+                                              display: 'flex',
+                                              justifyContent: 'space-between',
+                                              alignItems: 'center',
+                                              padding: '12px 15px',
+                                              backgroundColor: 'var(--accent-bg)',
+                                              borderRadius: '4px',
+                                              marginBottom: '8px'
+                                            }}
+                                          >
+                                            <div>
+                                              <strong>{piece.title}</strong>
+                                              <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>by {piece.author} • {piece.genre}</div>
+                                            </div>
+                                            <button
+                                              type="button"
+                                              className="btn-primary"
+                                              style={{
+                                                backgroundColor: '#d9534f',
+                                                borderColor: '#d9534f',
+                                                color: '#fff',
+                                                padding: '5px 12px',
+                                                borderRadius: '4px',
+                                                marginLeft: '15px'
+                                              }}
+                                              onClick={async () => {
+                                                if (!confirm(`Delete "${piece.title}"?`)) return;
+                                                const res = await fetch('/api/admin/selected-works/pieces/delete', {
+                                                  method: 'POST',
+                                                  headers: { 'Content-Type': 'application/json' },
+                                                  body: JSON.stringify({ id: piece.id }),
+                                                });
+                                                const data = await res.json();
+                                                if (res.ok) {
+                                                  alert('Piece deleted.');
+                                                  if (selectedWorksPiece?.id === piece.id) setSelectedWorksPiece(null);
+                                                  if (editSWPieceId === piece.id) {
+                                                    setEditSWPieceId('');
+                                                    setEditSWPieceTitle('');
+                                                    setEditSWPieceAuthor('');
+                                                    setEditSWPieceGenre('Poetry');
+                                                    setEditSWPieceContent('');
+                                                  }
+                                                  await refreshSiteContent();
+                                                } else {
+                                                  alert(`Failed to delete: ${data.error || 'Unknown error'}`);
+                                                }
+                                              }}
+                                            >
+                                              Delete
+                                            </button>
+                                          </li>
+                                        ))}
+                                      </ul>
+                                    )}
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
+                          </div>
                         )}
                       </div>
                     )}
