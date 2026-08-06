@@ -195,7 +195,7 @@ export default function App() {
             </div>
 
             <div className="content-box" style={{ textAlign: 'center' }}>
-              <h2 className="section-title">From the Editors' Desk</h2>
+              <h2 className="section-title">From the Co-Editors in Chiefs' Desk</h2>
               <p style={{ maxWidth: '700px', margin: '0 auto', marginBottom: '20px' }}>
                 Welcome to the digital home of The Hilltop Horizon Review! Run by a team of devoted and eager young writers, we seek to build a world-wide community for young writers to chase their dreams.
               </p>
@@ -428,17 +428,17 @@ Red upon white cloth`}
             {/* Official Email & Social Media Placeholders */}
             <div style={{ textAlign: 'center', marginBottom: '40px', paddingBottom: '30px', borderBottom: '1px solid var(--accent-border)' }}>
               <p style={{ marginBottom: '12px', fontSize: '1.05rem' }}>
-                <strong>Official Email:</strong> <a href="mailto:contact@hilltophorizonreview.com" style={{ color: 'var(--text-main)' }}>contact@hilltophorizonreview.com</a>
+                <strong>Official Email:</strong> <a href="team@hilltophorizonreview.com" style={{ color: 'var(--text-main)' }}>team@hilltophorizonreview.com</a>
               </p>
               <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '15px' }}>Connect with us on social media:</p>
               <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', fontSize: '0.95rem' }}>
-                <a href="#" style={{ color: 'var(--text-main)', textDecoration: 'none' }}>Instagram</a>
+                <a href="https://www.instagram.com/hilltop_horizon_review/" style={{ color: 'var(--text-main)', textDecoration: 'none' }}>Instagram</a>
                 <span>•</span>
-                <a href="#" style={{ color: 'var(--text-main)', textDecoration: 'none' }}>X (Twitter)</a>
+                <a href="#" style={{ color: 'var(--text-main)', textDecoration: 'none' }}>(Coming Soon...)</a>
                 <span>•</span>
-                <a href="#" style={{ color: 'var(--text-main)', textDecoration: 'none' }}>Facebook</a>
+                <a href="#" style={{ color: 'var(--text-main)', textDecoration: 'none' }}>(Coming Soon...)</a>
                 <span>•</span>
-                <a href="#" style={{ color: 'var(--text-main)', textDecoration: 'none' }}>TikTok</a>
+                <a href="#" style={{ color: 'var(--text-main)', textDecoration: 'none' }}>(Coming Soon...)</a>
               </div>
             </div>
 
@@ -550,60 +550,60 @@ Red upon white cloth`}
           <div className="content-box" style={{ maxWidth: '800px', margin: '0 auto' }}>
             <h2 className="section-title">Join Our Team</h2>
             <p style={{ textAlign: 'center', marginBottom: '30px', color: 'var(--text-muted)' }}>
-              The Hilltop Horizon Review is entirely run by high schoolers. We look for passionate, dedicated individuals who want to help shape our global literary community. Open to students ages 14–19.
+              The Hilltop Horizon Review is entirely run by high schoolers. We look for passionate, dedicated individuals who want to help shape our global literary community. Open to teens ages 14–19. Link to apply coming soon...
             </p>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '30px', marginBottom: '40px' }}>
               <div>
                 <h4 style={{ fontSize: '1.2rem', marginBottom: '5px' }}>Poetry Editor</h4>
-                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Reviews and selects poetry submissions, evaluates lyrical quality, and curates monthly poetic features.</p>
+                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Currently Seeking: One. Edits poetry submissions and provides detailed, specific, and in-depth constructive feedback for every piece assigned. Communicates and works together with fellow poetry editors to select a collection of poems to be published each issue. Recommended qualifications: Experience in poetry is a required minimum. Experience editing poetry is a definete plus. Willingsness to work and communicate with fellow editors. Come consistently to meetings. & more.</p>
               </div>
               <div>
                 <h4 style={{ fontSize: '1.2rem', marginBottom: '5px' }}>Fiction Editor</h4>
-                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Reads short stories and flash fiction submissions, evaluating narrative arc, character development, and prose style.</p>
+                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Currently Seeking: Two. Edits fiction submissions and provides detailed, specific, and in-depth constructive feedback for every piece assigned. Communicates and works together with fellow fiction editors to select a collection of fiction pieces to be published each issue. Recommended qualifications: Experience in fiction is a required minimum. Experience editing fiction is a definete plus. Willingsness to work and communicate with fellow editors. Come consistently to meetings. & more.</p>
               </div>
               <div>
                 <h4 style={{ fontSize: '1.2rem', marginBottom: '5px' }}>Nonfiction Editor</h4>
-                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Evaluates personal essays, memoirs, and creative nonfiction pieces for emotional resonance and clarity.</p>
+                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Currently Seeking: Two. Edits nonfiction submissions and provides detailed, specific, and in-depth constructive feedback for every piece assigned. Communicates and works together with fellow nonfiction editors to select a collection of nonfiction pieces to be published each issue. Recommended qualifications: Experience in nonfiction is a required minimum. Experience editing fiction is a definete plus. Willingsness to work and communicate with fellow editors. Come consistently to meetings. & more.</p>
               </div>
               <div>
                 <h4 style={{ fontSize: '1.2rem', marginBottom: '5px' }}>Art Editor</h4>
-                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Curates digital and traditional visual artwork to accompany literary pieces and feature independent youth artists.</p>
+                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Currently Seeking: One. Reviews artwork submissions and provides detailed, specific, and in-depth constructive feedback for every piece assigned. Works to select pieces to be published in each issue. Recommended qualifications: Experience in art is a required minimum. Experience reviewing, judging, and providing feedback on artwork is a definete plus, as well as experience in a variety of mediums. Willingsness to work and communicate with fellow editors. Come consistently to meetings. & more.</p>
               </div>
               <div>
                 <h4 style={{ fontSize: '1.2rem', marginBottom: '5px' }}>Photography Editor</h4>
-                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Selects striking photographic works for publication across issues and online showcases.</p>
+                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Currently Seeking: One. Reviews photography submissions and provides detailed, specific, and in-depth constructive feedback for every piece assigned. Works to select pieces to be published in each issue. Recommended qualifications: Experience in photography is a required minimum. Experience reviewing, judging, and providing feedback on photography is a definete plus. Willingsness to work and communicate with fellow editors. Come consistently to meetings. & more.</p>
               </div>
               <div>
                 <h4 style={{ fontSize: '1.2rem', marginBottom: '5px' }}>Internal Operations Secretary</h4>
-                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Manages internal team schedules, meeting notes, communication channels, and administrative workflows.</p>
+                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Currently Seeking: Zero. Manages internal team schedules, meeting notes, communication channels, announcments, and administrative workflows. Recommended qualifications: strong organizational and calendar management skills, excellent communication for team announcements, and proficiency in tools like Slack, Google Workspace, and project management platforms. Come consistently to meetings. & more.</p>
               </div>
               <div>
                 <h4 style={{ fontSize: '1.2rem', marginBottom: '5px' }}>External Operations Secretary</h4>
-                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Coordinates outreach with partner literary magazines, schools, and external literary organizations.</p>
+                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Currently Seeking: Zero. Manages submissions, general tracking organization, external communication, public relations, and forms. Recommended qualifications: strong organizational skills, excellent communication with members of the public -- primarily submitters, frequent availability to check and respond to inquiries and requests. Come consistently to meetings. & more.</p>
               </div>
               <div>
-                <h4 style={{ fontSize: '1.2rem', marginBottom: '5px' }}>Website Manager</h4>
-                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Maintains web infrastructure, uploads new issues, tests user interfaces, and ensures smooth site performance.</p>
+                <h4 style={{ fontSize: '1.2rem', marginBottom: '5px' }}>Website Administrator</h4>
+                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Currently Seeking: Zero. Maintains web infrastructure and security, uploads new issues, adds new features, and ensures smooth site performance. Recommended qualifications: Basic coding knowledge is required. Experience and familiarity with IDEs, github, cloudflare, and especially experience with creating / acting as administrator for other websites is recommended. Come consistently to meetings. & more.</p>
               </div>
               <div>
                 <h4 style={{ fontSize: '1.2rem', marginBottom: '5px' }}>Social Media Director</h4>
-                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Runs social channels, designs promotional graphics, and engages with the online young writer community.</p>
+                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Currently Seeking: Zero. Runs social channels, designs promotional graphics, and engages with the online young writer community. Recommended Qualifications: Experience with handling social media accounts, art & design experience, experience with canva, photoshop, illustrator, etc. Come consistently to meetings. & more.</p>
               </div>
               <div>
                 <h4 style={{ fontSize: '1.2rem', marginBottom: '5px' }}>International Representatives</h4>
-                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Builds regional networks, promotes submissions, and coordinates translation or regional features abroad.</p>
+                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Builds regional networks, handles promotion in region, and coordinates translation or regional features abroad. Recommended Qualifications: MUST be living in a nation that The Hilltop Horizon Review does NOT have an international representative in. Fluency in the nation's language. Experience with creating promotional materials. Does not necessarily require coming to meetings because of time zone differences.</p>
               </div>
               <div>
                 <h4 style={{ fontSize: '1.2rem', marginBottom: '5px' }}>Director of Policy and Standards</h4>
-                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Ensures adherence to magazine guidelines, ethical standards, plagiarism checks, and AI-free policies.</p>
+                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Ensures adherence to magazine guidelines, ethical standards, plagiarism checks, and AI-free policies. Does not necessarily require coming to meetings because of time zone differences.</p>
               </div>
             </div>
 
             <div style={{ textAlign: 'center' }}>
               <p style={{ marginBottom: '15px', fontStyle: 'italic' }}>Ready to apply?</p>
               <a href="#" className="btn-primary" style={{ textDecoration: 'none', display: 'inline-block' }}>
-                Open Application Form (Google Form) →
+                Application Form Coming Soon... →
               </a>
             </div>
           </div>
