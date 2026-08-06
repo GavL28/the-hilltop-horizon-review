@@ -134,6 +134,18 @@ export default function App() {
   const [editSWPieceGenre, setEditSWPieceGenre] = useState('Poetry');
   const [editSWPieceContent, setEditSWPieceContent] = useState('');
 
+  const scrollToForm = (id) => {
+    setTimeout(() => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        el.style.transition = 'box-shadow 0.3s';
+        el.style.boxShadow = '0 0 0 3px rgba(51, 122, 183, 0.5)';
+        setTimeout(() => { el.style.boxShadow = ''; }, 1200);
+      }
+    }, 60);
+  };
+
   // --- New State for Dynamic Content ---
   const [currentIssue, setCurrentIssue] = useState(null);
   const [pastIssues, setPastIssues] = useState([]);
@@ -1195,7 +1207,7 @@ Red upon white cloth`}
                           <button
                             type="button"
                             className="btn-primary"
-                            onClick={() => setAdminDigitalMode('add')}
+                            onClick={() => { setAdminDigitalMode('add'); scrollToForm('digital-add-form'); }}
                             style={{
                               backgroundColor: adminDigitalMode === 'add' ? '#337ab7' : '#fff',
                               color: adminDigitalMode === 'add' ? '#fff' : '#337ab7',
@@ -1209,7 +1221,7 @@ Red upon white cloth`}
                           <button
                             type="button"
                             className="btn-primary"
-                            onClick={() => setAdminDigitalMode('edit')}
+                            onClick={() => { setAdminDigitalMode('edit'); scrollToForm('digital-edit-form'); }}
                             style={{
                               backgroundColor: adminDigitalMode === 'edit' ? '#337ab7' : '#fff',
                               color: adminDigitalMode === 'edit' ? '#fff' : '#337ab7',
@@ -1223,7 +1235,7 @@ Red upon white cloth`}
                           <button
                             type="button"
                             className="btn-primary"
-                            onClick={() => setAdminDigitalMode('delete')}
+                            onClick={() => { setAdminDigitalMode('delete'); scrollToForm('digital-delete-form'); }}
                             style={{
                               backgroundColor: adminDigitalMode === 'delete' ? '#337ab7' : '#fff',
                               color: adminDigitalMode === 'delete' ? '#fff' : '#337ab7',
@@ -1237,7 +1249,7 @@ Red upon white cloth`}
                         </div>
 
                         {adminDigitalMode === 'add' && (
-                          <form onSubmit={async (e) => {
+                          <form id="digital-add-form" onSubmit={async (e) => {
                             e.preventDefault();
                             const res = await fetch('/api/admin/digital-editions/add', {
                               method: 'POST',
@@ -1281,7 +1293,7 @@ Red upon white cloth`}
                         )}
 
                         {adminDigitalMode === 'edit' && (
-                          <form onSubmit={async (e) => {
+                          <form id="digital-edit-form" onSubmit={async (e) => {
                             e.preventDefault();
                             if (!editDigitalId) {
                               alert('Please select an edition to edit.');
@@ -1352,7 +1364,7 @@ Red upon white cloth`}
                         )}
 
                         {adminDigitalMode === 'delete' && (
-                          <div>
+                          <div id="digital-delete-form">
                             {digitalEditions.length === 0 ? (
                               <p style={{ fontStyle: 'italic', color: 'var(--text-muted)' }}>No digital editions to delete.</p>
                             ) : (
@@ -1434,7 +1446,7 @@ Red upon white cloth`}
                                 key={mode}
                                 type="button"
                                 className="btn-primary"
-                                onClick={() => setAdminSWMode(mode)}
+                                onClick={() => { setAdminSWMode(mode); scrollToForm('sw-' + mode + '-form'); }}
                                 style={{
                                   backgroundColor: adminSWMode === mode ? '#337ab7' : '#fff',
                                   color: adminSWMode === mode ? '#fff' : '#337ab7',
@@ -1450,7 +1462,7 @@ Red upon white cloth`}
                         </div>
 
                         {adminSWMode === 'add-issue' && (
-                          <form onSubmit={async (e) => {
+                          <form id="sw-add-issue-form" onSubmit={async (e) => {
                             e.preventDefault();
                             const res = await fetch('/api/admin/selected-works/issues/add', {
                               method: 'POST',
@@ -1482,7 +1494,7 @@ Red upon white cloth`}
                         )}
 
                         {adminSWMode === 'edit-issue' && (
-                          <form onSubmit={async (e) => {
+                          <form id="sw-edit-issue-form" onSubmit={async (e) => {
                             e.preventDefault();
                             if (!editSWIssueId) {
                               alert('Please select an issue to edit.');
@@ -1542,7 +1554,7 @@ Red upon white cloth`}
                         )}
 
                         {adminSWMode === 'delete-issue' && (
-                          <div>
+                          <div id="sw-delete-issue-form">
                             {selectedWorks.length === 0 ? (
                               <p style={{ fontStyle: 'italic', color: 'var(--text-muted)' }}>No issues to delete.</p>
                             ) : (
@@ -1608,7 +1620,7 @@ Red upon white cloth`}
                         )}
 
                         {adminSWMode === 'add-piece' && (
-                          <form onSubmit={async (e) => {
+                          <form id="sw-add-piece-form" onSubmit={async (e) => {
                             e.preventDefault();
                             if (!swPieceIssueId) {
                               alert('Please select an issue.');
@@ -1705,7 +1717,7 @@ Red upon white cloth`}
                         )}
 
                         {adminSWMode === 'edit-piece' && (
-                          <form onSubmit={async (e) => {
+                          <form id="sw-edit-piece-form" onSubmit={async (e) => {
                             e.preventDefault();
                             if (!editSWPieceId) {
                               alert('Please select a piece to edit.');
@@ -1828,7 +1840,7 @@ Red upon white cloth`}
                         )}
 
                         {adminSWMode === 'delete-piece' && (
-                          <div>
+                          <div id="sw-delete-piece-form">
                             {selectedWorks.flatMap((issue) => issue.pieces).length === 0 ? (
                               <p style={{ fontStyle: 'italic', color: 'var(--text-muted)' }}>No pieces to delete.</p>
                             ) : (
