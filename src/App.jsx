@@ -146,6 +146,21 @@ export default function App() {
     }, 60);
   };
 
+  const apiPost = async (url, body) => {
+    try {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      let data = {};
+      try { data = await res.json(); } catch { data = {}; }
+      return { ok: res.ok, data };
+    } catch (err) {
+      return { ok: false, data: { error: err.message } };
+    }
+  };
+
   // --- New State for Dynamic Content ---
   const [currentIssue, setCurrentIssue] = useState(null);
   const [pastIssues, setPastIssues] = useState([]);
@@ -998,20 +1013,9 @@ Red upon white cloth`}
                     {!isAdminLoggedIn ? (
                       <form onSubmit={async (e) => {
                         e.preventDefault();
-                        const res = await fetch('/api/admin/login', {
-                          method: 'POST',
-                          headers: { 'Content-Type': 'application/json' },
-                          body: JSON.stringify({ password: adminPassword })
-                        });
-                        if (res.ok) setIsAdminLoggedIn(true);
-                        else {
-                          try {
-                            const errorData = await res.json();
-                            alert(`Access Denied: ${errorData.error}`);
-                          } catch (err) {
-                            alert(`Server Error: Check your browser's network tab or Cloudflare logs.`);
-                          }
-                        }
+                        const { ok, data } = await apiPost('/api/admin/login', { password: adminPassword });
+                        if (ok) setIsAdminLoggedIn(true);
+                        else alert(`Access Denied: ${data.error || 'Check Cloudflare logs'}`);
                       }}>
                         <div className="form-group">
                           <label>Admin Password</label>
@@ -1057,24 +1061,20 @@ Red upon white cloth`}
                             e.preventDefault();
                             if (!confirm('Are you sure? This will archive the current issue, update the home page, and email ALL subscribers.')) return;
 
-                            const res = await fetch('/api/admin/publish', {
-                              method: 'POST',
-                              headers: { 'Content-Type': 'application/json' },
-                              body: JSON.stringify({ 
-                                title: newIssueTitle, 
-                                contentHtml: newIssueHtml, 
-                                announcementMessage: newAnnouncement 
-                              })
+                            const { ok, data } = await apiPost('/api/admin/publish', { 
+                              title: newIssueTitle, 
+                              contentHtml: newIssueHtml, 
+                              announcementMessage: newAnnouncement 
                             });
 
-                            if (res.ok) {
+                            if (ok) {
                               alert('Issue published and emails sent successfully!');
                               setNewIssueTitle('');
                               setNewIssueHtml('');
                               setNewAnnouncement('');
                               await refreshSiteContent();
                             } else {
-                              alert('Failed to publish.');
+                              alert(`Failed to publish: ${data.error || 'Unknown error'}`);
                             }
                           }}>
                             <div className="form-group">
@@ -1114,18 +1114,13 @@ Red upon white cloth`}
                               return;
                             }
 
-                            const res = await fetch('/api/admin/update-issue', {
-                              method: 'POST',
-                              headers: { 'Content-Type': 'application/json' },
-                              body: JSON.stringify({
-                                issueId: editingIssueId,
-                                title: editIssueTitle,
-                                contentHtml: editIssueHtml,
-                              }),
+                            const { ok, data } = await apiPost('/api/admin/update-issue', {
+                              issueId: editingIssueId,
+                              title: editIssueTitle,
+                              contentHtml: editIssueHtml,
                             });
 
-                            const data = await res.json();
-                            if (res.ok) {
+                            if (ok) {
                               alert('Issue updated successfully.');
                               const refreshed = await refreshSiteContent();
                               if (refreshed?.success && selectedIssue?.id === editingIssueId) {
@@ -1251,13 +1246,8 @@ Red upon white cloth`}
                         {adminDigitalMode === 'add' && (
                           <form id="digital-add-form" onSubmit={async (e) => {
                             e.preventDefault();
-                            const res = await fetch('/api/admin/digital-editions/add', {
-                              method: 'POST',
-                              headers: { 'Content-Type': 'application/json' },
-                              body: JSON.stringify({ title: digitalTitle, url: digitalUrl }),
-                            });
-                            const data = await res.json();
-                            if (res.ok) {
+                            const { ok, data } = await apiPost('/api/admin/digital-editions/add', { title: digitalTitle, url: digitalUrl });
+                            if (ok) {
                               alert('Digital magazine edition added.');
                               setDigitalTitle('');
                               setDigitalUrl('');
@@ -1299,13 +1289,8 @@ Red upon white cloth`}
                               alert('Please select an edition to edit.');
                               return;
                             }
-                            const res = await fetch('/api/admin/digital-editions/edit', {
-                              method: 'POST',
-                              headers: { 'Content-Type': 'application/json' },
-                              body: JSON.stringify({ id: editDigitalId, title: editDigitalTitle, url: editDigitalUrl }),
-                            });
-                            const data = await res.json();
-                            if (res.ok) {
+                            const { ok, data } = await apiPost('/api/admin/digital-editions/edit', { id: editDigitalId, title: editDigitalTitle, url: editDigitalUrl });
+                            if (ok) {
                               alert('Digital magazine edition updated.');
                               await refreshSiteContent();
                             } else {
@@ -1400,13 +1385,8 @@ Red upon white cloth`}
                                       }}
                                       onClick={async () => {
                                         if (!confirm(`Delete "${edition.title}"?`)) return;
-                                        const res = await fetch('/api/admin/digital-editions/delete', {
-                                          method: 'POST',
-                                          headers: { 'Content-Type': 'application/json' },
-                                          body: JSON.stringify({ id: edition.id }),
-                                        });
-                                        const data = await res.json();
-                                        if (res.ok) {
+                                        const { ok, data } = await apiPost('/api/admin/digital-editions/delete', { id: edition.id });
+                                        if (ok) {
                                           alert('Digital magazine edition deleted.');
                                           if (editDigitalId === edition.id) {
                                             setEditDigitalId('');
@@ -1464,13 +1444,8 @@ Red upon white cloth`}
                         {adminSWMode === 'add-issue' && (
                           <form id="sw-add-issue-form" onSubmit={async (e) => {
                             e.preventDefault();
-                            const res = await fetch('/api/admin/selected-works/issues/add', {
-                              method: 'POST',
-                              headers: { 'Content-Type': 'application/json' },
-                              body: JSON.stringify({ title: swIssueTitle }),
-                            });
-                            const data = await res.json();
-                            if (res.ok) {
+                            const { ok, data } = await apiPost('/api/admin/selected-works/issues/add', { title: swIssueTitle });
+                            if (ok) {
                               alert('Issue added.');
                               setSwIssueTitle('');
                               await refreshSiteContent();
@@ -1500,13 +1475,8 @@ Red upon white cloth`}
                               alert('Please select an issue to edit.');
                               return;
                             }
-                            const res = await fetch('/api/admin/selected-works/issues/edit', {
-                              method: 'POST',
-                              headers: { 'Content-Type': 'application/json' },
-                              body: JSON.stringify({ id: editSWIssueId, title: editSWIssueTitle }),
-                            });
-                            const data = await res.json();
-                            if (res.ok) {
+                            const { ok, data } = await apiPost('/api/admin/selected-works/issues/edit', { id: editSWIssueId, title: editSWIssueTitle });
+                            if (ok) {
                               alert('Issue title updated.');
                               await refreshSiteContent();
                             } else {
@@ -1591,13 +1561,8 @@ Red upon white cloth`}
                                       }}
                                       onClick={async () => {
                                         if (!confirm(`Delete "${issue.title}" and all of its pieces?`)) return;
-                                        const res = await fetch('/api/admin/selected-works/issues/delete', {
-                                          method: 'POST',
-                                          headers: { 'Content-Type': 'application/json' },
-                                          body: JSON.stringify({ id: issue.id }),
-                                        });
-                                        const data = await res.json();
-                                        if (res.ok) {
+                                        const { ok, data } = await apiPost('/api/admin/selected-works/issues/delete', { id: issue.id });
+                                        if (ok) {
                                           alert('Issue deleted.');
                                           if (selectedWorksIssue?.id === issue.id) setSelectedWorksIssue(null);
                                           if (editSWIssueId === issue.id) {
@@ -1626,19 +1591,14 @@ Red upon white cloth`}
                               alert('Please select an issue.');
                               return;
                             }
-                            const res = await fetch('/api/admin/selected-works/pieces/add', {
-                              method: 'POST',
-                              headers: { 'Content-Type': 'application/json' },
-                              body: JSON.stringify({
-                                issueId: swPieceIssueId,
-                                title: swPieceTitle,
-                                author: swPieceAuthor,
-                                genre: swPieceGenre,
-                                content: swPieceContent,
-                              }),
+                            const { ok, data } = await apiPost('/api/admin/selected-works/pieces/add', {
+                              issueId: swPieceIssueId,
+                              title: swPieceTitle,
+                              author: swPieceAuthor,
+                              genre: swPieceGenre,
+                              content: swPieceContent,
                             });
-                            const data = await res.json();
-                            if (res.ok) {
+                            if (ok) {
                               alert('Piece added.');
                               setSwPieceTitle('');
                               setSwPieceAuthor('');
@@ -1723,20 +1683,15 @@ Red upon white cloth`}
                               alert('Please select a piece to edit.');
                               return;
                             }
-                            const res = await fetch('/api/admin/selected-works/pieces/edit', {
-                              method: 'POST',
-                              headers: { 'Content-Type': 'application/json' },
-                              body: JSON.stringify({
-                                id: editSWPieceId,
-                                issueId: editSWPieceIssueId,
-                                title: editSWPieceTitle,
-                                author: editSWPieceAuthor,
-                                genre: editSWPieceGenre,
-                                content: editSWPieceContent,
-                              }),
+                            const { ok, data } = await apiPost('/api/admin/selected-works/pieces/edit', {
+                              id: editSWPieceId,
+                              issueId: editSWPieceIssueId,
+                              title: editSWPieceTitle,
+                              author: editSWPieceAuthor,
+                              genre: editSWPieceGenre,
+                              content: editSWPieceContent,
                             });
-                            const data = await res.json();
-                            if (res.ok) {
+                            if (ok) {
                               alert('Piece updated.');
                               await refreshSiteContent();
                             } else {
@@ -1882,13 +1837,8 @@ Red upon white cloth`}
                                               }}
                                               onClick={async () => {
                                                 if (!confirm(`Delete "${piece.title}"?`)) return;
-                                                const res = await fetch('/api/admin/selected-works/pieces/delete', {
-                                                  method: 'POST',
-                                                  headers: { 'Content-Type': 'application/json' },
-                                                  body: JSON.stringify({ id: piece.id }),
-                                                });
-                                                const data = await res.json();
-                                                if (res.ok) {
+                                                const { ok, data } = await apiPost('/api/admin/selected-works/pieces/delete', { id: piece.id });
+                                                if (ok) {
                                                   alert('Piece deleted.');
                                                   if (selectedWorksPiece?.id === piece.id) setSelectedWorksPiece(null);
                                                   if (editSWPieceId === piece.id) {
