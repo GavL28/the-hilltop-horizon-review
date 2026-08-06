@@ -21,6 +21,18 @@ const staffData = [
   { id: 'rubbi', name: 'Rubbi Chen', pronouns: 'She/Her', grade: 'Senior', role: 'International Representative (China)', shortBio: 'Rubbi is a fiction writer from Shanghai, China. Normally she writes some teenage queer romance, body horror (especially splatterpunk!) and suspense fiction.', fullBio: 'Rubbi is a fiction writer from Shanghai, China. Normally she writes some teenage queer romance, body horror (especially splatterpunk!) and suspense fiction. She started writing in primary school and her first work was a yaoi smut. Except for writing, she claims to have no other artistic talent, so she spends most of her time doing anthropology and queer studies research, advocating for women’s rights, watching women’s hockey, fantasizing about her future wife, and being a cat mom. ', photo: '/Rubbi Chen.jpg' },
 ];
 
+// Selected Works placeholder data — replace with real pieces as issues are published
+const SELECTED_WORKS_GENRES = ['Poetry', 'Fiction', 'Nonfiction', 'Art', 'Photography'];
+const selectedWorksData = [
+  {
+    id: 'issue-1',
+    title: 'Issue 1',
+    pieces: [
+      { id: 'i1-p1', title: 'Example', author: 'John Smith', genre: 'Poetry', content: 'example piece' },
+    ],
+  },
+];
+
 const TINYMCE_INIT = {
   height: 400,
   menubar: false,
@@ -73,6 +85,8 @@ export default function App() {
   const [activeTab, setActiveTab] = useState('home');
   const [selectedStaff, setSelectedStaff] = useState(null);
   const [openGuidelines, setOpenGuidelines] = useState('general');
+  const [selectedWorksIssue, setSelectedWorksIssue] = useState(null);
+  const [selectedWorksPiece, setSelectedWorksPiece] = useState(null);
 
   const toggleGuidelines = (section) => {
     setOpenGuidelines((prev) => (prev === section ? null : section));
@@ -182,6 +196,8 @@ export default function App() {
             <ul className="dropdown">
               <li><button className="dropdown-link" onClick={() => setActiveTab('issues-current')}>Current Issue</button></li>
               <li><button className="dropdown-link" onClick={() => setActiveTab('issues-archive')}>Past Issues Archive</button></li>
+              <li><button className="dropdown-link" onClick={() => setActiveTab('selected-works')}>Selected Works</button></li>
+              <li><button className="dropdown-link" onClick={() => setActiveTab('digital-magazine')}>Digital Magazine</button></li>
             </ul>
           </li>
           <li className="nav-item">
@@ -426,6 +442,148 @@ Red upon white cloth`}
               dangerouslySetInnerHTML={{ __html: selectedIssue.content_html }} 
               style={{ lineHeight: '1.8' }}
             />
+          </div>
+        )}
+
+        {/* 4. SELECTED WORKS (List of issues) */}
+        {activeTab === 'selected-works' && (
+          <div className="content-box fade-in">
+            <h2 className="section-title">Selected Works</h2>
+            <p style={{ textAlign: 'center', marginBottom: '20px', color: 'var(--text-muted)' }}>
+              Browse the pieces selected for publication, organized by issue. Click an issue to view its selected works.
+            </p>
+            {selectedWorksData.length === 0 && (
+              <p style={{ textAlign: 'center', fontStyle: 'italic', color: 'var(--text-muted)' }}>No issues available yet.</p>
+            )}
+            <ul style={{ listStyleType: 'none', padding: 0 }}>
+              {selectedWorksData.map((issue) => (
+                <li
+                  key={issue.id}
+                  onClick={() => {
+                    setSelectedWorksIssue(issue);
+                    setActiveTab('selected-works-issue');
+                  }}
+                  style={{
+                    marginBottom: '15px',
+                    padding: '15px',
+                    backgroundColor: 'var(--accent-bg)',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                    border: '1px solid transparent',
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.border = '1px solid var(--text-main)'}
+                  onMouseLeave={(e) => e.currentTarget.style.border = '1px solid transparent'}
+                >
+                  <strong style={{ fontSize: '1.2rem', color: 'var(--text-main)' }}>{issue.title}</strong>
+                  <span style={{ color: 'var(--text-muted)', fontSize: '0.9rem', display: 'block', marginTop: '5px' }}>
+                    {issue.pieces.length} piece{issue.pieces.length === 1 ? '' : 's'}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {/* 5. SELECTED WORKS — ISSUE (List of pieces with authors) */}
+        {activeTab === 'selected-works-issue' && selectedWorksIssue && (
+          <div className="content-box fade-in">
+            <button
+              className="btn-back"
+              onClick={() => setActiveTab('selected-works')}
+              style={{ marginBottom: '20px', background: 'none', border: 'none', color: 'var(--text-main)', cursor: 'pointer', fontStyle: 'italic' }}
+            >
+              ← Back to Selected Works
+            </button>
+            <h3 style={{ fontSize: '1.8rem', marginBottom: '20px', borderBottom: '1px solid var(--accent-border)', paddingBottom: '10px' }}>
+              {selectedWorksIssue.title} — Selected Works
+            </h3>
+            {SELECTED_WORKS_GENRES.map((genre) => {
+              const genrePieces = selectedWorksIssue.pieces.filter((p) => p.genre === genre);
+              return (
+                <div key={genre} style={{ marginBottom: '25px' }}>
+                  <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.3rem', borderBottom: '1px solid var(--accent-border)', paddingBottom: '5px', marginBottom: '12px' }}>
+                    {genre}
+                  </h4>
+                  {genrePieces.length === 0 ? (
+                    <p style={{ color: 'var(--text-muted)', fontStyle: 'italic', fontSize: '0.9rem' }}>No pieces yet.</p>
+                  ) : (
+                    <ul style={{ listStyleType: 'none', padding: 0 }}>
+                      {genrePieces.map((piece) => (
+                        <li
+                          key={piece.id}
+                          onClick={() => {
+                            setSelectedWorksPiece(piece);
+                            setActiveTab('selected-works-piece');
+                          }}
+                          style={{
+                            marginBottom: '12px',
+                            padding: '15px',
+                            backgroundColor: 'var(--accent-bg)',
+                            borderRadius: '4px',
+                            cursor: 'pointer',
+                            border: '1px solid transparent',
+                          }}
+                          onMouseEnter={(e) => e.currentTarget.style.border = '1px solid var(--text-main)'}
+                          onMouseLeave={(e) => e.currentTarget.style.border = '1px solid transparent'}
+                        >
+                          <strong style={{ color: 'var(--text-main)' }}>{piece.title}</strong>
+                          <span style={{ color: 'var(--text-muted)', fontSize: '0.9rem', display: 'block', marginTop: '4px' }}>
+                            by {piece.author}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {/* 6. SELECTED WORKS — PIECE (Viewing a specific piece) */}
+        {activeTab === 'selected-works-piece' && selectedWorksPiece && (
+          <div className="content-box fade-in">
+            <button
+              className="btn-back"
+              onClick={() => setActiveTab('selected-works-issue')}
+              style={{ marginBottom: '20px', background: 'none', border: 'none', color: 'var(--text-main)', cursor: 'pointer', fontStyle: 'italic' }}
+            >
+              ← Back to {selectedWorksIssue ? selectedWorksIssue.title : 'Selected Works'}
+            </button>
+            <h3 style={{ fontSize: '1.8rem', marginBottom: '8px' }}>{selectedWorksPiece.title}</h3>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'baseline',
+                borderBottom: '1px solid var(--accent-border)',
+                paddingBottom: '10px',
+                marginBottom: '20px',
+              }}
+            >
+              <span style={{ color: 'var(--text-muted)', fontStyle: 'italic' }}>{selectedWorksPiece.genre}</span>
+              <span style={{ color: 'var(--text-main)', fontWeight: 'bold' }}>{selectedWorksPiece.author}</span>
+            </div>
+            <div className="issue-content" style={{ lineHeight: '1.8', whiteSpace: 'pre-wrap' }}>
+              {selectedWorksPiece.content}
+            </div>
+          </div>
+        )}
+
+        {/* 7. DIGITAL MAGAZINE (External edition links) */}
+        {activeTab === 'digital-magazine' && (
+          <div className="content-box fade-in" style={{ textAlign: 'center' }}>
+            <h2 className="section-title">Digital Magazine</h2>
+            <p style={{ marginBottom: '30px', color: 'var(--text-muted)' }}>
+              Read each issue in our interactive digital magazine edition.
+            </p>
+            <a
+              href="#"
+              className="btn-primary"
+              style={{ textDecoration: 'none', display: 'inline-block', fontSize: '1.1rem', padding: '15px 30px' }}
+            >
+              Issue One Digital Magazine Edition →
+            </a>
           </div>
         )}
 
