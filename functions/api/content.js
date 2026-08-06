@@ -17,6 +17,11 @@ export async function onRequestGet(context) {
         'SELECT message, created_at FROM announcements ORDER BY created_at DESC LIMIT 1'
       ).first();
 
+      // 3b. Fetch all announcements (newest first) for the Announcements tabs
+      const { results: announcements } = await db.prepare(
+        'SELECT id, message, created_at FROM announcements ORDER BY created_at DESC'
+      ).all();
+
       // 4. Fetch all digital magazine editions
       const { results: digitalEditions } = await db.prepare(
         'SELECT id, title, url FROM digital_editions ORDER BY created_at ASC'
@@ -40,6 +45,7 @@ export async function onRequestGet(context) {
         currentIssue, 
         pastIssues, 
         announcement,
+        announcements,
         digitalEditions,
         selectedWorks
       }), {

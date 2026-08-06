@@ -114,6 +114,12 @@ export default function App() {
   const [editDigitalTitle, setEditDigitalTitle] = useState('');
   const [editDigitalUrl, setEditDigitalUrl] = useState('');
 
+  // Announcements admin state
+  const [adminAnnouncementMode, setAdminAnnouncementMode] = useState('add');
+  const [announcementMessage, setAnnouncementMessage] = useState('');
+  const [editAnnouncementId, setEditAnnouncementId] = useState('');
+  const [editAnnouncementMessage, setEditAnnouncementMessage] = useState('');
+
   // Selected works state (fetched from /api/content)
   const [selectedWorks, setSelectedWorks] = useState([]);
 
@@ -166,6 +172,7 @@ export default function App() {
   const [pastIssues, setPastIssues] = useState([]);
   const [selectedIssue, setSelectedIssue] = useState(null); // <-- Add this new line!
   const [announcement, setAnnouncement] = useState('');
+  const [announcements, setAnnouncements] = useState([]);
   const [isContentLoading, setIsContentLoading] = useState(true);
 
   async function refreshSiteContent() {
@@ -177,6 +184,7 @@ export default function App() {
         setPastIssues(data.pastIssues || []);
         setDigitalEditions(data.digitalEditions || []);
         setSelectedWorks(data.selectedWorks || []);
+        setAnnouncements(data.announcements || []);
         if (data.announcement) setAnnouncement(data.announcement.message);
       }
       return data;
@@ -241,10 +249,10 @@ export default function App() {
             </ul>
           </li>
           <li className="nav-item">
-            <button className="nav-link" onClick={() => setActiveTab('issues-current')}>Issues ▾</button>
+            <button className="nav-link" onClick={() => setActiveTab('announcements')}>Announcements ▾</button>
             <ul className="dropdown">
-              <li><button className="dropdown-link" onClick={() => setActiveTab('issues-current')}>Current Issue</button></li>
-              <li><button className="dropdown-link" onClick={() => setActiveTab('issues-archive')}>Past Issues Archive</button></li>
+              <li><button className="dropdown-link" onClick={() => setActiveTab('announcements')}>Announcements</button></li>
+              <li><button className="dropdown-link" onClick={() => setActiveTab('announcements-archive')}>Past Announcements</button></li>
               <li><button className="dropdown-link" onClick={() => setActiveTab('selected-works')}>Selected Works</button></li>
               <li><button className="dropdown-link" onClick={() => setActiveTab('digital-magazine')}>Digital Magazine</button></li>
             </ul>
@@ -407,62 +415,57 @@ Red upon white cloth`}
           </div>
         )}
 
-        {/* ISSUES TAB */}
-        {(activeTab === 'issues' || activeTab === 'issues-current') && (
+        {/* ANNOUNCEMENTS TAB */}
+        {activeTab === 'announcements' && (
           <div className="content-box fade-in">
-            <h2 className="section-title">Current Issue</h2>
-            
-            {isContentLoading && <p style={{ textAlign: 'center', fontStyle: 'italic', color: 'var(--text-muted)' }}>Loading latest issue...</p>}
+            <h2 className="section-title">Announcements</h2>
 
-            {!isContentLoading && currentIssue && (
-              <div style={{ marginBottom: '50px' }}>
-                <h3 style={{ fontSize: '1.8rem', marginBottom: '20px', borderBottom: '1px solid var(--accent-border)', paddingBottom: '10px' }}>
-                  {currentIssue.title}
-                </h3>
-                <div className="issue-content" dangerouslySetInnerHTML={{ __html: currentIssue.content_html }} style={{ lineHeight: '1.8' }} />
-              </div>
+            {isContentLoading && <p style={{ textAlign: 'center', fontStyle: 'italic', color: 'var(--text-muted)' }}>Loading latest announcement...</p>}
+
+            {!isContentLoading && announcements.length === 0 && (
+              <p style={{ textAlign: 'center', fontStyle: 'italic', color: 'var(--text-muted)' }}>No announcements yet. Check back soon!</p>
             )}
 
-            {!isContentLoading && !currentIssue && (
-              <p style={{ textAlign: 'center', fontStyle: 'italic', color: 'var(--text-muted)' }}>No active issue is currently published. Check back soon!</p>
+            {!isContentLoading && announcements.length > 0 && (
+              <div style={{ marginBottom: '50px' }}>
+                <div className="issue-content" style={{ lineHeight: '1.8', fontSize: '1.15rem' }}>
+                  {announcements[0].message}
+                </div>
+                <span style={{ color: 'var(--text-muted)', fontSize: '0.9rem', display: 'block', marginTop: '15px' }}>
+                  Posted {new Date(announcements[0].created_at).toLocaleDateString()}
+                </span>
+              </div>
             )}
           </div>
         )}
 
-        {/* 2. PAST ISSUES ARCHIVE (Clickable List) */}
-        {activeTab === 'issues-archive' && (
+        {/* PAST ANNOUNCEMENTS */}
+        {activeTab === 'announcements-archive' && (
           <div className="content-box fade-in">
-            <h2 className="section-title">Past Issues Archive</h2>
-            
+            <h2 className="section-title">Past Announcements</h2>
+
             {isContentLoading && <p style={{ textAlign: 'center', fontStyle: 'italic', color: 'var(--text-muted)' }}>Loading archive...</p>}
-            
-            {!isContentLoading && pastIssues.length === 0 && (
-              <p style={{ textAlign: 'center', fontStyle: 'italic', color: 'var(--text-muted)' }}>No past issues available yet.</p>
+
+            {!isContentLoading && announcements.slice(1).length === 0 && (
+              <p style={{ textAlign: 'center', fontStyle: 'italic', color: 'var(--text-muted)' }}>No past announcements available yet.</p>
             )}
 
-            {!isContentLoading && pastIssues.length > 0 && (
+            {!isContentLoading && announcements.slice(1).length > 0 && (
               <ul style={{ listStyleType: 'none', padding: 0 }}>
-                {pastIssues.map((issue) => (
-                  <li 
-                    key={issue.id} 
-                    onClick={() => {
-                      setSelectedIssue(issue);
-                      setActiveTab('issue-detail');
-                    }}
-                    style={{ 
-                      marginBottom: '15px', 
-                      padding: '15px', 
-                      backgroundColor: 'var(--accent-bg)', 
+                {announcements.slice(1).map((a) => (
+                  <li
+                    key={a.id}
+                    style={{
+                      marginBottom: '15px',
+                      padding: '15px',
+                      backgroundColor: 'var(--accent-bg)',
                       borderRadius: '4px',
-                      cursor: 'pointer',
                       border: '1px solid transparent',
                     }}
-                    onMouseEnter={(e) => e.currentTarget.style.border = '1px solid var(--text-main)'}
-                    onMouseLeave={(e) => e.currentTarget.style.border = '1px solid transparent'}
                   >
-                    <strong style={{ fontSize: '1.2rem', color: 'var(--text-main)' }}>{issue.title}</strong>
+                    <div style={{ color: 'var(--text-main)' }}>{a.message}</div>
                     <span style={{ color: 'var(--text-muted)', fontSize: '0.9rem', display: 'block', marginTop: '5px' }}>
-                      Published {new Date(issue.published_at).toLocaleDateString()}
+                      Posted {new Date(a.created_at).toLocaleDateString()}
                     </span>
                   </li>
                 ))}
@@ -1392,6 +1395,195 @@ Red upon white cloth`}
                                             setEditDigitalId('');
                                             setEditDigitalTitle('');
                                             setEditDigitalUrl('');
+                                          }
+                                          await refreshSiteContent();
+                                        } else {
+                                          alert(`Failed to delete: ${data.error || 'Unknown error'}`);
+                                        }
+                                      }}
+                                    >
+                                      Delete
+                                    </button>
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
+                          </div>
+                        )}
+
+                        <hr style={{ margin: '30px 0', border: 'none', borderTop: '1px solid var(--accent-border)' }} />
+                        <h3 style={{ fontFamily: 'var(--font-heading)', marginBottom: '15px' }}>Announcements</h3>
+
+                        <div style={{ display: 'flex', gap: '10px', marginBottom: '25px', flexWrap: 'wrap' }}>
+                          <button
+                            type="button"
+                            className="btn-primary"
+                            onClick={() => { setAdminAnnouncementMode('add'); scrollToForm('announcement-add-form'); }}
+                            style={{
+                              backgroundColor: adminAnnouncementMode === 'add' ? '#337ab7' : '#fff',
+                              color: adminAnnouncementMode === 'add' ? '#fff' : '#337ab7',
+                              border: '1px solid #337ab7',
+                              padding: '5px 10px',
+                              borderRadius: '4px'
+                            }}
+                          >
+                            Add Announcement
+                          </button>
+                          <button
+                            type="button"
+                            className="btn-primary"
+                            onClick={() => { setAdminAnnouncementMode('edit'); scrollToForm('announcement-edit-form'); }}
+                            style={{
+                              backgroundColor: adminAnnouncementMode === 'edit' ? '#337ab7' : '#fff',
+                              color: adminAnnouncementMode === 'edit' ? '#fff' : '#337ab7',
+                              border: '1px solid #337ab7',
+                              padding: '5px 10px',
+                              borderRadius: '4px'
+                            }}
+                          >
+                            Edit Announcement
+                          </button>
+                          <button
+                            type="button"
+                            className="btn-primary"
+                            onClick={() => { setAdminAnnouncementMode('delete'); scrollToForm('announcement-delete-form'); }}
+                            style={{
+                              backgroundColor: adminAnnouncementMode === 'delete' ? '#337ab7' : '#fff',
+                              color: adminAnnouncementMode === 'delete' ? '#fff' : '#337ab7',
+                              border: '1px solid #337ab7',
+                              padding: '5px 10px',
+                              borderRadius: '4px'
+                            }}
+                          >
+                            Delete Announcement
+                          </button>
+                        </div>
+
+                        {adminAnnouncementMode === 'add' && (
+                          <form id="announcement-add-form" onSubmit={async (e) => {
+                            e.preventDefault();
+                            const { ok, data } = await apiPost('/api/admin/announcements/add', { message: announcementMessage });
+                            if (ok) {
+                              alert('Announcement posted.');
+                              setAnnouncementMessage('');
+                              await refreshSiteContent();
+                            } else {
+                              alert(`Failed to add: ${data.error || 'Unknown error'}`);
+                            }
+                          }}>
+                            <div className="form-group">
+                              <label>Announcement Message</label>
+                              <textarea
+                                className="form-control"
+                                value={announcementMessage}
+                                onChange={(e) => setAnnouncementMessage(e.target.value)}
+                                required
+                                rows="4"
+                                placeholder="e.g., Submissions for Issue II are now open!"
+                              />
+                            </div>
+                            <button type="submit" className="btn-primary" style={{ marginTop: '10px' }}>Post Announcement</button>
+                          </form>
+                        )}
+
+                        {adminAnnouncementMode === 'edit' && (
+                          <form id="announcement-edit-form" onSubmit={async (e) => {
+                            e.preventDefault();
+                            if (!editAnnouncementId) {
+                              alert('Please select an announcement to edit.');
+                              return;
+                            }
+                            const { ok, data } = await apiPost('/api/admin/announcements/edit', { id: editAnnouncementId, message: editAnnouncementMessage });
+                            if (ok) {
+                              alert('Announcement updated.');
+                              await refreshSiteContent();
+                            } else {
+                              alert(`Failed to update: ${data.error || 'Unknown error'}`);
+                            }
+                          }}>
+                            <div className="form-group">
+                              <label>Select Announcement to Edit</label>
+                              {announcements.length === 0 ? (
+                                <p style={{ fontStyle: 'italic', color: 'var(--text-muted)' }}>No announcements yet.</p>
+                              ) : (
+                                <select
+                                  className="form-control"
+                                  value={editAnnouncementId}
+                                  onChange={(e) => {
+                                    const a = announcements.find((x) => x.id === e.target.value);
+                                    setEditAnnouncementId(a?.id || '');
+                                    setEditAnnouncementMessage(a?.message || '');
+                                  }}
+                                  required
+                                >
+                                  <option value="">— Choose an announcement —</option>
+                                  {announcements.map((a) => (
+                                    <option key={a.id} value={a.id}>
+                                      {a.message.length > 80 ? a.message.slice(0, 80) + '…' : a.message}
+                                    </option>
+                                  ))}
+                                </select>
+                              )}
+                            </div>
+                            <div className="form-group">
+                              <label>Announcement Message</label>
+                              <textarea
+                                className="form-control"
+                                value={editAnnouncementMessage}
+                                onChange={(e) => setEditAnnouncementMessage(e.target.value)}
+                                required
+                                rows="4"
+                              />
+                            </div>
+                            <button type="submit" className="btn-primary" style={{ marginTop: '10px' }}>Update Announcement</button>
+                          </form>
+                        )}
+
+                        {adminAnnouncementMode === 'delete' && (
+                          <div id="announcement-delete-form">
+                            {announcements.length === 0 ? (
+                              <p style={{ fontStyle: 'italic', color: 'var(--text-muted)' }}>No announcements to delete.</p>
+                            ) : (
+                              <ul style={{ listStyleType: 'none', padding: 0 }}>
+                                {announcements.map((a) => (
+                                  <li
+                                    key={a.id}
+                                    style={{
+                                      display: 'flex',
+                                      justifyContent: 'space-between',
+                                      alignItems: 'center',
+                                      padding: '12px 15px',
+                                      backgroundColor: 'var(--accent-bg)',
+                                      borderRadius: '4px',
+                                      marginBottom: '10px'
+                                    }}
+                                  >
+                                    <div style={{ minWidth: 0 }}>
+                                      <strong>{a.message}</strong>
+                                      <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+                                        Posted {new Date(a.created_at).toLocaleDateString()}
+                                      </div>
+                                    </div>
+                                    <button
+                                      type="button"
+                                      className="btn-primary"
+                                      style={{
+                                        backgroundColor: '#d9534f',
+                                        borderColor: '#d9534f',
+                                        color: '#fff',
+                                        padding: '5px 12px',
+                                        borderRadius: '4px',
+                                        marginLeft: '15px',
+                                        flexShrink: 0
+                                      }}
+                                      onClick={async () => {
+                                        if (!confirm('Delete this announcement?')) return;
+                                        const { ok, data } = await apiPost('/api/admin/announcements/delete', { id: a.id });
+                                        if (ok) {
+                                          alert('Announcement deleted.');
+                                          if (editAnnouncementId === a.id) {
+                                            setEditAnnouncementId('');
+                                            setEditAnnouncementMessage('');
                                           }
                                           await refreshSiteContent();
                                         } else {
