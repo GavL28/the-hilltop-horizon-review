@@ -16,12 +16,32 @@ export async function onRequestGet(context) {
       const announcement = await db.prepare(
         'SELECT message, created_at FROM announcements ORDER BY created_at DESC LIMIT 1'
       ).first();
-  
+
+      // 4. Fetch all digital magazine editions
+      const { results: digitalEditions } = await db.prepare(
+        'SELECT id, title, url FROM digital_editions ORDER BY created_at ASC'
+      ).all();
+
+      // 5. Fetch all selected works (issues + their pieces)
+      const { results: swIssues } = await db.prepare(
+        'SELECT id, title FROM selected_works_issues ORDER BY created_at ASC'
+      ).all();
+      const { results: swPieces } = await db.prepare(
+        'SELECT id, issue_id, title, author, genre, content FROM selected_works_pieces'
+      ).all();
+      const selectedWorks = swIssues.map((issue) => ({
+        id: issue.id,
+        title: issue.title,
+        pieces: swPieces.filter((piece) => piece.issue_id === issue.id),
+      }));
+
       return new Response(JSON.stringify({ 
         success: true, 
         currentIssue, 
         pastIssues, 
-        announcement 
+        announcement,
+        digitalEditions,
+        selectedWorks
       }), {
         status: 200,
         headers: { 'Content-Type': 'application/json' }
