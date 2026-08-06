@@ -36,9 +36,47 @@ const TINYMCE_INIT = {
   content_style: 'body { font-family:Lora,Georgia,serif; font-size:16px }',
 };
 
+function GuidelinesSection({ title, isOpen, onToggle, children }) {
+  return (
+    <div style={{ border: '1px solid var(--accent-border)', borderRadius: '4px', marginBottom: '15px', overflow: 'hidden' }}>
+      <button
+        type="button"
+        onClick={onToggle}
+        style={{
+          width: '100%',
+          textAlign: 'left',
+          padding: '15px 20px',
+          backgroundColor: isOpen ? 'var(--accent-bg)' : 'transparent',
+          border: 'none',
+          cursor: 'pointer',
+          fontFamily: 'var(--font-heading)',
+          fontSize: '1.15rem',
+          color: 'var(--text-main)',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        <span>{title}</span>
+        <span style={{ fontSize: '1.1rem', color: 'var(--text-muted)' }}>{isOpen ? '−' : '+'}</span>
+      </button>
+      {isOpen && (
+        <div style={{ padding: '0 20px 20px 20px', fontSize: '0.95rem' }}>
+          {children}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function App() {
   const [activeTab, setActiveTab] = useState('home');
   const [selectedStaff, setSelectedStaff] = useState(null);
+  const [openGuidelines, setOpenGuidelines] = useState('general');
+
+  const toggleGuidelines = (section) => {
+    setOpenGuidelines((prev) => (prev === section ? null : section));
+  };
 
   // Subscription Form State
   const [subName, setSubName] = useState('');
@@ -233,7 +271,12 @@ Red upon white cloth`}
         {activeTab === 'about-litmag' && (
           <div className="content-box">
             <h2 className="section-title">About The Hilltop Horizon Review</h2>
-            <p>We are an international youth literary magazine, run by high schoolers, for high schoolers.</p>
+            <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.5rem', marginBottom: '8px' }}>The Hilltop Horizon Review</h3>
+            <p style={{ fontStyle: 'italic', color: 'var(--text-muted)' }}>An international youth literary magazine, founded by high schoolers, for high schoolers.</p>
+            <p>We are a team of 14 Reynolds Young Writers Workshop Class of 2026 alumni from all over the world, including the U.S., China, Japan, and South Korea.</p>
+            <p>We accept submissions from high schoolers (ages 14-19).</p>
+            <p>If your submission(s) is selected to be published, you will be notified and your work and bio will be added to the issue. Each piece you submit will be carefully reviewed by our wonderful editors, who will provide editing, and detailed, specific, and in-depth feedback.</p>
+            <p>Communication will be by email.</p>
           </div>
         )}
 
@@ -393,14 +436,91 @@ Red upon white cloth`}
             <p style={{ marginBottom: '20px' }}>
               Thank you for taking the time to submit to our literary magazine! Please review the information below before making your submission. Good luck!
             </p>
-            <h3 style={{ fontFamily: 'var(--font-heading)', marginTop: '20px', marginBottom: '10px' }}>Age Requirements</h3>
-            <p>Please note we only accept submissions from high school aged students (ages 14–19).</p>
-            <h3 style={{ fontFamily: 'var(--font-heading)', marginTop: '20px', marginBottom: '10px' }}>What Can Be Submitted?</h3>
-            <p>We accept works of fiction, nonfiction, poetry, artwork, and photography. However, we do <strong>NOT</strong> accept any works that have been published elsewhere. We are looking for original, unpublished works.</p>
-            <h3 style={{ fontFamily: 'var(--font-heading)', marginTop: '20px', marginBottom: '10px' }}>Artificial Intelligence & Plagiarism Policy</h3>
-            <p>We do not allow the use of artificial intelligence (AI) in any capacity. AI may not be used for developing ideas, giving suggestions, or producing content to any extent.</p>
-            <h3 style={{ fontFamily: 'var(--font-heading)', marginTop: '20px', marginBottom: '10px' }}>Prohibited Content</h3>
-            <p>We do not permit hate speech, bigotry, extreme violence, or sexually explicit content.</p>
+
+            <GuidelinesSection title="General Guidelines" isOpen={openGuidelines === 'general'} onToggle={() => toggleGuidelines('general')}>
+              <p style={{ fontStyle: 'italic', color: 'var(--text-muted)' }}>Applies to any/all submissions:</p>
+              <h4 style={{ fontFamily: 'var(--font-heading)', marginTop: '15px', marginBottom: '8px' }}>Original & Unpublished Work Only</h4>
+              <p>Submit original, previously unpublished work only. Posting on your own social media, blog, or website (or performing at an open mic) is fine, but work that has appeared in another literary magazine, journal, or zine is not eligible.</p>
+              <h4 style={{ fontFamily: 'var(--font-heading)', marginBottom: '8px' }}>Simultaneous Submissions</h4>
+              <p>Simultaneous submissions are not allowed.</p>
+              <h4 style={{ fontFamily: 'var(--font-heading)', marginBottom: '8px' }}>One Document Per Section</h4>
+              <p>Put all of your pieces for a section in one document, each with a clear title exactly as it should appear in print. (Check section specific guidelines for more details)</p>
+              <h4 style={{ fontFamily: 'var(--font-heading)', marginBottom: '8px' }}>Content Warnings</h4>
+              <p>If your work engages sensitive material (violence, self-harm, sexual content, abuse, etc.), add a brief content warning at the top of the document. It won't affect acceptance.</p>
+              <h4 style={{ fontFamily: 'var(--font-heading)', marginBottom: '8px' }}>File Naming</h4>
+              <p>For file names: <code style={{ backgroundColor: 'var(--accent-bg)', padding: '2px 5px', borderRadius: '3px' }}>first_last_title</code> e.g. <code style={{ backgroundColor: 'var(--accent-bg)', padding: '2px 5px', borderRadius: '3px' }}>John_Smith_Sunlight.filetype</code>. For the title, use any one of your submission(s)'s titles.</p>
+              <h4 style={{ fontFamily: 'var(--font-heading)', marginBottom: '8px' }}>Guardian Consent</h4>
+              <p>If you are under 18, make sure to have a guardian consent to your submitting to The Hilltop Horizon Review, and to consent to granting us the right to publish your work.</p>
+              <h4 style={{ fontFamily: 'var(--font-heading)', marginBottom: '8px' }}>No AI & No Plagiarism</h4>
+              <p>NO AI AT ALL will be tolerated. No pieces generated, adjusted, revised, or anything affected by AI in any way will be tolerated. We will check every submission and submissions found to have used AI will be disqualified, and may or may not be given a SINGLE warning based on the severity of your AI usage. In addition, we do not tolerate plagiarism, and if you do quote something please properly cite it.</p>
+              <h4 style={{ fontFamily: 'var(--font-heading)', marginBottom: '8px' }}>Read Everything Carefully</h4>
+              <p>Read your section's specific guidelines carefully as well!</p>
+              <p style={{ marginTop: '15px' }}>Questions? Email <a href="mailto:team@hilltophorizonreview.com" style={{ color: 'var(--text-main)' }}>team@hilltophorizonreview.com</a></p>
+            </GuidelinesSection>
+
+            <GuidelinesSection title="Poetry Guidelines" isOpen={openGuidelines === 'poetry'} onToggle={() => toggleGuidelines('poetry')}>
+              <h4 style={{ fontFamily: 'var(--font-heading)', marginTop: '0', marginBottom: '8px' }}>Font Size</h4>
+              <p>12 Point Font, with exceptions for stylistic choice.</p>
+              <h4 style={{ fontFamily: 'var(--font-heading)', marginBottom: '8px' }}>Acceptable Fonts</h4>
+              <p>Times New Roman ONLY.</p>
+              <h4 style={{ fontFamily: 'var(--font-heading)', marginBottom: '8px' }}>Number and Length of Submission</h4>
+              <p>A submission may include up to five (5) pages of poetry. Submitted poems may be any length, but each poem should begin at the top of a new page.</p>
+              <h4 style={{ fontFamily: 'var(--font-heading)', marginBottom: '8px' }}>Spacing</h4>
+              <p>Single spaced, with exceptions for stylistic choice.</p>
+              <h4 style={{ fontFamily: 'var(--font-heading)', marginBottom: '8px' }}>File Type</h4>
+              <p>Word Document.</p>
+              <h4 style={{ fontFamily: 'var(--font-heading)', marginBottom: '8px' }}>Other</h4>
+              <p>While stylistic choices are accepted, it is preferred that poems are in the format suggested above.</p>
+            </GuidelinesSection>
+
+            <GuidelinesSection title="Fiction Guidelines" isOpen={openGuidelines === 'fiction'} onToggle={() => toggleGuidelines('fiction')}>
+              <h4 style={{ fontFamily: 'var(--font-heading)', marginTop: '0', marginBottom: '8px' }}>Font Size</h4>
+              <p>12 pt.</p>
+              <h4 style={{ fontFamily: 'var(--font-heading)', marginBottom: '8px' }}>Acceptable Fonts</h4>
+              <p>Times New Roman ONLY.</p>
+              <h4 style={{ fontFamily: 'var(--font-heading)', marginBottom: '8px' }}>Number of Submissions Per Person</h4>
+              <p>Multiple pieces can be submitted but they must add up to be under the word limit and must be submitted in the same form/document.</p>
+              <h4 style={{ fontFamily: 'var(--font-heading)', marginBottom: '8px' }}>Length of Submission</h4>
+              <p>5000 words.</p>
+              <h4 style={{ fontFamily: 'var(--font-heading)', marginBottom: '8px' }}>Spacing</h4>
+              <p>Double spaced.</p>
+              <h4 style={{ fontFamily: 'var(--font-heading)', marginBottom: '8px' }}>File Type</h4>
+              <p>N/A.</p>
+              <h4 style={{ fontFamily: 'var(--font-heading)', marginBottom: '8px' }}>Other</h4>
+              <p>Please have a clear title on the piece for publication.</p>
+            </GuidelinesSection>
+
+            <GuidelinesSection title="Nonfiction Guidelines" isOpen={openGuidelines === 'nonfiction'} onToggle={() => toggleGuidelines('nonfiction')}>
+              <h4 style={{ fontFamily: 'var(--font-heading)', marginTop: '0', marginBottom: '8px' }}>Font Size</h4>
+              <p>12 pt font.</p>
+              <h4 style={{ fontFamily: 'var(--font-heading)', marginBottom: '8px' }}>Acceptable Fonts</h4>
+              <p>Times New Roman ONLY.</p>
+              <h4 style={{ fontFamily: 'var(--font-heading)', marginBottom: '8px' }}>Number of Submissions Per Person</h4>
+              <p>Unlimited, can submit multiple pieces as long as they fall within the word limit.</p>
+              <h4 style={{ fontFamily: 'var(--font-heading)', marginBottom: '8px' }}>Length of Submission</h4>
+              <p>3500 words maximum in total.</p>
+              <h4 style={{ fontFamily: 'var(--font-heading)', marginBottom: '8px' }}>Spacing</h4>
+              <p>Single-spaced.</p>
+              <h4 style={{ fontFamily: 'var(--font-heading)', marginBottom: '8px' }}>File Type</h4>
+              <p>Google Docs (preferred), or PDF.</p>
+              <h4 style={{ fontFamily: 'var(--font-heading)', marginBottom: '8px' }}>Other</h4>
+              <p>Must include titles for each submitted piece. Profanity/explicit themes allowed. We are looking for works that are personal and introspective. Dual submissions are allowed.</p>
+            </GuidelinesSection>
+
+            <GuidelinesSection title="Art Guidelines" isOpen={openGuidelines === 'art'} onToggle={() => toggleGuidelines('art')}>
+              <h4 style={{ fontFamily: 'var(--font-heading)', marginTop: '0', marginBottom: '8px' }}>Number of Submissions Per Person</h4>
+              <p>No minimum; maximum of 5.</p>
+              <h4 style={{ fontFamily: 'var(--font-heading)', marginBottom: '8px' }}>File Type</h4>
+              <p>JPEG, PNG.</p>
+            </GuidelinesSection>
+
+            <GuidelinesSection title="Photography Guidelines" isOpen={openGuidelines === 'photography'} onToggle={() => toggleGuidelines('photography')}>
+              <h4 style={{ fontFamily: 'var(--font-heading)', marginTop: '0', marginBottom: '8px' }}>Number of Submissions Per Person</h4>
+              <p>No minimum; maximum of 5.</p>
+              <h4 style={{ fontFamily: 'var(--font-heading)', marginBottom: '8px' }}>File Type</h4>
+              <p>JPEG, PNG, or RAW.</p>
+            </GuidelinesSection>
+
             <div style={{ marginTop: '30px', textAlign: 'center' }}>
               <a href="#" className="btn-primary" style={{ textDecoration: 'none', display: 'inline-block' }} onClick={(e) => { e.preventDefault(); setActiveTab('submit-links'); }}>
                 Go to Submission Links →
