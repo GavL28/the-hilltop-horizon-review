@@ -8,7 +8,7 @@ const staffData = [
   { id: 'gavin', name: 'Gavin Liu', pronouns: 'He/Him', grade: 'Junior', role: 'Co-Editor in Chief', shortBio: 'Gavin Liu is a writer (mainly poetry), musician, visual artist, journalist, and avid magnet collector', fullBio: 'Gavin Liu is a writer (mainly poetry), musician, visual artist, journalist, and avid magnet collector from Sammamish, WA. He spends his time writing, playing the piano, gaming, on walks, overthinking, or doing nothing. He has over 200 magnets, which may or may not be a good financial investment but it’s too late to turn back now.', photo: '/Gavin Liu.jpeg' },
   { id: 'tawanda', name: 'Tawanda Sibanda', pronouns: 'He/Him', grade: 'Senior', role: 'Co-Editor in Chief & Internal Operations Secretary', shortBio: 'Tawanda Sibanda is mainly a poet and artist from Allentown, Pennsylvania. He spends his time running, working out, baking treats, bopping to J-city pop, or staying up too late to binge anime.', fullBio: 'Tawanda Sibanda is mainly a poet and artist from Allentown, Pennsylvania. He spends his time running, working out, baking treats, bopping to J-city pop, or staying up too late to binge anime.' },
   { id: 'sherry', name: 'Sherry Wang', pronouns: 'She/Her', grade: 'Junior', role: 'Poetry Editor & Social Media Director', shortBio: 'Sherry Wang is a teenage poet, musician, and public speaker from Monmouth County, New Jersey.', fullBio: 'Sherry Wang is a teenage poet, musician, and public speaker from Monmouth County, New Jersey. She began writing in the fifth grade after discovering the works of Shakespeare, whose plays and sonnets sparked her love of language. When she is not searching for her next inspiration, Sherry can be found performing on stage, spending weekends at Speech & Debate tournaments, or eating more sushi than she would like to admit.', photo: '/Sherry Wang..jpg'  },
-  { id: 'mia-l', name: 'Mia Lucke', pronouns: 'She/Her', grade: 'Senior', role: 'Poetry Editor & Art Editor', shortBio: 'Coming Soon...', fullBio: 'Full biography coming soon...' },
+  { id: 'mia-l', name: 'Mia Lucke', pronouns: 'She/Her', grade: 'Senior', role: 'Poetry Editor & Art Editor', shortBio: 'Mia Lucke is a poet and visual artist. Adopted from Taiwan, she currently lives in Milwaukee, Wisconsin.', fullBio: 'Mia Lucke is a poet and visual artist. Adopted from Taiwan, she currently lives in Milwaukee, Wisconsin. She spends her time writing, doing art, or going on walks. She often can be found performing her poetry for open mics, marathons, or fundraisers. The topics of her writings range from mental health, to biblical and mythological stories, or modern day society and politics. Her poetry focuses on processing both herself and the world around her.' },
   { id: 'grey', name: 'Grey Raymonds', pronouns: 'He/Him', grade: 'Senior', role: 'Poetry Editor', shortBio: 'Coming Soon...', fullBio: 'Full biography coming soon...' },
   { id: 'brielle', name: 'Brielle Tandy', pronouns: 'She/Her', grade: 'Senior', role: 'Poetry Editor', shortBio: 'Coming Soon...', fullBio: 'Full biography coming soon...' },
   { id: 'jayne', name: 'Jayne Kim', pronouns: 'She/Her', grade: 'Senior', role: 'Nonfiction Editor & International Representative (South Korea)', shortBio: 'Coming Soon...', fullBio: 'Full biography coming soon...' },
@@ -118,7 +118,7 @@ export default function App() {
       <header className="site-header">
         <div className="container">
           <a href="#" className="logo-container" onClick={() => setActiveTab('home')}>
-            <img src="https://raw.githubusercontent.com/GavL28/the-hilltop-horizon-review/main/public/The Hilltop Horizon Review.logo.png" alt="Logo" />
+            <img src="https://raw.githubusercontent.com/GavL28/the-hilltop-horizon-review/main/public/THHR.logo (1).png" alt="Logo" />
           </a>
           <div className="site-title">The Hilltop Horizon Review</div>
           <div className="site-subtitle">an international youth literary magazine</div>
@@ -592,11 +592,11 @@ Red upon white cloth`}
               </div>
               <div>
                 <h4 style={{ fontSize: '1.2rem', marginBottom: '5px' }}>International Representatives</h4>
-                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Builds regional networks, handles promotion in region, and coordinates translation or regional features abroad. Recommended Qualifications: MUST be living in a nation that The Hilltop Horizon Review does NOT have an international representative in. Fluency in the nation's language. Experience with creating promotional materials. Does not necessarily require coming to meetings because of time zone differences.</p>
+                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Currently Seeking: As many as possible (NOT U.S.A., China, Japan, or South Korea). Builds regional networks, handles promotion in region, and coordinates translation or regional features abroad. Recommended Qualifications: MUST be living in a nation that The Hilltop Horizon Review does NOT have an international representative in. Fluency in the nation's language. Experience with creating promotional materials. Does not necessarily require coming to meetings because of time zone differences.</p>
               </div>
               <div>
                 <h4 style={{ fontSize: '1.2rem', marginBottom: '5px' }}>Director of Policy and Standards</h4>
-                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Ensures adherence to magazine guidelines, ethical standards, plagiarism checks, and AI-free policies. Does not necessarily require coming to meetings because of time zone differences.</p>
+                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Currently Seeking: One. Ensures adherence to magazine guidelines, ethical standards, plagiarism checks, and AI-free policies. Does not necessarily require coming to meetings because of time zone differences.</p>
               </div>
             </div>
 
