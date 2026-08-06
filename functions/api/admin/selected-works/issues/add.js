@@ -1,4 +1,4 @@
-import { requireAdmin } from '../../../lib/admin-auth.js';
+import { requireAdmin } from '../../../../lib/admin-auth.js';
 
 export async function onRequestPost(context) {
   const auth = await requireAdmin(context);

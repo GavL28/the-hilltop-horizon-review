@@ -1,4 +1,4 @@
-import { requireAdmin } from '../../../lib/admin-auth.js';
+import { requireAdmin } from '../../../../lib/admin-auth.js';
 
 const GENRES = ['Poetry', 'Fiction', 'Nonfiction', 'Art', 'Photography'];
 
