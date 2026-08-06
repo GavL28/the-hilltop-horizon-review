@@ -23,11 +23,12 @@ body {
 }
 
 .container {
-  max-width: 1600px;
+  max-width: 900px;
   margin: 0 auto;
   padding: 0 20px;
+  border-left: none !important;  /* Force removes left line */
+  border-right: none !important; /* Force removes right line */
 }
-
 /* Header & Logo */
 .site-header {
   padding: 40px 0;
