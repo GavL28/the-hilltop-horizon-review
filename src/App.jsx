@@ -836,14 +836,19 @@ Red upon white cloth`}
                 <strong>Official Email:</strong> <a href="team@hilltophorizonreview.com" style={{ color: 'var(--text-main)' }}>team@hilltophorizonreview.com</a>
               </p>
               <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '15px' }}>Connect with us on social media:</p>
-              <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', fontSize: '0.95rem' }}>
-                <a href="https://www.instagram.com/hilltop_horizon_review/" style={{ color: 'var(--text-main)', textDecoration: 'none' }}>Instagram</a>
-                <span>•</span>
-                <a href="#" style={{ color: 'var(--text-main)', textDecoration: 'none' }}>(Coming Soon...)</a>
-                <span>•</span>
-                <a href="#" style={{ color: 'var(--text-main)', textDecoration: 'none' }}>(Coming Soon...)</a>
-                <span>•</span>
-                <a href="#" style={{ color: 'var(--text-main)', textDecoration: 'none' }}>(Coming Soon...)</a>
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '15px', flexWrap: 'wrap' }}>
+                <a
+                  href="https://www.instagram.com/hilltop_horizon_review/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-primary"
+                  style={{ display: 'inline-block', textDecoration: 'none' }}
+                >
+                  Instagram
+                </a>
+                <span className="btn-primary" style={{ display: 'inline-block', backgroundColor: '#D6D3D1', color: '#1C1917', cursor: 'default' }}>Coming Soon...</span>
+                <span className="btn-primary" style={{ display: 'inline-block', backgroundColor: '#D6D3D1', color: '#1C1917', cursor: 'default' }}>Coming Soon...</span>
+                <span className="btn-primary" style={{ display: 'inline-block', backgroundColor: '#D6D3D1', color: '#1C1917', cursor: 'default' }}>Coming Soon...</span>
               </div>
             </div>
 
