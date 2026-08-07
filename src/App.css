@@ -5,7 +5,7 @@
   --bg-color: #DFF6EA; /* Light Green */
   --card-bg: #FFFFFF;
   --text-main: #1C1917;
-  --text-muted: #57534E;
+  --text-muted: #000000;
   --accent-ink: #2A3439;
   --accent-border: #E7E5E4;
   --font-heading: 'Playfair Display', Georgia, serif;
@@ -56,14 +56,14 @@ body {
   font-family: var(--font-heading);
   font-size: 2.8rem; /* Slightly larger */
   font-weight: 700; /* Makes the font much thicker and bolder */
-  color: #808080; /* Light Gray */
+  color: #000000; /* Black */
   letter-spacing: -0.02em;
   margin-top: 4px;
 }
 
 .site-subtitle {
   font-style: italic;
-  color: #808080; /* Light Gray */
+  color: #000000; /* Black */
   font-weight: 600; /* Made bolder */
   font-size: 1.05rem;
   margin-top: 20px;
@@ -235,6 +235,7 @@ body {
   border: none;
   box-shadow: none;
   margin-bottom: 30px;
+  text-align: left; /* Left-align text blocks (FAQ, Join Us, etc.) instead of centered */
 }
 
 .form-group {
