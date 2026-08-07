@@ -475,17 +475,14 @@ export default function App() {
         <section className="container" style={{ paddingTop: '15px' }}>
           {/* Dynamic Announcement Banner */}
           {announcement && (
-            <div style={{
-              backgroundColor: 'var(--accent-bg)',
-              borderLeft: '4px solid var(--text-main)',
-              padding: '15px 20px',
-              marginBottom: '30px',
-              fontStyle: 'italic',
-              display: 'flex',
-              alignItems: 'center'
-            }}>
-              <span className="loud-speaker">📢</span> 
-              <span><strong>Latest Update:</strong> {announcement}</span>
+            <div className="announcement-banner">
+              <button className="announcement-heading" onClick={() => setActiveTab('announcements')}>
+                <span className="loud-speaker">📢</span> Announcements
+              </button>
+              <div className="announcement-message">{announcement}</div>
+              <button className="announcement-view-all" onClick={() => setActiveTab('announcements')}>
+                (click to view all announcements)
+              </button>
             </div>
           )}
 
