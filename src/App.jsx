@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 import { Turnstile } from '@marsidev/react-turnstile';
 import { Editor } from '@tinymce/tinymce-react';
@@ -112,6 +112,11 @@ function GuidelinesSection({ title, isOpen, onToggle, children }) {
 export default function App() {
   const [activeTab, setActiveTab] = useState(getTabFromHash);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [openMobileDropdown, setOpenMobileDropdown] = useState(null);
+  const navBarRef = useRef(null);
+  const navListRef = useRef(null);
+  const navNaturalWidth = useRef(0);
+  const [navCollapsed, setNavCollapsed] = useState(() => typeof window !== 'undefined' && window.innerWidth <= 1250);
   const [selectedStaff, setSelectedStaff] = useState(null);
   const [openGuidelines, setOpenGuidelines] = useState('general');
   const [selectedWorksIssue, setSelectedWorksIssue] = useState(null);
@@ -259,6 +264,42 @@ export default function App() {
     return () => window.removeEventListener('hashchange', onHashChange);
   }, []);
 
+  // Collapse the nav into the hamburger menu whenever the tabs don't fit
+  useEffect(() => {
+    const bar = navBarRef.current;
+    const list = navListRef.current;
+    if (!bar || !list) return;
+
+    const measure = () => {
+      // Only measure the natural (row) width while the list is laid out as a row
+      if (!list.classList.contains('nav-list-open') && list.scrollWidth > 0) {
+        navNaturalWidth.current = list.scrollWidth;
+      }
+      const logo = bar.querySelector('.nav-logo');
+      const logoWidth = logo ? logo.getBoundingClientRect().width : 0;
+      const available = bar.clientWidth - logoWidth - 100;
+      const collapsed = window.innerWidth <= 1250 || (navNaturalWidth.current > 0 && navNaturalWidth.current > available);
+      setNavCollapsed(collapsed);
+      // If we just revealed the list, wait a frame to measure its true width
+      if (!collapsed && navNaturalWidth.current === 0) {
+        requestAnimationFrame(measure);
+      }
+    };
+
+    measure();
+    window.addEventListener('resize', measure);
+    return () => window.removeEventListener('resize', measure);
+  }, []);
+
+  const handleParentNavClick = (group, fallbackTab) => (e) => {
+    if (navCollapsed) {
+      e.stopPropagation();
+      setOpenMobileDropdown((prev) => (prev === group ? null : group));
+    } else {
+      setActiveTab(fallbackTab);
+    }
+  };
+
   const allIssuesForAdmin = [
     ...(currentIssue ? [{ ...currentIssue, isCurrent: true }] : []),
     ...(pastIssues || []).map((issue) => ({ ...issue, isCurrent: false })),
@@ -305,14 +346,14 @@ export default function App() {
   return (
     <div className="app">
       {/* Navigation Bar (top banner) */}
-      <nav className="nav-bar">
+      <nav className={navCollapsed ? 'nav-bar nav-collapsed' : 'nav-bar'} ref={navBarRef}>
         <a href="#" className="nav-logo" onClick={() => { setActiveTab('home'); setMobileMenuOpen(false); }} title="The Hilltop Horizon Review">
           <img src="https://raw.githubusercontent.com/GavL28/the-hilltop-horizon-review/main/public/THHR.logo (1).png" alt="Logo" />
           <span className="nav-brand">The Hilltop Horizon Review</span>
         </a>
         <button
           className="nav-toggle"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          onClick={() => { setMobileMenuOpen(!mobileMenuOpen); if (mobileMenuOpen) setOpenMobileDropdown(null); }}
           aria-label="Toggle menu"
           aria-expanded={mobileMenuOpen}
         >
@@ -320,12 +361,16 @@ export default function App() {
           <span className="nav-toggle-bar"></span>
           <span className="nav-toggle-bar"></span>
         </button>
-        <ul className={mobileMenuOpen ? 'nav-list nav-list-open' : 'nav-list'} onClick={() => setMobileMenuOpen(false)}>
+        <ul
+          className={mobileMenuOpen ? 'nav-list nav-list-open' : 'nav-list'}
+          ref={navListRef}
+          onClick={() => { setMobileMenuOpen(false); setOpenMobileDropdown(null); }}
+        >
           <li className="nav-item">
             <button className={isNavActive('home') ? 'nav-link active' : 'nav-link'} onClick={() => setActiveTab('home')}>Home</button>
           </li>
-          <li className="nav-item">
-            <button className={isNavActive('about') ? 'nav-link active' : 'nav-link'} onClick={() => setActiveTab('about-litmag')}>About ▾</button>
+          <li className={openMobileDropdown === 'about' ? 'nav-item dropdown-open' : 'nav-item'}>
+            <button className={isNavActive('about') ? 'nav-link active' : 'nav-link'} onClick={handleParentNavClick('about', 'about-litmag')}>About ▾</button>
             <ul className="dropdown">
               <li><button className="dropdown-link" onClick={() => setActiveTab('about-litmag')}>About the Lit Mag</button></li>
               <li><button className="dropdown-link" onClick={() => setActiveTab('about-mission')}>Our Mission</button></li>
@@ -334,15 +379,15 @@ export default function App() {
               <li><button className="dropdown-link" onClick={() => setActiveTab('about-stats')}>Stats</button></li>
             </ul>
           </li>
-          <li className="nav-item">
-            <button className={isNavActive('issues') ? 'nav-link active' : 'nav-link'} onClick={() => setActiveTab('selected-works')}>Issues / Selected Works ▾</button>
+          <li className={openMobileDropdown === 'issues' ? 'nav-item dropdown-open' : 'nav-item'}>
+            <button className={isNavActive('issues') ? 'nav-link active' : 'nav-link'} onClick={handleParentNavClick('issues', 'selected-works')}>Issues / Selected Works ▾</button>
             <ul className="dropdown">
               <li><button className="dropdown-link" onClick={() => setActiveTab('selected-works')}>Selected Works</button></li>
               <li><button className="dropdown-link" onClick={() => setActiveTab('digital-magazine')}>Digital Magazine</button></li>
             </ul>
           </li>
-          <li className="nav-item">
-            <button className={isNavActive('submit') ? 'nav-link active' : 'nav-link'} onClick={() => setActiveTab('submit-guidelines')}>Submit ▾</button>
+          <li className={openMobileDropdown === 'submit' ? 'nav-item dropdown-open' : 'nav-item'}>
+            <button className={isNavActive('submit') ? 'nav-link active' : 'nav-link'} onClick={handleParentNavClick('submit', 'submit-guidelines')}>Submit ▾</button>
             <ul className="dropdown">
               <li><button className="dropdown-link" onClick={() => setActiveTab('submit-guidelines')}>Guidelines</button></li>
               <li><button className="dropdown-link" onClick={() => setActiveTab('submit-links')}>Submissions Links</button></li>
