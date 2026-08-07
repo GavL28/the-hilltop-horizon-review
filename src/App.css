@@ -169,11 +169,20 @@ body {
   border-bottom: 1px solid var(--accent-border);
 }
 
+.hero-image {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto 20px auto;
+  border-radius: 4px;
+}
+
 .hero-description {
   font-size: 1.15rem;
   color: var(--text-muted);
   max-width: 650px;
   margin: 0 auto;
+  font-style: italic;
 }
 
 .featured-poem {
@@ -197,6 +206,34 @@ body {
   white-space: pre-line;
   line-height: 2;
   color: var(--text-main);
+}
+
+/* About split: text left, image right */
+.about-split {
+  display: flex;
+  gap: 30px;
+  align-items: flex-start;
+  margin-top: 20px;
+}
+
+.about-text {
+  flex: 1 1 55%;
+}
+
+.about-image {
+  flex: 1 1 45%;
+}
+
+.about-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+  .about-split {
+    flex-direction: column;
+  }
 }
 
 /* Staff Grid */

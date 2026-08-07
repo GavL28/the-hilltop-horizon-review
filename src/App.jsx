@@ -306,6 +306,7 @@ export default function App() {
             )}
 
             <div className="hero-banner">
+              <img src="/IMG_6051.jpeg" alt="The Hilltop Horizon Review" className="hero-image" />
               <p className="hero-description">
                 We are an international youth literary magazine, run by high schoolers, for high schoolers.
               </p>
@@ -352,10 +353,17 @@ Red upon white cloth`}
             <h2 className="section-title">About The Hilltop Horizon Review</h2>
             <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.5rem', marginBottom: '8px' }}>The Hilltop Horizon Review</h3>
             <p style={{ fontStyle: 'italic', color: 'var(--text-muted)' }}>An international youth literary magazine, founded by high schoolers, for high schoolers.</p>
-            <p>We are a team of 14 Reynolds Young Writers Workshop Class of 2026 alumni from all over the world, including the U.S., China, Japan, and South Korea.</p>
-            <p>We accept submissions from high schoolers (ages 14-19).</p>
-            <p>If your submission(s) is selected to be published, you will be notified and your work and bio will be added to the issue. Each piece you submit will be carefully reviewed by our wonderful editors, who will provide editing, and detailed, specific, and in-depth feedback.</p>
-            <p>Communication will be by email.</p>
+            <div className="about-split">
+              <div className="about-text">
+                <p>We are a team of 14 Reynolds Young Writers Workshop Class of 2026 alumni from all over the world, including the U.S., China, Japan, and South Korea.</p>
+                <p>We accept submissions from high schoolers (ages 14-19).</p>
+                <p>If your submission(s) is selected to be published, you will be notified and your work and bio will be added to the issue. Each piece you submit will be carefully reviewed by our wonderful editors, who will provide editing, and detailed, specific, and in-depth feedback.</p>
+                <p>Communication will be by email.</p>
+              </div>
+              <div className="about-image">
+                <img src="/IMG_5975.jpeg" alt="The Hilltop Horizon Review team" />
+              </div>
+            </div>
           </div>
         )}
 
