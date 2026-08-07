@@ -236,6 +236,18 @@ export default function App() {
     return groups[group].includes(activeTab);
   };
 
+  const handleTextareaTab = (value, setValue) => (e) => {
+    if (e.key !== 'Tab') return;
+    e.preventDefault();
+    const el = e.currentTarget;
+    const start = el.selectionStart ?? 0;
+    const end = el.selectionEnd ?? 0;
+    setValue(value.slice(0, start) + '\t' + value.slice(end));
+    setTimeout(() => {
+      el.selectionStart = el.selectionEnd = start + 1;
+    }, 0);
+  };
+
   return (
     <div className="app">
       {/* Navigation Bar (top banner) */}
@@ -602,15 +614,12 @@ Red upon white cloth`}
                             setActiveTab('selected-works-piece');
                           }}
                           style={{
-                            marginBottom: '12px',
-                            padding: '15px',
-                            backgroundColor: 'var(--accent-bg)',
-                            borderRadius: '4px',
+                            marginBottom: '8px',
+                            padding: '6px 0',
                             cursor: 'pointer',
-                            border: '1px solid transparent',
                           }}
-                          onMouseEnter={(e) => e.currentTarget.style.border = '1px solid var(--text-main)'}
-                          onMouseLeave={(e) => e.currentTarget.style.border = '1px solid transparent'}
+                          onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.6'; }}
+                          onMouseLeave={(e) => { e.currentTarget.style.opacity = '1'; }}
                         >
                           <strong style={{ color: 'var(--text-main)' }}>{piece.title}</strong>
                           <span style={{ color: 'var(--text-muted)', fontSize: '0.9rem', display: 'block', marginTop: '4px' }}>
@@ -1927,6 +1936,7 @@ Red upon white cloth`}
                                 rows={8}
                                 value={swPieceContent}
                                 onChange={(e) => setSwPieceContent(e.target.value)}
+                                onKeyDown={handleTextareaTab(swPieceContent, setSwPieceContent)}
                                 required
                                 placeholder="Paste the piece here. Line breaks are preserved."
                               />
@@ -2044,6 +2054,7 @@ Red upon white cloth`}
                                     rows={8}
                                     value={editSWPieceContent}
                                     onChange={(e) => setEditSWPieceContent(e.target.value)}
+                                    onKeyDown={handleTextareaTab(editSWPieceContent, setEditSWPieceContent)}
                                     required
                                   />
                                 </div>

@@ -79,7 +79,7 @@ body {
   position: sticky;
   top: 0;
   z-index: 100;
-  padding: 24px 30px;
+  padding: 16px 30px;
   width: 100vw;
   margin-left: calc(50% - 50vw);
 }
@@ -111,6 +111,7 @@ body {
   display: flex;
   list-style: none;
   margin-left: auto;
+  padding-right: 24px;
 }
 
 .nav-item {
