@@ -222,16 +222,33 @@ export default function App() {
     setActiveTab('staff-detail');
   };
 
+  const isNavActive = (group) => {
+    const groups = {
+      home: ['home'],
+      about: ['about-litmag', 'about-mission', 'about-staff', 'staff-detail'],
+      announcements: ['announcements', 'announcements-archive'],
+      issues: ['selected-works', 'selected-works-issue', 'selected-works-piece', 'digital-magazine', 'issues-archive'],
+      submit: ['submit-guidelines', 'submit-links'],
+      faq: ['faq'],
+      contact: ['contact'],
+      join: ['join'],
+    };
+    return groups[group].includes(activeTab);
+  };
+
   return (
     <div className="app">
       {/* Navigation Bar (top banner) */}
       <nav className="nav-bar">
+        <a href="#" className="nav-logo" onClick={() => setActiveTab('home')} title="The Hilltop Horizon Review">
+          <img src="https://raw.githubusercontent.com/GavL28/the-hilltop-horizon-review/main/public/THHR.logo (1).png" alt="Logo" />
+        </a>
         <ul className="nav-list">
           <li className="nav-item">
-            <button className="nav-link" onClick={() => setActiveTab('home')}>Home</button>
+            <button className={isNavActive('home') ? 'nav-link active' : 'nav-link'} onClick={() => setActiveTab('home')}>Home</button>
           </li>
           <li className="nav-item">
-            <button className="nav-link" onClick={() => setActiveTab('about-litmag')}>About ▾</button>
+            <button className={isNavActive('about') ? 'nav-link active' : 'nav-link'} onClick={() => setActiveTab('about-litmag')}>About ▾</button>
             <ul className="dropdown">
               <li><button className="dropdown-link" onClick={() => setActiveTab('about-litmag')}>About the Lit Mag</button></li>
               <li><button className="dropdown-link" onClick={() => setActiveTab('about-mission')}>Our Mission</button></li>
@@ -239,34 +256,34 @@ export default function App() {
             </ul>
           </li>
           <li className="nav-item">
-            <button className="nav-link" onClick={() => setActiveTab('announcements')}>Announcements ▾</button>
+            <button className={isNavActive('announcements') ? 'nav-link active' : 'nav-link'} onClick={() => setActiveTab('announcements')}>Announcements ▾</button>
             <ul className="dropdown">
               <li><button className="dropdown-link" onClick={() => setActiveTab('announcements')}>Announcements</button></li>
               <li><button className="dropdown-link" onClick={() => setActiveTab('announcements-archive')}>Past Announcements</button></li>
             </ul>
           </li>
           <li className="nav-item">
-            <button className="nav-link" onClick={() => setActiveTab('selected-works')}>Issues / Selected Works ▾</button>
+            <button className={isNavActive('issues') ? 'nav-link active' : 'nav-link'} onClick={() => setActiveTab('selected-works')}>Issues / Selected Works ▾</button>
             <ul className="dropdown">
               <li><button className="dropdown-link" onClick={() => setActiveTab('selected-works')}>Selected Works</button></li>
               <li><button className="dropdown-link" onClick={() => setActiveTab('digital-magazine')}>Digital Magazine</button></li>
             </ul>
           </li>
           <li className="nav-item">
-            <button className="nav-link" onClick={() => setActiveTab('submit-guidelines')}>Submit ▾</button>
+            <button className={isNavActive('submit') ? 'nav-link active' : 'nav-link'} onClick={() => setActiveTab('submit-guidelines')}>Submit ▾</button>
             <ul className="dropdown">
               <li><button className="dropdown-link" onClick={() => setActiveTab('submit-guidelines')}>Guidelines</button></li>
               <li><button className="dropdown-link" onClick={() => setActiveTab('submit-links')}>Submissions Links</button></li>
             </ul>
           </li>
           <li className="nav-item">
-            <button className="nav-link" onClick={() => setActiveTab('faq')}>FAQ</button>
+            <button className={isNavActive('faq') ? 'nav-link active' : 'nav-link'} onClick={() => setActiveTab('faq')}>FAQ</button>
           </li>
           <li className="nav-item">
-            <button className="nav-link" onClick={() => setActiveTab('contact')}>Contact Us</button>
+            <button className={isNavActive('contact') ? 'nav-link active' : 'nav-link'} onClick={() => setActiveTab('contact')}>Contact Us</button>
           </li>
           <li className="nav-item">
-            <button className="nav-link" onClick={() => setActiveTab('join')}>Join Us</button>
+            <button className={isNavActive('join') ? 'nav-link active' : 'nav-link'} onClick={() => setActiveTab('join')}>Join Us</button>
           </li>
         </ul>
       </nav>
