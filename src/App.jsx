@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import { Turnstile } from '@marsidev/react-turnstile';
 import { Editor } from '@tinymce/tinymce-react';
@@ -71,6 +71,24 @@ function getTabFromHash() {
   return TAB_PARENT[tab] || tab;
 }
 
+const PAGE_TITLES = {
+  home: 'Home',
+  'about-litmag': 'About the Lit Mag',
+  'about-mission': 'Our Mission',
+  'about-staff': 'Staff / Team',
+  announcements: 'Announcements',
+  'about-stats': 'Stats',
+  'selected-works': 'Selected Works',
+  'digital-magazine': 'Digital Magazine',
+  'issues-archive': 'Issues Archive',
+  'submit-guidelines': 'Submit: Guidelines',
+  'submit-links': 'Submit: Submissions Links',
+  faq: 'FAQ',
+  contact: 'Contact Us',
+  join: 'Join Us',
+  admin: 'Admin',
+};
+
 const TINYMCE_INIT = {
   height: 400,
   menubar: false,
@@ -123,10 +141,6 @@ export default function App() {
   const [activeTab, setActiveTab] = useState(getTabFromHash);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openMobileDropdown, setOpenMobileDropdown] = useState(null);
-  const navBarRef = useRef(null);
-  const navListRef = useRef(null);
-  const navNaturalWidth = useRef(0);
-  const [navCollapsed, setNavCollapsed] = useState(() => typeof window !== 'undefined' && window.innerWidth <= 1250);
   const [selectedStaff, setSelectedStaff] = useState(null);
   const [openGuidelines, setOpenGuidelines] = useState('general');
   const [selectedWorksIssue, setSelectedWorksIssue] = useState(null);
@@ -303,6 +317,21 @@ export default function App() {
     }
   }, [activeTab, selectedWorksIssue, selectedWorksPiece]);
 
+  // Keep the browser tab title in sync with the active page
+  useEffect(() => {
+    let page;
+    if (activeTab === 'staff-detail') {
+      page = selectedStaff ? selectedStaff.name : PAGE_TITLES['about-staff'];
+    } else if (activeTab === 'selected-works-issue' || activeTab === 'selected-works-piece') {
+      page = selectedWorksIssue || selectedWorksPiece ? (selectedWorksPiece || selectedWorksIssue).title : PAGE_TITLES['selected-works'];
+    } else if (activeTab === 'issue-detail') {
+      page = selectedIssue ? selectedIssue.title : PAGE_TITLES['issues-archive'];
+    } else {
+      page = PAGE_TITLES[activeTab] || PAGE_TITLES.home;
+    }
+    document.title = `The Hilltop Horizon Review | ${page}`;
+  }, [activeTab, selectedStaff, selectedWorksIssue, selectedWorksPiece, selectedIssue]);
+
   // React to manual hash edits / back-forward navigation
   useEffect(() => {
     const onHashChange = () => {
@@ -312,35 +341,9 @@ export default function App() {
     return () => window.removeEventListener('hashchange', onHashChange);
   }, [selectedWorks]);
 
-  // Collapse the nav into the hamburger menu whenever the tabs don't fit
-  useEffect(() => {
-    const bar = navBarRef.current;
-    const list = navListRef.current;
-    if (!bar || !list) return;
-
-    const measure = () => {
-      // Only measure the natural (row) width while the list is laid out as a row
-      if (!list.classList.contains('nav-list-open') && list.scrollWidth > 0) {
-        navNaturalWidth.current = list.scrollWidth;
-      }
-      const logo = bar.querySelector('.nav-logo');
-      const logoWidth = logo ? logo.getBoundingClientRect().width : 0;
-      const available = bar.clientWidth - logoWidth - 100;
-      const collapsed = window.innerWidth <= 1250 || (navNaturalWidth.current > 0 && navNaturalWidth.current > available);
-      setNavCollapsed(collapsed);
-      // If we just revealed the list, wait a frame to measure its true width
-      if (!collapsed && navNaturalWidth.current === 0) {
-        requestAnimationFrame(measure);
-      }
-    };
-
-    measure();
-    window.addEventListener('resize', measure);
-    return () => window.removeEventListener('resize', measure);
-  }, []);
-
+  // Collapse the nav into the hamburger menu only on mobile widths
   const handleParentNavClick = (group, fallbackTab) => (e) => {
-    if (navCollapsed) {
+    if (window.matchMedia('(max-width: 880px)').matches) {
       e.stopPropagation();
       setOpenMobileDropdown((prev) => (prev === group ? null : group));
     } else {
@@ -394,7 +397,7 @@ export default function App() {
   return (
     <div className="app">
       {/* Navigation Bar (top banner) */}
-      <nav className={navCollapsed ? 'nav-bar nav-collapsed' : 'nav-bar'} ref={navBarRef}>
+      <nav className="nav-bar">
         <a href="#" className="nav-logo" onClick={() => { setActiveTab('home'); setMobileMenuOpen(false); }} title="The Hilltop Horizon Review">
           <img src="https://raw.githubusercontent.com/GavL28/the-hilltop-horizon-review/main/public/THHR.logo (1).png" alt="Logo" />
           <span className="nav-brand">The Hilltop Horizon Review</span>
@@ -411,7 +414,6 @@ export default function App() {
         </button>
         <ul
           className={mobileMenuOpen ? 'nav-list nav-list-open' : 'nav-list'}
-          ref={navListRef}
           onClick={() => { setMobileMenuOpen(false); setOpenMobileDropdown(null); }}
         >
           <li className="nav-item">

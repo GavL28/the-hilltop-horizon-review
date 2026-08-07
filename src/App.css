@@ -166,53 +166,6 @@ body {
   background-color: var(--text-main);
 }
 
-/* Nav collapsed to the hamburger menu (class driven by JS width measurement) */
-.nav-collapsed .nav-toggle {
-  display: flex;
-}
-
-.nav-collapsed .nav-brand {
-  display: none;
-}
-
-.nav-collapsed .nav-list {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  flex-direction: column;
-  align-items: stretch;
-  background-color: var(--bg-color);
-  border-bottom: 1px solid var(--accent-border);
-  padding: 6px 0 14px;
-  display: none;
-  z-index: 99;
-  max-height: calc(100vh - 90px);
-  overflow-y: auto;
-}
-
-.nav-collapsed .nav-list-open {
-  display: flex;
-}
-
-.nav-collapsed .nav-link {
-  padding: 12px 30px;
-  font-size: 0.95rem;
-  letter-spacing: 0.03em;
-  text-align: left;
-  width: 100%;
-}
-
-.nav-collapsed .nav-link.active {
-  border-bottom: none;
-  border-left: 3px solid var(--accent-ink);
-}
-
-.nav-collapsed .nav-item {
-  position: relative;
-  display: block;
-}
-
 .dropdown {
   display: none;
   position: absolute;
@@ -231,31 +184,83 @@ body {
   display: block;
 }
 
-/* Collapsed (hamburger) mode: a subtab list opens as an overlay on top of the
-   main tab titles below it, rather than pushing them aside */
-.nav-collapsed .nav-item > .dropdown {
-  display: none;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  min-width: 0;
-  background-color: var(--card-bg);
-  border: none;
-  border-bottom: 1px solid var(--accent-border);
-  border-radius: 0;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.08);
-  padding: 6px 0 10px;
-  z-index: 96;
-}
+/* Mobile (≤880px): the hamburger menu is shown; subtab lists open on tap as an
+   overlay on top of the main tab titles below them, rather than pushing them aside */
+@media (max-width: 880px) {
+  .nav-toggle {
+    display: flex;
+  }
 
-.nav-collapsed .nav-item.dropdown-open > .dropdown {
-  display: block;
-}
+  .nav-brand {
+    display: none;
+  }
 
-.nav-collapsed .dropdown-link {
-  padding: 8px 30px;
-  font-size: 0.9rem;
+  .nav-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    background-color: var(--bg-color);
+    border-bottom: 1px solid var(--accent-border);
+    padding: 6px 0 14px;
+    display: none;
+    z-index: 99;
+    max-height: calc(100vh - 90px);
+    overflow-y: auto;
+  }
+
+  .nav-list-open {
+    display: flex;
+  }
+
+  .nav-link {
+    padding: 12px 30px;
+    font-size: 0.95rem;
+    letter-spacing: 0.03em;
+    text-align: left;
+    width: 100%;
+  }
+
+  .nav-link.active {
+    border-bottom: none;
+    border-left: 3px solid var(--accent-ink);
+  }
+
+  .nav-item {
+    position: relative;
+    display: block;
+  }
+
+  .nav-item:hover .dropdown {
+    display: none;
+  }
+
+  .nav-item > .dropdown {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    min-width: 0;
+    background-color: var(--card-bg);
+    border: none;
+    border-bottom: 1px solid var(--accent-border);
+    border-radius: 0;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+    padding: 6px 0 10px;
+    z-index: 96;
+  }
+
+  .nav-item.dropdown-open > .dropdown {
+    display: block;
+  }
+
+  .dropdown-link {
+    padding: 8px 30px;
+    font-size: 0.9rem;
+  }
 }
 
 .dropdown-link {
