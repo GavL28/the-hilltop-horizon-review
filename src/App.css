@@ -23,14 +23,14 @@ body {
 }
 
 .container {
-  max-width: 900px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 30px;
 }
 
 /* Header & Logo */
 .site-header {
-  padding: 40px 0;
+  padding: 18px 0 14px;
   text-align: center;
   border-bottom: 1px solid var(--accent-border);
 }
@@ -38,7 +38,7 @@ body {
 .logo-container img {
   width: 300px; /* Adjust the size as needed */
   height: auto;
-  margin-bottom: 20px; /* Adjust as needed */
+  margin-bottom: 8px; /* Adjust as needed */
   opacity: 1; /* Changed from 0.9 to 1 for solid color */
   filter: drop-shadow(0px 0px 8px rgba(255, 255, 255, 1));
 }
@@ -58,7 +58,7 @@ body {
   font-weight: 700; /* Makes the font much thicker and bolder */
   color: #000000; /* Black */
   letter-spacing: -0.02em;
-  margin-top: 4px;
+  margin-top: 0;
 }
 
 .site-subtitle {
@@ -66,7 +66,7 @@ body {
   color: #000000; /* Black */
   font-weight: 600; /* Made bolder */
   font-size: 1.05rem;
-  margin-top: 20px;
+  margin-top: 8px;
 }
 
 /* Navigation & Dropdowns */
@@ -83,6 +83,8 @@ body {
 .nav-list {
   display: flex;
   list-style: none;
+  width: 100%;
+  justify-content: space-evenly;
 }
 
 .nav-item {
@@ -155,7 +157,7 @@ body {
 
 /* Main Content Area */
 .main-content {
-  padding: 60px 0;
+  padding: 30px 0;
   min-height: 500px;
 }
 
@@ -173,8 +175,8 @@ body {
 /* Hero & Poem Styles */
 .hero-banner {
   text-align: center;
-  margin-bottom: 60px;
-  padding: 60px 20px 40px; 
+  margin-bottom: 40px;
+  padding: 30px 20px 20px; 
   border-bottom: 1px solid var(--accent-border);
 }
 
@@ -182,7 +184,7 @@ body {
   display: block;
   max-width: 480px;
   height: auto;
-  margin: 0 auto 20px auto;
+  margin: 0 auto 10px auto;
   border-radius: 4px;
 }
 
