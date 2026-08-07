@@ -366,11 +366,100 @@ body {
 
 /* Footer */
 .site-footer {
-  border-top: 1px solid var(--accent-border);
-  padding: 40px 0;
+  background-color: #33332f;
+  color: #d6d3d1;
+  padding: 40px 30px 20px;
+  margin-top: 60px;
+}
+
+.footer-logo {
   text-align: center;
-  color: var(--text-muted);
+  margin-bottom: 30px;
+}
+
+.footer-logo img {
+  height: 72px;
+  width: auto;
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.15));
+}
+
+.footer-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 36px 48px;
+  margin-bottom: 36px;
+}
+
+.footer-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.footer-tab {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: #ffffff;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 4px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.footer-col button {
+  color: #d6d3d1;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-family: var(--font-body);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.footer-col button:hover,
+.footer-col .footer-tab:hover {
+  color: #ffffff;
+}
+
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  padding-top: 16px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+
+.footer-copyright {
   font-size: 0.85rem;
+  color: #d6d3d1;
+}
+
+.footer-instagram {
+  display: inline-flex;
+  align-items: center;
+  margin-left: auto;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.footer-instagram svg {
+  height: 24px;
+  width: 24px;
+  fill: currentColor;
+}
+
+.footer-instagram:hover {
+  color: #d6d3d1;
 }
 
 /* --- New Staff Directory Styles --- */
