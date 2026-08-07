@@ -224,18 +224,7 @@ export default function App() {
 
   return (
     <div className="app">
-      {/* Header & Logo */}
-      <header className="site-header">
-        <div className="container">
-          <a href="#" className="logo-container" onClick={() => setActiveTab('home')}>
-            <img src="https://raw.githubusercontent.com/GavL28/the-hilltop-horizon-review/main/public/THHR.logo (1).png" alt="Logo" />
-          </a>
-          <div className="site-title">The Hilltop Horizon Review</div>
-          <div className="site-subtitle">an international youth literary magazine</div>
-        </div>
-      </header>
-
-      {/* Navigation Bar */}
+      {/* Navigation Bar (top banner) */}
       <nav className="nav-bar">
         <ul className="nav-list">
           <li className="nav-item">
@@ -282,6 +271,17 @@ export default function App() {
         </ul>
       </nav>
 
+      {/* Header & Logo */}
+      <header className="site-header">
+        <div className="container">
+          <a href="#" className="logo-container" onClick={() => setActiveTab('home')}>
+            <img src="https://raw.githubusercontent.com/GavL28/the-hilltop-horizon-review/main/public/THHR.logo (1).png" alt="Logo" />
+          </a>
+          <div className="site-title">The Hilltop Horizon Review</div>
+          <div className="site-subtitle">an international youth literary magazine</div>
+        </div>
+      </header>
+
       {/* Main Content Area */}
       <main className="main-content container">
 
@@ -323,8 +323,8 @@ export default function App() {
             </div>
 
             {/* Announcements Box */}
-            <div className="content-box" style={{ maxWidth: '700px', margin: '0 auto 40px auto' }}>
-              <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.6rem', marginBottom: '15px', textAlign: 'center' }}>Announcements</h3>
+          <div className="content-box" style={{ maxWidth: '1000px', margin: '0 auto 40px auto' }}>
+            <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.6rem', marginBottom: '15px', textAlign: 'center' }}>Announcements</h3>
               <ul style={{ paddingLeft: '20px', fontSize: '0.95rem', color: 'var(--text-main)', display: 'flex', flexDirection: 'column', gap: '15px' }}>
                 <li>
                   <strong>Issue I Submissions:</strong> We are officially open for poetry, fiction, nonfiction, art, and photography. Issue 1 is for Reynolds 2026 alumni only. Read our guidelines to submit.
@@ -965,7 +965,7 @@ Red upon white cloth`}
 
         {/* JOIN US TAB */}
         {activeTab === 'join' && (
-          <div className="content-box" style={{ maxWidth: '800px', margin: '0 auto' }}>
+          <div className="content-box" style={{ maxWidth: '1000px', margin: '0 auto' }}>
             <h2 className="section-title">Join Our Team</h2>
             <p style={{ textAlign: 'center', marginBottom: '30px', color: 'var(--text-muted)' }}>
               The Hilltop Horizon Review is entirely run by high schoolers. We look for passionate, dedicated individuals who want to help shape our global literary community. Open to teens ages 14–19. Link to apply coming soon...
