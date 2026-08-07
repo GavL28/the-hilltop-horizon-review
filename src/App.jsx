@@ -24,6 +24,43 @@ const staffData = [
 // Genres used by Selected Works (section subheadings)
 const SELECTED_WORKS_GENRES = ['Poetry', 'Fiction', 'Nonfiction', 'Art', 'Photography'];
 
+// Tabs that can be restored from the URL hash on reload
+const VALID_TABS = new Set([
+  'home',
+  'about-litmag',
+  'about-mission',
+  'about-staff',
+  'staff-detail',
+  'announcements',
+  'about-stats',
+  'selected-works',
+  'selected-works-issue',
+  'selected-works-piece',
+  'digital-magazine',
+  'issues-archive',
+  'issue-detail',
+  'submit-guidelines',
+  'submit-links',
+  'faq',
+  'contact',
+  'join',
+  'admin',
+]);
+
+// Sub-views that need in-memory state to render — a reload lands on their parent tab
+const TAB_PARENT = {
+  'staff-detail': 'about-staff',
+  'selected-works-issue': 'selected-works',
+  'selected-works-piece': 'selected-works',
+  'issue-detail': 'issues-archive',
+};
+
+function getTabFromHash() {
+  const tab = window.location.hash.replace(/^#\/?/, '').trim();
+  if (!VALID_TABS.has(tab)) return 'home';
+  return TAB_PARENT[tab] || tab;
+}
+
 const TINYMCE_INIT = {
   height: 400,
   menubar: false,
@@ -73,7 +110,7 @@ function GuidelinesSection({ title, isOpen, onToggle, children }) {
 }
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState('home');
+  const [activeTab, setActiveTab] = useState(getTabFromHash);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [selectedStaff, setSelectedStaff] = useState(null);
   const [openGuidelines, setOpenGuidelines] = useState('general');
@@ -205,6 +242,21 @@ export default function App() {
       setIsContentLoading(false);
     }
     loadContent();
+  }, []);
+
+  // Keep the URL hash in sync with the active tab so reloads stay on the same page
+  useEffect(() => {
+    const target = `#/${activeTab}`;
+    if (window.location.hash !== target) {
+      window.history.replaceState(null, '', target);
+    }
+  }, [activeTab]);
+
+  // React to manual hash edits / back-forward navigation
+  useEffect(() => {
+    const onHashChange = () => setActiveTab(getTabFromHash());
+    window.addEventListener('hashchange', onHashChange);
+    return () => window.removeEventListener('hashchange', onHashChange);
   }, []);
 
   const allIssuesForAdmin = [
