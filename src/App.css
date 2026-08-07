@@ -769,6 +769,12 @@ body {
   color: var(--text-main);
 }
 
+.announcement-date {
+  margin-top: 6px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
 .announcement-view-all {
   display: block;
   margin-top: 14px;

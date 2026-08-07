@@ -89,6 +89,18 @@ const PAGE_TITLES = {
   admin: 'Admin',
 };
 
+// "August 3rd" style date for announcements (D1 stores timestamps in UTC)
+function formatAnnouncementDate(dateStr) {
+  const d = new Date(String(dateStr).replace(' ', 'T') + 'Z');
+  if (Number.isNaN(d.getTime())) return '';
+  const day = d.getUTCDate();
+  const suffix = day % 10 === 1 && day % 100 !== 11 ? 'st'
+    : day % 10 === 2 && day % 100 !== 12 ? 'nd'
+    : day % 10 === 3 && day % 100 !== 13 ? 'rd' : 'th';
+  const month = d.toLocaleDateString('en-US', { month: 'long', timeZone: 'UTC' });
+  return `${month} ${day}${suffix}`;
+}
+
 const TINYMCE_INIT = {
   height: 400,
   menubar: false,
@@ -241,7 +253,6 @@ export default function App() {
   const [currentIssue, setCurrentIssue] = useState(null);
   const [pastIssues, setPastIssues] = useState([]);
   const [selectedIssue, setSelectedIssue] = useState(null); // <-- Add this new line!
-  const [announcement, setAnnouncement] = useState('');
   const [announcements, setAnnouncements] = useState([]);
   const [isContentLoading, setIsContentLoading] = useState(true);
 
@@ -283,7 +294,6 @@ export default function App() {
           setDigitalEditions(data.digitalEditions || []);
           setSelectedWorks(data.selectedWorks || []);
           setAnnouncements(data.announcements || []);
-          if (data.announcement) setAnnouncement(data.announcement.message);
           restoreRoute(data.selectedWorks || []);
         }
       return data;
@@ -470,22 +480,9 @@ export default function App() {
         </header>
       )}
 
-      {/* Home: announcement banner + hero (above the main content) */}
+      {/* Home: hero (above the main content) */}
       {activeTab === 'home' && (
         <section className="container" style={{ paddingTop: '15px' }}>
-          {/* Dynamic Announcement Banner */}
-          {announcement && (
-            <div className="announcement-banner">
-              <button className="announcement-heading" onClick={() => setActiveTab('announcements')}>
-                <span className="loud-speaker">📢</span> Announcements
-              </button>
-              <div className="announcement-message">{announcement}</div>
-              <button className="announcement-view-all" onClick={() => setActiveTab('announcements')}>
-                (click to view all announcements)
-              </button>
-            </div>
-          )}
-
           <div className="hero-banner">
             <img src="/IMG_6051.jpeg" alt="The Hilltop Horizon Review" className="hero-image" />
             <p className="hero-description">
@@ -520,17 +517,30 @@ export default function App() {
         {activeTab === 'home' && (
           <div>
 
-            {/* Announcements Box */}
-          <div className="content-box" style={{ maxWidth: '1000px', margin: '0 auto 40px auto' }}>
-            <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.6rem', marginBottom: '15px', textAlign: 'center' }}>Announcements</h3>
-              <ul style={{ paddingLeft: '20px', fontSize: '0.95rem', color: 'var(--text-main)', display: 'flex', flexDirection: 'column', gap: '15px' }}>
-                <li>
-                  <strong>Issue I Submissions:</strong> We are officially open for poetry, fiction, nonfiction, art, and photography. Issue 1 is for Reynolds 2026 alumni only. Read our guidelines to submit.
-                </li>
-                <li>
-                  <strong>Editors Wanted:</strong> We are expanding our team! If you have a sharp eye for literature, check our "Join Us" page to apply.
-                </li>
-              </ul>
+            {/* Announcements (from DB, newest 3 shown on home) */}
+            <div className="announcement-banner" style={{ maxWidth: '1000px', margin: '0 auto 40px auto' }}>
+              <button className="announcement-heading" onClick={() => setActiveTab('announcements')}>
+                <span className="loud-speaker">📢</span> Announcements
+              </button>
+              {isContentLoading && (
+                <p style={{ textAlign: 'center', fontStyle: 'italic', color: 'var(--text-muted)' }}>Loading announcements...</p>
+              )}
+              {!isContentLoading && announcements.length === 0 && (
+                <p style={{ textAlign: 'center', fontStyle: 'italic', color: 'var(--text-muted)' }}>No announcements yet. Check back soon!</p>
+              )}
+              {announcements.length > 0 && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  {announcements.slice(0, 3).map((a) => (
+                    <div key={a.id}>
+                      <div className="announcement-message">{a.message}</div>
+                      <div className="announcement-date">{formatAnnouncementDate(a.created_at)}</div>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <button className="announcement-view-all" onClick={() => setActiveTab('announcements')}>
+                (click to view all announcements)
+              </button>
             </div>
             
             <h2 className="section-title">Featured Work</h2>
@@ -590,6 +600,7 @@ Red upon white cloth`}
           <div className="content-box">
             <h2 className="section-title">Our Mission</h2>
             <p>We seek to provide a welcoming and interactive community for young writers to join, as it can be difficult to find such a community locally.</p>
+            <p>Though we are mainly a literary magazine, we also accept art and photography. Submissions are reviewed blindly. We believe that feedback to every single submission no matter published or not is essential to supporting young writers and artists. If you don't get selected for an issue, come back and submit to the next issue!</p>
           </div>
         )}
 
@@ -683,7 +694,7 @@ Red upon white cloth`}
                       {a.message}
                     </div>
                     <span style={{ color: 'var(--text-muted)', fontSize: '0.95rem', display: 'block', marginTop: '12px' }}>
-                      Posted {new Date(a.created_at).toLocaleDateString()}
+                      {formatAnnouncementDate(a.created_at)}
                     </span>
                   </div>
                 ))}
@@ -1847,7 +1858,7 @@ Red upon white cloth`}
                                     <div style={{ minWidth: 0 }}>
                                       <strong>{a.message}</strong>
                                       <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-                                        Posted {new Date(a.created_at).toLocaleDateString()}
+                                        {formatAnnouncementDate(a.created_at)}
                                       </div>
                                     </div>
                                     <button
@@ -2397,10 +2408,6 @@ Red upon white cloth`}
                     <button onClick={() => setActiveTab('about-stats')}>Stats</button>
                   </div>
                   <div className="footer-col">
-                    <span className="footer-tab">Announcements</span>
-                    <button onClick={() => setActiveTab('announcements')}>Announcements</button>
-                  </div>
-                  <div className="footer-col">
                     <span className="footer-tab">Issues / Selected Works</span>
                     <button onClick={() => setActiveTab('selected-works')}>Selected Works</button>
                     <button onClick={() => setActiveTab('digital-magazine')}>Digital Magazine</button>
@@ -2409,6 +2416,10 @@ Red upon white cloth`}
                     <span className="footer-tab">Submit</span>
                     <button onClick={() => setActiveTab('submit-guidelines')}>Guidelines</button>
                     <button onClick={() => setActiveTab('submit-links')}>Submissions Links</button>
+                  </div>
+                  <div className="footer-col">
+                    <span className="footer-tab">Announcements</span>
+                    <button onClick={() => setActiveTab('announcements')}>Announcements</button>
                   </div>
                   <div className="footer-col">
                     <button className="footer-tab" onClick={() => setActiveTab('faq')}>FAQ</button>
