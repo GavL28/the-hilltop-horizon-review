@@ -38,6 +38,7 @@ body {
 
 .logo-container img {
   width: 400px; /* Adjust the size as needed */
+  max-width: 100%;
   height: auto;
   margin-bottom: 8px; /* Adjust as needed */
   opacity: 1; /* Changed from 0.9 to 1 for solid color */
@@ -81,8 +82,7 @@ body {
   top: 0;
   z-index: 100;
   padding: 16px 30px;
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
+  width: 100%;
 }
 
 .nav-logo {
@@ -146,15 +146,85 @@ body {
   color: var(--text-muted);
 }
 
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  margin-left: auto;
+}
+
+.nav-toggle-bar {
+  display: block;
+  width: 26px;
+  height: 3px;
+  border-radius: 2px;
+  background-color: var(--text-main);
+}
+
 @media (max-width: 880px) {
-  .nav-link {
-    padding: 8px 8px;
-    font-size: 0.78rem;
-    letter-spacing: 0.02em;
+  .nav-toggle {
+    display: flex;
   }
 
   .nav-brand {
     display: none;
+  }
+
+  .nav-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    background-color: var(--bg-color);
+    border-bottom: 1px solid var(--accent-border);
+    padding: 6px 0 14px;
+    display: none;
+    z-index: 99;
+    max-height: calc(100vh - 90px);
+    overflow-y: auto;
+  }
+
+  .nav-list-open {
+    display: flex;
+  }
+
+  .nav-link {
+    padding: 12px 30px;
+    font-size: 0.95rem;
+    letter-spacing: 0.03em;
+    text-align: left;
+    width: 100%;
+  }
+
+  .nav-link.active {
+    border-bottom: none;
+    border-left: 3px solid var(--accent-ink);
+  }
+
+  .nav-item {
+    display: block;
+  }
+
+  .dropdown {
+    position: static;
+    display: block;
+    box-shadow: none;
+    border: none;
+    background: transparent;
+    padding: 0;
+    min-width: 0;
+  }
+
+  .dropdown-link {
+    padding: 8px 30px;
+    font-size: 0.9rem;
   }
 }
 
@@ -222,6 +292,7 @@ body {
 .hero-image {
   display: block;
   max-width: 480px;
+  width: 100%;
   height: auto;
   margin: 0 auto 5px auto;
   border-radius: 4px;
@@ -233,6 +304,15 @@ body {
   max-width: 650px;
   margin: 0 auto;
   font-style: italic;
+}
+
+/* Editors' Desk: full-width white section on the home page */
+.editors-desk {
+  background-color: #ffffff;
+  padding: 40px 30px;
+  text-align: center;
+  border-top: 1px solid var(--accent-border);
+  border-bottom: 1px solid var(--accent-border);
 }
 
 .featured-poem {
@@ -392,8 +472,7 @@ body {
   color: #d6d3d1;
   padding: 40px 30px 20px;
   margin-top: 60px;
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
+  width: 100%;
 }
 
 .footer-logo {
@@ -647,4 +726,36 @@ body {
 
 .link-button:hover {
   opacity: 0.75;
+}
+
+/* --- Small screens (phones) --- */
+@media (max-width: 600px) {
+  .nav-bar {
+    padding: 12px 16px;
+  }
+
+  .logo-container img {
+    width: 280px;
+  }
+
+  .site-title {
+    font-size: 2rem;
+  }
+
+  .site-subtitle {
+    font-size: 0.95rem;
+    margin-top: 12px;
+  }
+
+  .container {
+    padding: 0 16px;
+  }
+
+  .editors-desk {
+    padding: 30px 16px;
+  }
+
+  .hero-description {
+    font-size: 1rem;
+  }
 }
