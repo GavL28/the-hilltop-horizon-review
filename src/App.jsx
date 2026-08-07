@@ -307,7 +307,9 @@ export default function App() {
     let target;
     if (activeTab === 'selected-works-issue' || activeTab === 'selected-works-piece') {
       // Preserve the object id already in the URL until the sub-view is restored
-      const currentId = (selectedWorksIssue || selectedWorksPiece)?.id || getHashRoute().id;
+      const currentId =
+        (activeTab === 'selected-works-piece' ? selectedWorksPiece?.id : selectedWorksIssue?.id) ||
+        getHashRoute().id;
       target = `#/${activeTab}${currentId ? `/${currentId}` : ''}`;
     } else {
       target = `#/${activeTab}`;
