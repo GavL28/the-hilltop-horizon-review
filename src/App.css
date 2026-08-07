@@ -30,13 +30,13 @@ body {
 
 /* Header & Logo */
 .site-header {
-  padding: 18px 0 14px;
+  padding: 8px 0 14px;
   text-align: center;
   border-bottom: 1px solid var(--accent-border);
 }
 
 .logo-container img {
-  width: 300px; /* Adjust the size as needed */
+  width: 340px; /* Adjust the size as needed */
   height: auto;
   margin-bottom: 8px; /* Adjust as needed */
   opacity: 1; /* Changed from 0.9 to 1 for solid color */
@@ -88,7 +88,7 @@ body {
 }
 
 .nav-logo img {
-  height: 46px;
+  height: 60px;
   width: auto;
 }
 
@@ -105,7 +105,7 @@ body {
 
 .nav-link {
   display: block;
-  padding: 20px 12px;
+  padding: 24px 12px;
   color: var(--text-main);
   text-decoration: none;
   font-size: 0.85rem;
@@ -174,7 +174,7 @@ body {
 
 /* Main Content Area */
 .main-content {
-  padding: 30px 0;
+  padding: 15px 0;
   min-height: 500px;
 }
 
@@ -193,7 +193,7 @@ body {
 .hero-banner {
   text-align: center;
   margin-bottom: 20px;
-  padding: 30px 20px 10px; 
+  padding: 15px 20px 10px; 
   border-bottom: 1px solid var(--accent-border);
 }
 
@@ -370,6 +370,8 @@ body {
   color: #d6d3d1;
   padding: 40px 30px 20px;
   margin-top: 60px;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
 }
 
 .footer-logo {
@@ -378,7 +380,7 @@ body {
 }
 
 .footer-logo img {
-  height: 72px;
+  height: 110px;
   width: auto;
   filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.15));
 }
