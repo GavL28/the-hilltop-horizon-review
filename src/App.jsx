@@ -288,16 +288,18 @@ export default function App() {
         </ul>
       </nav>
 
-      {/* Header & Logo */}
-      <header className="site-header">
-        <div className="container">
-          <a href="#" className="logo-container" onClick={() => setActiveTab('home')}>
-            <img src="https://raw.githubusercontent.com/GavL28/the-hilltop-horizon-review/main/public/THHR.logo (1).png" alt="Logo" />
-          </a>
-          <div className="site-title">The Hilltop Horizon Review</div>
-          <div className="site-subtitle">an international youth literary magazine</div>
-        </div>
-      </header>
+      {/* Header & Logo (home page only) */}
+      {activeTab === 'home' && (
+        <header className="site-header">
+          <div className="container">
+            <a href="#" className="logo-container" onClick={() => setActiveTab('home')}>
+              <img src="https://raw.githubusercontent.com/GavL28/the-hilltop-horizon-review/main/public/THHR.logo (1).png" alt="Logo" />
+            </a>
+            <div className="site-title">The Hilltop Horizon Review</div>
+            <div className="site-subtitle">an international youth literary magazine</div>
+          </div>
+        </header>
+      )}
 
       {/* Main Content Area */}
       <main className="main-content container">
@@ -871,9 +873,6 @@ Red upon white cloth`}
                 >
                   Instagram
                 </a>
-                <span className="btn-primary" style={{ display: 'inline-block', backgroundColor: '#D6D3D1', color: '#1C1917', cursor: 'default' }}>Coming Soon...</span>
-                <span className="btn-primary" style={{ display: 'inline-block', backgroundColor: '#D6D3D1', color: '#1C1917', cursor: 'default' }}>Coming Soon...</span>
-                <span className="btn-primary" style={{ display: 'inline-block', backgroundColor: '#D6D3D1', color: '#1C1917', cursor: 'default' }}>Coming Soon...</span>
               </div>
             </div>
 
