@@ -55,9 +55,19 @@ const TAB_PARENT = {
   'issue-detail': 'issues-archive',
 };
 
+// Parse `#/tab` or `#/tab/id` from the URL
+function getHashRoute() {
+  const raw = window.location.hash.replace(/^#\/?/, '').trim();
+  const [tab, id] = raw.split('/');
+  return { tab, id: id || null };
+}
+
 function getTabFromHash() {
-  const tab = window.location.hash.replace(/^#\/?/, '').trim();
+  const { tab, id } = getHashRoute();
   if (!VALID_TABS.has(tab)) return 'home';
+  // Selected-works sub-views carry their object id in the URL and are restored
+  // by an effect once the content loads, so keep the tab when an id is present.
+  if (id && (tab === 'selected-works-issue' || tab === 'selected-works-piece')) return tab;
   return TAB_PARENT[tab] || tab;
 }
 
@@ -221,18 +231,47 @@ export default function App() {
   const [announcements, setAnnouncements] = useState([]);
   const [isContentLoading, setIsContentLoading] = useState(true);
 
+  // Restore a selected-works sub-view (issue or piece) from its URL id
+  const restoreRoute = (works) => {
+    const { tab, id } = getHashRoute();
+    if (tab === 'selected-works-issue' && id) {
+      const issue = works.find((i) => String(i.id) === id);
+      if (issue) {
+        setSelectedWorksIssue(issue);
+        setActiveTab('selected-works-issue');
+      } else {
+        setActiveTab('selected-works');
+      }
+      return true;
+    }
+    if (tab === 'selected-works-piece' && id) {
+      const issue = works.find((i) => i.pieces.some((p) => String(p.id) === id));
+      if (issue) {
+        const piece = issue.pieces.find((p) => String(p.id) === id);
+        setSelectedWorksIssue(issue);
+        setSelectedWorksPiece(piece);
+        setActiveTab('selected-works-piece');
+      } else {
+        setActiveTab('selected-works');
+      }
+      return true;
+    }
+    return false;
+  };
+
   async function refreshSiteContent() {
     try {
       const res = await fetch('/api/content');
       const data = await res.json();
-      if (data.success) {
-        setCurrentIssue(data.currentIssue);
-        setPastIssues(data.pastIssues || []);
-        setDigitalEditions(data.digitalEditions || []);
-        setSelectedWorks(data.selectedWorks || []);
-        setAnnouncements(data.announcements || []);
-        if (data.announcement) setAnnouncement(data.announcement.message);
-      }
+        if (data.success) {
+          setCurrentIssue(data.currentIssue);
+          setPastIssues(data.pastIssues || []);
+          setDigitalEditions(data.digitalEditions || []);
+          setSelectedWorks(data.selectedWorks || []);
+          setAnnouncements(data.announcements || []);
+          if (data.announcement) setAnnouncement(data.announcement.message);
+          restoreRoute(data.selectedWorks || []);
+        }
       return data;
     } catch (err) {
       console.error('Failed to fetch site content:', err);
@@ -251,18 +290,27 @@ export default function App() {
 
   // Keep the URL hash in sync with the active tab so reloads stay on the same page
   useEffect(() => {
-    const target = `#/${activeTab}`;
+    let target;
+    if (activeTab === 'selected-works-issue' || activeTab === 'selected-works-piece') {
+      // Preserve the object id already in the URL until the sub-view is restored
+      const currentId = (selectedWorksIssue || selectedWorksPiece)?.id || getHashRoute().id;
+      target = `#/${activeTab}${currentId ? `/${currentId}` : ''}`;
+    } else {
+      target = `#/${activeTab}`;
+    }
     if (window.location.hash !== target) {
       window.history.replaceState(null, '', target);
     }
-  }, [activeTab]);
+  }, [activeTab, selectedWorksIssue, selectedWorksPiece]);
 
   // React to manual hash edits / back-forward navigation
   useEffect(() => {
-    const onHashChange = () => setActiveTab(getTabFromHash());
+    const onHashChange = () => {
+      if (!restoreRoute(selectedWorks)) setActiveTab(getTabFromHash());
+    };
     window.addEventListener('hashchange', onHashChange);
     return () => window.removeEventListener('hashchange', onHashChange);
-  }, []);
+  }, [selectedWorks]);
 
   // Collapse the nav into the hamburger menu whenever the tabs don't fit
   useEffect(() => {
@@ -796,8 +844,8 @@ Red upon white cloth`}
                 marginBottom: '20px',
               }}
             >
-              <span style={{ color: 'var(--text-muted)', fontStyle: 'italic' }}>{selectedWorksPiece.genre}</span>
               <span style={{ color: 'var(--text-main)', fontWeight: 'bold' }}>{selectedWorksPiece.author}</span>
+              <span style={{ color: 'var(--text-muted)', fontStyle: 'italic' }}>{selectedWorksPiece.genre}</span>
             </div>
             <div className="issue-content" style={{ lineHeight: '1.8', whiteSpace: 'pre-wrap' }}>
               {selectedWorksPiece.content}
