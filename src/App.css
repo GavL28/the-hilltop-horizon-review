@@ -66,7 +66,7 @@ body {
   color: #000000; /* Black */
   font-weight: 600; /* Made bolder */
   font-size: 1.05rem;
-  margin-top: 14px;
+  margin-top: 20px;
 }
 
 /* Navigation & Dropdowns */
@@ -192,8 +192,8 @@ body {
 /* Hero & Poem Styles */
 .hero-banner {
   text-align: center;
-  margin-bottom: 40px;
-  padding: 30px 20px 20px; 
+  margin-bottom: 20px;
+  padding: 30px 20px 10px; 
   border-bottom: 1px solid var(--accent-border);
 }
 
@@ -201,7 +201,7 @@ body {
   display: block;
   max-width: 480px;
   height: auto;
-  margin: 0 auto 10px auto;
+  margin: 0 auto 5px auto;
   border-radius: 4px;
 }
 
