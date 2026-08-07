@@ -459,7 +459,15 @@ Red upon white cloth`}
             <p style={{ fontStyle: 'italic', color: 'var(--text-muted)' }}>An international youth literary magazine, founded by high schoolers, for high schoolers.</p>
             <div className="about-split">
               <div className="about-text">
-                <p><strong>Founded by Gavin Liu and Tawanda Sibanda on July 8th, 2026.</strong></p>
+                <p>
+                  <strong>
+                    Founded by{' '}
+                    <button className="link-button" onClick={() => handleStaffClick(staffData.find((s) => s.id === 'gavin'))}>Gavin Liu</button>
+                    {' '}and{' '}
+                    <button className="link-button" onClick={() => handleStaffClick(staffData.find((s) => s.id === 'tawanda'))}>Tawanda Sibanda</button>
+                    {' '}on July 8th, 2026.
+                  </strong>
+                </p>
                 <p>We are a team of 14 Reynolds Young Writers Workshop Class of 2026 alumni from all over the world, including the U.S., China, Japan, and South Korea.</p>
                 <p>We accept submissions from high schoolers (ages 14-19).</p>
                 <p>We publish a new issue every two months.</p>
@@ -470,7 +478,7 @@ Red upon white cloth`}
                   <button
                     className="link-button"
                     onClick={() => setActiveTab('about-staff')}
-                    style={{ color: 'var(--accent)', fontWeight: 700 }}
+                    style={{ color: '#064e3b', fontWeight: 700 }}
                   >
                     here
                   </button>
@@ -750,8 +758,14 @@ Red upon white cloth`}
               {selectedWorksPiece.content}
             </div>
             {selectedWorksPiece.bio && (
-              <div style={{ marginTop: '30px', padding: '15px 20px', backgroundColor: 'var(--accent-bg)', borderRadius: '4px', fontSize: '0.98rem', fontStyle: 'italic', color: 'var(--text-main)' }}>
-                {selectedWorksPiece.bio}
+              <div style={{ marginTop: '40px' }}>
+                <hr style={{ border: 'none', borderTop: '1px solid var(--accent-border)', marginBottom: '20px' }} />
+                <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.35rem', fontWeight: 700, marginBottom: '10px', color: 'var(--text-main)' }}>
+                  {selectedWorksPiece.author}
+                </h4>
+                <p style={{ fontSize: '1rem', fontWeight: 400, lineHeight: '1.75', color: 'var(--text-main)' }}>
+                  {selectedWorksPiece.bio}
+                </p>
               </div>
             )}
           </div>
