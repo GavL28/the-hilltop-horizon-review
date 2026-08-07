@@ -83,6 +83,8 @@ body {
 .nav-list {
   display: flex;
   list-style: none;
+  width: 100%;
+  justify-content: space-evenly;
 }
 
 .nav-item {
