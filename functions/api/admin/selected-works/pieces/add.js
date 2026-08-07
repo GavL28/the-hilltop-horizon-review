@@ -6,7 +6,7 @@ export async function onRequestPost(context) {
   const auth = await requireAdmin(context);
   if (auth.error) return auth.error;
 
-  const { issueId, title, author, genre, content } = await context.request.json();
+  const { issueId, title, author, genre, content, bio } = await context.request.json();
 
   if (!issueId || !title?.trim() || !author?.trim() || !content?.trim()) {
     return new Response(JSON.stringify({ success: false, error: 'Issue, title, author, and content are required' }), {
@@ -35,8 +35,8 @@ export async function onRequestPost(context) {
 
   const id = crypto.randomUUID();
   await context.env.DB.prepare(
-    'INSERT INTO selected_works_pieces (id, issue_id, title, author, genre, content) VALUES (?, ?, ?, ?, ?, ?)'
-  ).bind(id, issueId, title.trim(), author.trim(), genre, content).run();
+    'INSERT INTO selected_works_pieces (id, issue_id, title, author, genre, content, bio) VALUES (?, ?, ?, ?, ?, ?, ?)'
+  ).bind(id, issueId, title.trim(), author.trim(), genre, content, bio?.trim() || '').run();
 
   return new Response(JSON.stringify({ success: true }), {
     status: 200,

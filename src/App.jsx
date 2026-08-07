@@ -134,12 +134,14 @@ export default function App() {
   const [swPieceAuthor, setSwPieceAuthor] = useState('');
   const [swPieceGenre, setSwPieceGenre] = useState('Poetry');
   const [swPieceContent, setSwPieceContent] = useState('');
+  const [swPieceBio, setSwPieceBio] = useState('');
   const [editSWPieceId, setEditSWPieceId] = useState('');
   const [editSWPieceIssueId, setEditSWPieceIssueId] = useState('');
   const [editSWPieceTitle, setEditSWPieceTitle] = useState('');
   const [editSWPieceAuthor, setEditSWPieceAuthor] = useState('');
   const [editSWPieceGenre, setEditSWPieceGenre] = useState('Poetry');
   const [editSWPieceContent, setEditSWPieceContent] = useState('');
+  const [editSWPieceBio, setEditSWPieceBio] = useState('');
 
   const scrollToForm = (id) => {
     setTimeout(() => {
@@ -225,7 +227,7 @@ export default function App() {
   const isNavActive = (group) => {
     const groups = {
       home: ['home'],
-      about: ['about-litmag', 'about-mission', 'about-staff', 'staff-detail', 'announcements'],
+      about: ['about-litmag', 'about-mission', 'about-staff', 'staff-detail', 'announcements', 'about-stats'],
       issues: ['selected-works', 'selected-works-issue', 'selected-works-piece', 'digital-magazine', 'issues-archive'],
       submit: ['submit-guidelines', 'submit-links'],
       faq: ['faq'],
@@ -266,6 +268,7 @@ export default function App() {
               <li><button className="dropdown-link" onClick={() => setActiveTab('about-mission')}>Our Mission</button></li>
               <li><button className="dropdown-link" onClick={() => setActiveTab('about-staff')}>Staff / Team</button></li>
               <li><button className="dropdown-link" onClick={() => setActiveTab('announcements')}>Announcements</button></li>
+              <li><button className="dropdown-link" onClick={() => setActiveTab('about-stats')}>Stats</button></li>
             </ul>
           </li>
           <li className="nav-item">
@@ -337,13 +340,25 @@ export default function App() {
               </p>
             </div>
 
-            <div className="content-box" style={{ textAlign: 'center' }}>
+            <div
+              className="content-box"
+              style={{
+                textAlign: 'center',
+                width: '100vw',
+                marginLeft: 'calc(50% - 50vw)',
+                backgroundColor: '#ffffff',
+                padding: '40px 30px',
+              }}
+            >
               <h2 className="section-title">From the Co-Editors in Chiefs' Desk</h2>
               <p style={{ maxWidth: '700px', margin: '0 auto', marginBottom: '20px' }}>
                 Welcome to the digital home of The Hilltop Horizon Review! Run by a team of devoted and eager young writers, we seek to build a world-wide community for young writers to chase their dreams.
               </p>
               <p style={{ fontStyle: 'italic', color: 'var(--text-muted)' }}>
-                — Gavin, Co-Editor in Chief
+                —{' '}
+                <button className="link-button" onClick={() => setActiveTab('about-staff')}>
+                  Gavin, Co-Editor in Chief
+                </button>
               </p>
             </div>
 
@@ -457,7 +472,7 @@ Red upon white cloth`}
         {/* ANNOUNCEMENTS TAB */}
         {activeTab === 'announcements' && (
           <div className="content-box fade-in">
-            <h2 className="section-title">Announcements</h2>
+            <h2 className="section-title" style={{ fontSize: '2.6rem' }}>Announcements</h2>
 
             {isContentLoading && <p style={{ textAlign: 'center', fontStyle: 'italic', color: 'var(--text-muted)' }}>Loading announcements...</p>}
 
@@ -472,22 +487,46 @@ Red upon white cloth`}
                     key={a.id}
                     style={{
                       marginBottom: '20px',
-                      padding: i === 0 ? '20px' : '15px',
+                      padding: i === 0 ? '28px' : '20px',
                       backgroundColor: 'var(--accent-bg)',
                       borderRadius: '4px',
                       borderLeft: i === 0 ? '4px solid var(--accent)' : 'none',
                     }}
                   >
-                    <div className="issue-content" style={{ lineHeight: '1.8', fontSize: '1.15rem' }}>
+                    <div
+                      className="issue-content"
+                      style={{
+                        lineHeight: '1.7',
+                        fontSize: i === 0 ? '1.5rem' : '1.25rem',
+                        fontWeight: i === 0 ? 700 : 600,
+                      }}
+                    >
                       {a.message}
                     </div>
-                    <span style={{ color: 'var(--text-muted)', fontSize: '0.9rem', display: 'block', marginTop: '10px' }}>
+                    <span style={{ color: 'var(--text-muted)', fontSize: '0.95rem', display: 'block', marginTop: '12px' }}>
                       Posted {new Date(a.created_at).toLocaleDateString()}
                     </span>
                   </div>
                 ))}
               </div>
             )}
+          </div>
+        )}
+
+        {/* STATS TAB */}
+        {activeTab === 'about-stats' && (
+          <div className="content-box fade-in">
+            <h2 className="section-title">Stats</h2>
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '40px', flexWrap: 'wrap', marginTop: '30px' }}>
+              <div style={{ padding: '30px 45px', backgroundColor: 'var(--accent-bg)', borderRadius: '8px', textAlign: 'center', minWidth: '240px' }}>
+                <div style={{ fontSize: '3rem', fontFamily: 'var(--font-heading)', fontWeight: 700, color: 'var(--text-main)' }}>—</div>
+                <div style={{ fontSize: '1.1rem', fontWeight: 600, marginTop: '8px', color: 'var(--text-main)' }}>Submissions Received</div>
+              </div>
+              <div style={{ padding: '30px 45px', backgroundColor: 'var(--accent-bg)', borderRadius: '8px', textAlign: 'center', minWidth: '240px' }}>
+                <div style={{ fontSize: '3rem', fontFamily: 'var(--font-heading)', fontWeight: 700, color: 'var(--text-main)' }}>4</div>
+                <div style={{ fontSize: '1.1rem', fontWeight: 600, marginTop: '8px', color: 'var(--text-main)' }}>Nations Reached</div>
+              </div>
+            </div>
           </div>
         )}
 
@@ -633,6 +672,11 @@ Red upon white cloth`}
             <div className="issue-content" style={{ lineHeight: '1.8', whiteSpace: 'pre-wrap' }}>
               {selectedWorksPiece.content}
             </div>
+            {selectedWorksPiece.bio && (
+              <div style={{ marginTop: '30px', padding: '15px 20px', backgroundColor: 'var(--accent-bg)', borderRadius: '4px', fontSize: '0.98rem', fontStyle: 'italic', color: 'var(--text-main)' }}>
+                {selectedWorksPiece.bio}
+              </div>
+            )}
           </div>
         )}
 
@@ -830,6 +874,16 @@ Red upon white cloth`}
             <p style={{ marginBottom: '15px' }}>Public announcements will be posted on this website and our official instagram account, but communication typically will be through email.</p>
             <h4 style={{ fontFamily: 'var(--font-heading)', marginTop: '15px' }}>Can I submit to multiple genres / secitons?</h4>
             <p>Yes; you can technically submit 20 or even more pieces total across the genres and sections. However, you may only fill one submission form per genre / section each issue.</p>
+
+            <div style={{ marginTop: '45px', padding: '25px', backgroundColor: 'var(--accent-bg)', borderRadius: '4px', textAlign: 'center' }}>
+              <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.4rem', marginBottom: '10px' }}>Any other questions?</h4>
+              <p style={{ marginBottom: '12px' }}>
+                Feel free to reach out to us at{' '}
+                <a href="mailto:team@hilltophorizonreview.com" style={{ color: 'var(--text-main)', fontWeight: 'bold' }}>team@hilltophorizonreview.com</a>
+                , or find more info on our contact page.
+              </p>
+              <button className="btn-primary" onClick={() => setActiveTab('contact')}>Contact Page</button>
+            </div>
           </div>
         )}
 
@@ -1836,12 +1890,14 @@ Red upon white cloth`}
                               author: swPieceAuthor,
                               genre: swPieceGenre,
                               content: swPieceContent,
+                              bio: swPieceBio,
                             });
                             if (ok) {
                               alert('Piece added.');
                               setSwPieceTitle('');
                               setSwPieceAuthor('');
                               setSwPieceContent('');
+                              setSwPieceBio('');
                               await refreshSiteContent();
                             } else {
                               alert(`Failed to add: ${data.error || 'Unknown error'}`);
@@ -1912,6 +1968,17 @@ Red upon white cloth`}
                                 placeholder="Paste the piece here. Line breaks are preserved."
                               />
                             </div>
+                            <div className="form-group">
+                              <label>Author Bio (optional)</label>
+                              <textarea
+                                className="form-control"
+                                rows={3}
+                                value={swPieceBio}
+                                onChange={(e) => setSwPieceBio(e.target.value)}
+                                onKeyDown={handleTextareaTab(swPieceBio, setSwPieceBio)}
+                                placeholder="A short note about the author, shown under the piece."
+                              />
+                            </div>
                             <button type="submit" className="btn-primary" style={{ marginTop: '10px' }}>Add Piece</button>
                           </form>
                         )}
@@ -1930,6 +1997,7 @@ Red upon white cloth`}
                               author: editSWPieceAuthor,
                               genre: editSWPieceGenre,
                               content: editSWPieceContent,
+                              bio: editSWPieceBio,
                             });
                             if (ok) {
                               alert('Piece updated.');
@@ -1956,6 +2024,7 @@ Red upon white cloth`}
                                     setEditSWPieceAuthor(piece?.author || '');
                                     setEditSWPieceGenre(piece?.genre || 'Poetry');
                                     setEditSWPieceContent(piece?.content || '');
+                                    setEditSWPieceBio(piece?.bio || '');
                                   }}
                                   required
                                 >
@@ -2027,6 +2096,17 @@ Red upon white cloth`}
                                     onChange={(e) => setEditSWPieceContent(e.target.value)}
                                     onKeyDown={handleTextareaTab(editSWPieceContent, setEditSWPieceContent)}
                                     required
+                                  />
+                                </div>
+                                <div className="form-group">
+                                  <label>Author Bio (optional)</label>
+                                  <textarea
+                                    className="form-control"
+                                    rows={3}
+                                    value={editSWPieceBio}
+                                    onChange={(e) => setEditSWPieceBio(e.target.value)}
+                                    onKeyDown={handleTextareaTab(editSWPieceBio, setEditSWPieceBio)}
+                                    placeholder="A short note about the author, shown under the piece."
                                   />
                                 </div>
                                 <button type="submit" className="btn-primary" style={{ marginTop: '10px' }}>Save Changes</button>
@@ -2129,6 +2209,7 @@ Red upon white cloth`}
                     <button onClick={() => setActiveTab('about-litmag')}>About the Lit Mag</button>
                     <button onClick={() => setActiveTab('about-mission')}>Our Mission</button>
                     <button onClick={() => setActiveTab('about-staff')}>Staff / Team</button>
+                    <button onClick={() => setActiveTab('about-stats')}>Stats</button>
                   </div>
                   <div className="footer-col">
                     <span className="footer-tab">Announcements</span>
