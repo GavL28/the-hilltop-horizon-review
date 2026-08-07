@@ -30,6 +30,7 @@ body {
 
 /* Header & Logo */
 .site-header {
+  margin-top: -8px;
   padding: 0 0 14px;
   text-align: center;
   border-bottom: 1px solid var(--accent-border);

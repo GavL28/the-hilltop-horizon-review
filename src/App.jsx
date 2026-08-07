@@ -225,8 +225,7 @@ export default function App() {
   const isNavActive = (group) => {
     const groups = {
       home: ['home'],
-      about: ['about-litmag', 'about-mission', 'about-staff', 'staff-detail'],
-      announcements: ['announcements', 'announcements-archive'],
+      about: ['about-litmag', 'about-mission', 'about-staff', 'staff-detail', 'announcements'],
       issues: ['selected-works', 'selected-works-issue', 'selected-works-piece', 'digital-magazine', 'issues-archive'],
       submit: ['submit-guidelines', 'submit-links'],
       faq: ['faq'],
@@ -266,13 +265,7 @@ export default function App() {
               <li><button className="dropdown-link" onClick={() => setActiveTab('about-litmag')}>About the Lit Mag</button></li>
               <li><button className="dropdown-link" onClick={() => setActiveTab('about-mission')}>Our Mission</button></li>
               <li><button className="dropdown-link" onClick={() => setActiveTab('about-staff')}>Staff / Team</button></li>
-            </ul>
-          </li>
-          <li className="nav-item">
-            <button className={isNavActive('announcements') ? 'nav-link active' : 'nav-link'} onClick={() => setActiveTab('announcements')}>Announcements ▾</button>
-            <ul className="dropdown">
               <li><button className="dropdown-link" onClick={() => setActiveTab('announcements')}>Announcements</button></li>
-              <li><button className="dropdown-link" onClick={() => setActiveTab('announcements-archive')}>Past Announcements</button></li>
             </ul>
           </li>
           <li className="nav-item">
@@ -466,56 +459,34 @@ Red upon white cloth`}
           <div className="content-box fade-in">
             <h2 className="section-title">Announcements</h2>
 
-            {isContentLoading && <p style={{ textAlign: 'center', fontStyle: 'italic', color: 'var(--text-muted)' }}>Loading latest announcement...</p>}
+            {isContentLoading && <p style={{ textAlign: 'center', fontStyle: 'italic', color: 'var(--text-muted)' }}>Loading announcements...</p>}
 
             {!isContentLoading && announcements.length === 0 && (
               <p style={{ textAlign: 'center', fontStyle: 'italic', color: 'var(--text-muted)' }}>No announcements yet. Check back soon!</p>
             )}
 
             {!isContentLoading && announcements.length > 0 && (
-              <div style={{ marginBottom: '50px' }}>
-                <div className="issue-content" style={{ lineHeight: '1.8', fontSize: '1.15rem' }}>
-                  {announcements[0].message}
-                </div>
-                <span style={{ color: 'var(--text-muted)', fontSize: '0.9rem', display: 'block', marginTop: '15px' }}>
-                  Posted {new Date(announcements[0].created_at).toLocaleDateString()}
-                </span>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* PAST ANNOUNCEMENTS */}
-        {activeTab === 'announcements-archive' && (
-          <div className="content-box fade-in">
-            <h2 className="section-title">Past Announcements</h2>
-
-            {isContentLoading && <p style={{ textAlign: 'center', fontStyle: 'italic', color: 'var(--text-muted)' }}>Loading archive...</p>}
-
-            {!isContentLoading && announcements.slice(1).length === 0 && (
-              <p style={{ textAlign: 'center', fontStyle: 'italic', color: 'var(--text-muted)' }}>No past announcements available yet.</p>
-            )}
-
-            {!isContentLoading && announcements.slice(1).length > 0 && (
-              <ul style={{ listStyleType: 'none', padding: 0 }}>
-                {announcements.slice(1).map((a) => (
-                  <li
+              <div>
+                {announcements.map((a, i) => (
+                  <div
                     key={a.id}
                     style={{
-                      marginBottom: '15px',
-                      padding: '15px',
+                      marginBottom: '20px',
+                      padding: i === 0 ? '20px' : '15px',
                       backgroundColor: 'var(--accent-bg)',
                       borderRadius: '4px',
-                      border: '1px solid transparent',
+                      borderLeft: i === 0 ? '4px solid var(--accent)' : 'none',
                     }}
                   >
-                    <div style={{ color: 'var(--text-main)' }}>{a.message}</div>
-                    <span style={{ color: 'var(--text-muted)', fontSize: '0.9rem', display: 'block', marginTop: '5px' }}>
+                    <div className="issue-content" style={{ lineHeight: '1.8', fontSize: '1.15rem' }}>
+                      {a.message}
+                    </div>
+                    <span style={{ color: 'var(--text-muted)', fontSize: '0.9rem', display: 'block', marginTop: '10px' }}>
                       Posted {new Date(a.created_at).toLocaleDateString()}
                     </span>
-                  </li>
+                  </div>
                 ))}
-              </ul>
+              </div>
             )}
           </div>
         )}
@@ -2144,7 +2115,7 @@ Red upon white cloth`}
               </main>
 
               {/* Footer */}
-              <footer className="site-footer" onDoubleClick={() => setActiveTab('admin')}>
+              <footer className="site-footer">
                 <div className="footer-logo">
                   <img src="https://raw.githubusercontent.com/GavL28/the-hilltop-horizon-review/main/public/THHR.logo (1).png" alt="Logo" />
                 </div>
@@ -2162,7 +2133,6 @@ Red upon white cloth`}
                   <div className="footer-col">
                     <span className="footer-tab">Announcements</span>
                     <button onClick={() => setActiveTab('announcements')}>Announcements</button>
-                    <button onClick={() => setActiveTab('announcements-archive')}>Past Announcements</button>
                   </div>
                   <div className="footer-col">
                     <span className="footer-tab">Issues / Selected Works</span>
@@ -2186,7 +2156,7 @@ Red upon white cloth`}
                 </div>
 
                 <div className="footer-bottom">
-                  <span className="footer-copyright">&copy; {new Date().getFullYear()} The Hilltop Horizon Review Literary Magazine. All rights reserved.</span>
+                  <span className="footer-copyright" onDoubleClick={() => setActiveTab('admin')}>&copy; {new Date().getFullYear()} The Hilltop Horizon Review Literary Magazine. All rights reserved.</span>
                   <a
                     className="footer-instagram"
                     href="https://www.instagram.com/hilltop_horizon_review/"
