@@ -317,7 +317,7 @@ export default function App() {
                 Welcome to the digital home of The Hilltop Horizon Review! Run by a team of devoted and eager young writers, we seek to build a world-wide community for young writers to chase their dreams.
               </p>
               <p style={{ fontStyle: 'italic', color: 'var(--text-muted)' }}>
-                — Gavin & Tawanda, Co-Editors-in-Chief
+                — Gavin, Co-Editor in Chief
               </p>
             </div>
 
