@@ -253,7 +253,6 @@ export default function App() {
   const [currentIssue, setCurrentIssue] = useState(null);
   const [pastIssues, setPastIssues] = useState([]);
   const [selectedIssue, setSelectedIssue] = useState(null); // <-- Add this new line!
-  const [announcement, setAnnouncement] = useState(null);
   const [announcements, setAnnouncements] = useState([]);
   const [isContentLoading, setIsContentLoading] = useState(true);
 
@@ -295,7 +294,6 @@ export default function App() {
           setDigitalEditions(data.digitalEditions || []);
           setSelectedWorks(data.selectedWorks || []);
           setAnnouncements(data.announcements || []);
-          if (data.announcement) setAnnouncement(data.announcement);
           restoreRoute(data.selectedWorks || []);
         }
       return data;
@@ -482,23 +480,9 @@ export default function App() {
         </header>
       )}
 
-      {/* Home: announcement banner + hero (above the main content) */}
+      {/* Home: hero (above the main content) */}
       {activeTab === 'home' && (
         <section className="container" style={{ paddingTop: '15px' }}>
-          {/* Dynamic Announcement Banner */}
-          {announcement && (
-            <div className="announcement-banner">
-              <button className="announcement-heading" onClick={() => setActiveTab('announcements')}>
-                <span className="loud-speaker">📢</span> Announcements
-              </button>
-              <div className="announcement-message">{announcement.message}</div>
-              <div className="announcement-date">{formatAnnouncementDate(announcement.created_at)}</div>
-              <button className="announcement-view-all" onClick={() => setActiveTab('announcements')}>
-                (click to view all announcements)
-              </button>
-            </div>
-          )}
-
           <div className="hero-banner">
             <img src="/IMG_6051.jpeg" alt="The Hilltop Horizon Review" className="hero-image" />
             <p className="hero-description">
@@ -533,9 +517,11 @@ export default function App() {
         {activeTab === 'home' && (
           <div>
 
-            {/* Announcements Box (from DB, newest 3 shown on home) */}
-            <div className="content-box" style={{ maxWidth: '1000px', margin: '0 auto 40px auto' }}>
-              <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.6rem', marginBottom: '15px', textAlign: 'center' }}>Announcements</h3>
+            {/* Announcements (from DB, newest 3 shown on home) */}
+            <div className="announcement-banner" style={{ maxWidth: '1000px', margin: '0 auto 40px auto' }}>
+              <button className="announcement-heading" onClick={() => setActiveTab('announcements')}>
+                <span className="loud-speaker">📢</span> Announcements
+              </button>
               {isContentLoading && (
                 <p style={{ textAlign: 'center', fontStyle: 'italic', color: 'var(--text-muted)' }}>Loading announcements...</p>
               )}
@@ -543,17 +529,18 @@ export default function App() {
                 <p style={{ textAlign: 'center', fontStyle: 'italic', color: 'var(--text-muted)' }}>No announcements yet. Check back soon!</p>
               )}
               {announcements.length > 0 && (
-                <ul style={{ paddingLeft: '20px', fontSize: '1rem', color: 'var(--text-main)', display: 'flex', flexDirection: 'column', gap: '18px', margin: 0 }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                   {announcements.slice(0, 3).map((a) => (
-                    <li key={a.id}>
-                      <span style={{ lineHeight: '1.6' }}>{a.message}</span>
-                      <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginTop: '4px' }}>
-                        {formatAnnouncementDate(a.created_at)}
-                      </div>
-                    </li>
+                    <div key={a.id}>
+                      <div className="announcement-message">{a.message}</div>
+                      <div className="announcement-date">{formatAnnouncementDate(a.created_at)}</div>
+                    </div>
                   ))}
-                </ul>
+                </div>
               )}
+              <button className="announcement-view-all" onClick={() => setActiveTab('announcements')}>
+                (click to view all announcements)
+              </button>
             </div>
             
             <h2 className="section-title">Featured Work</h2>
