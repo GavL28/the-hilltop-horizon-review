@@ -74,6 +74,7 @@ function GuidelinesSection({ title, isOpen, onToggle, children }) {
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('home');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [selectedStaff, setSelectedStaff] = useState(null);
   const [openGuidelines, setOpenGuidelines] = useState('general');
   const [selectedWorksIssue, setSelectedWorksIssue] = useState(null);
@@ -253,11 +254,21 @@ export default function App() {
     <div className="app">
       {/* Navigation Bar (top banner) */}
       <nav className="nav-bar">
-        <a href="#" className="nav-logo" onClick={() => setActiveTab('home')} title="The Hilltop Horizon Review">
+        <a href="#" className="nav-logo" onClick={() => { setActiveTab('home'); setMobileMenuOpen(false); }} title="The Hilltop Horizon Review">
           <img src="https://raw.githubusercontent.com/GavL28/the-hilltop-horizon-review/main/public/THHR.logo (1).png" alt="Logo" />
           <span className="nav-brand">The Hilltop Horizon Review</span>
         </a>
-        <ul className="nav-list">
+        <button
+          className="nav-toggle"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label="Toggle menu"
+          aria-expanded={mobileMenuOpen}
+        >
+          <span className="nav-toggle-bar"></span>
+          <span className="nav-toggle-bar"></span>
+          <span className="nav-toggle-bar"></span>
+        </button>
+        <ul className={mobileMenuOpen ? 'nav-list nav-list-open' : 'nav-list'} onClick={() => setMobileMenuOpen(false)}>
           <li className="nav-item">
             <button className={isNavActive('home') ? 'nav-link active' : 'nav-link'} onClick={() => setActiveTab('home')}>Home</button>
           </li>
@@ -310,57 +321,58 @@ export default function App() {
         </header>
       )}
 
+      {/* Home: announcement banner + hero (above the main content) */}
+      {activeTab === 'home' && (
+        <section className="container" style={{ paddingTop: '15px' }}>
+          {/* Dynamic Announcement Banner */}
+          {announcement && (
+            <div style={{
+              backgroundColor: 'var(--accent-bg)',
+              borderLeft: '4px solid var(--text-main)',
+              padding: '15px 20px',
+              marginBottom: '30px',
+              fontStyle: 'italic',
+              display: 'flex',
+              alignItems: 'center'
+            }}>
+              <span className="loud-speaker">📢</span> 
+              <span><strong>Latest Update:</strong> {announcement}</span>
+            </div>
+          )}
+
+          <div className="hero-banner">
+            <img src="/IMG_6051.jpeg" alt="The Hilltop Horizon Review" className="hero-image" />
+            <p className="hero-description">
+              We are an international youth literary magazine, run by high schoolers, for high schoolers.
+            </p>
+          </div>
+        </section>
+      )}
+
+      {/* Editors' Desk (full-width white section) */}
+      {activeTab === 'home' && (
+        <section className="editors-desk">
+          <div style={{ maxWidth: '700px', margin: '0 auto' }}>
+            <h2 className="section-title">From the Co-Editors in Chiefs' Desk</h2>
+            <p style={{ maxWidth: '700px', margin: '0 auto', marginBottom: '20px' }}>
+              Welcome to the digital home of The Hilltop Horizon Review! Run by a team of devoted and eager young writers, we seek to build a world-wide community for young writers to chase their dreams.
+            </p>
+            <p style={{ fontStyle: 'italic', color: 'var(--text-muted)' }}>
+              —{' '}
+              <button className="link-button" onClick={() => setActiveTab('about-staff')}>
+                Gavin, Co-Editor in Chief
+              </button>
+            </p>
+          </div>
+        </section>
+      )}
+
       {/* Main Content Area */}
       <main className="main-content container">
 
         {/* HOME TAB */}
         {activeTab === 'home' && (
           <div>
-
-            {/* Dynamic Announcement Banner */}
-            {announcement && (
-              <div style={{
-                backgroundColor: 'var(--accent-bg)',
-                borderLeft: '4px solid var(--text-main)',
-                padding: '15px 20px',
-                marginBottom: '30px',
-                fontStyle: 'italic',
-                display: 'flex',
-                alignItems: 'center'
-              }}>
-                <span className="loud-speaker">📢</span> 
-                <span><strong>Latest Update:</strong> {announcement}</span>
-              </div>
-            )}
-
-            <div className="hero-banner">
-              <img src="/IMG_6051.jpeg" alt="The Hilltop Horizon Review" className="hero-image" />
-              <p className="hero-description">
-                We are an international youth literary magazine, run by high schoolers, for high schoolers.
-              </p>
-            </div>
-
-            <div
-              className="content-box"
-              style={{
-                textAlign: 'center',
-                width: '100vw',
-                marginLeft: 'calc(50% - 50vw)',
-                backgroundColor: '#ffffff',
-                padding: '40px 30px',
-              }}
-            >
-              <h2 className="section-title">From the Co-Editors in Chiefs' Desk</h2>
-              <p style={{ maxWidth: '700px', margin: '0 auto', marginBottom: '20px' }}>
-                Welcome to the digital home of The Hilltop Horizon Review! Run by a team of devoted and eager young writers, we seek to build a world-wide community for young writers to chase their dreams.
-              </p>
-              <p style={{ fontStyle: 'italic', color: 'var(--text-muted)' }}>
-                —{' '}
-                <button className="link-button" onClick={() => setActiveTab('about-staff')}>
-                  Gavin, Co-Editor in Chief
-                </button>
-              </p>
-            </div>
 
             {/* Announcements Box */}
           <div className="content-box" style={{ maxWidth: '1000px', margin: '0 auto 40px auto' }}>
@@ -530,14 +542,14 @@ Red upon white cloth`}
         {activeTab === 'about-stats' && (
           <div className="content-box fade-in">
             <h2 className="section-title">Stats</h2>
-            <div style={{ display: 'flex', justifyContent: 'center', gap: '40px', flexWrap: 'wrap', marginTop: '30px' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '60px', flexWrap: 'wrap', marginTop: '30px' }}>
               <div style={{ padding: '30px 45px', backgroundColor: 'var(--accent-bg)', borderRadius: '8px', textAlign: 'center', minWidth: '240px' }}>
-                <div style={{ fontSize: '3rem', fontFamily: 'var(--font-heading)', fontWeight: 700, color: 'var(--text-main)' }}>—</div>
-                <div style={{ fontSize: '1.1rem', fontWeight: 600, marginTop: '8px', color: 'var(--text-main)' }}>Submissions Received</div>
+                <div style={{ fontSize: '3rem', fontFamily: 'var(--font-heading)', fontWeight: 700, color: 'var(--text-main)', lineHeight: 1 }}>—</div>
+                <div style={{ fontSize: '1.1rem', fontWeight: 600, marginTop: '20px', color: 'var(--text-main)' }}>Submissions Received</div>
               </div>
               <div style={{ padding: '30px 45px', backgroundColor: 'var(--accent-bg)', borderRadius: '8px', textAlign: 'center', minWidth: '240px' }}>
-                <div style={{ fontSize: '3rem', fontFamily: 'var(--font-heading)', fontWeight: 700, color: 'var(--text-main)' }}>4</div>
-                <div style={{ fontSize: '1.1rem', fontWeight: 600, marginTop: '8px', color: 'var(--text-main)' }}>Nations Reached</div>
+                <div style={{ fontSize: '3rem', fontFamily: 'var(--font-heading)', fontWeight: 700, color: 'var(--text-main)', lineHeight: 1 }}>4</div>
+                <div style={{ fontSize: '1.1rem', fontWeight: 600, marginTop: '20px', color: 'var(--text-main)' }}>Nations Reached</div>
               </div>
             </div>
           </div>
