@@ -184,8 +184,8 @@ body {
   display: block;
 }
 
-/* Mobile (≤880px): the hamburger menu is shown; subtab lists open on tap as an
-   overlay on top of the main tab titles below them, rather than pushing them aside */
+/* Mobile (≤880px): the hamburger menu is shown; a subtab list opens below its
+   main tab name on tap, leaving the tab name clickable to close it again */
 @media (max-width: 880px) {
   .nav-toggle {
     display: flex;
@@ -240,7 +240,7 @@ body {
   .nav-item > .dropdown {
     display: none;
     position: absolute;
-    top: 0;
+    top: 100%;
     left: 0;
     right: 0;
     min-width: 0;
