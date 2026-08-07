@@ -242,6 +242,7 @@ export default function App() {
       <nav className="nav-bar">
         <a href="#" className="nav-logo" onClick={() => setActiveTab('home')} title="The Hilltop Horizon Review">
           <img src="https://raw.githubusercontent.com/GavL28/the-hilltop-horizon-review/main/public/THHR.logo (1).png" alt="Logo" />
+          <span className="nav-brand">The Hilltop Horizon Review</span>
         </a>
         <ul className="nav-list">
           <li className="nav-item">
