@@ -91,12 +91,13 @@ body {
 
 .nav-link {
   display: block;
-  padding: 16px 18px;
+  padding: 16px 12px;
   color: var(--text-main);
   text-decoration: none;
-  font-size: 0.9rem;
-  letter-spacing: 0.05em;
+  font-size: 0.85rem;
+  letter-spacing: 0.03em;
   text-transform: uppercase;
+  white-space: nowrap;
   background: none;
   border: none;
   cursor: pointer;
@@ -106,6 +107,14 @@ body {
 
 .nav-link:hover, .nav-item:hover > .nav-link {
   color: var(--text-muted);
+}
+
+@media (max-width: 880px) {
+  .nav-link {
+    padding: 14px 8px;
+    font-size: 0.78rem;
+    letter-spacing: 0.02em;
+  }
 }
 
 .dropdown {
@@ -171,7 +180,7 @@ body {
 
 .hero-image {
   display: block;
-  max-width: 100%;
+  max-width: 480px;
   height: auto;
   margin: 0 auto 20px auto;
   border-radius: 4px;
@@ -273,6 +282,18 @@ body {
   box-shadow: none;
   margin-bottom: 30px;
   text-align: left; /* Left-align text blocks (FAQ, Join Us, etc.) instead of centered */
+}
+
+.content-box p {
+  margin-bottom: 15px;
+  line-height: 1.75;
+  text-wrap: pretty;
+}
+
+.content-box h2,
+.content-box h3,
+.content-box h4 {
+  text-wrap: balance;
 }
 
 .form-group {
