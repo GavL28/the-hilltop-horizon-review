@@ -1273,8 +1273,8 @@ export default function App() {
 
             <div style={{ textAlign: 'center' }}>
               <p style={{ marginBottom: '15px', fontStyle: 'italic' }}>Ready to apply?</p>
-              <a href="#" className="btn-primary" style={{ textDecoration: 'none', display: 'inline-block' }}>
-                Application Form Coming Soon... →
+              <a href="https://docs.google.com/forms/d/e/1FAIpQLSf7t94PioPBZ6vYIsTg8KTuazKuFvMfB0N8BkygoGE2HI-wow/viewform?usp=sharing&ouid=115181364077200728162" className="btn-primary" style={{ textDecoration: 'none', display: 'inline-block' }} target="_blank" rel="noopener noreferrer">
+                JS Application Form →
               </a>
             </div>
           </div>
