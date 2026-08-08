@@ -543,14 +543,10 @@ export default function App() {
               </button>
             </div>
             
-            <h2 className="section-title">Featured Work</h2>
+            <h2 className="section-title">Featured Piece</h2>
             <div className="featured-poem">
-              <h3 className="poem-title">Sample Piece</h3>
-              <p className="poem-body">
-                {`Spurts of violent blue
-Shining of teasing steel through
-Red upon white cloth`}
-              </p>
+              <h3 className="poem-title">Editor's Choice</h3>
+              <p className="poem-body">To be determined...</p>
             </div>
           </div>
         )}
