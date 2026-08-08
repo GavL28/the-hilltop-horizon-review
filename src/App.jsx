@@ -548,12 +548,6 @@ export default function App() {
               <h3 className="poem-title">Editor's Choice</h3>
               <p className="poem-body">To be determined...</p>
             </div>
-
-            <div className="home-gallery">
-              <img src="/chatgpt-1.png" alt="" className="home-gallery-img" />
-              <img src="/chatgpt-2.png" alt="" className="home-gallery-img" />
-              <img src="/chatgpt-3.png" alt="" className="home-gallery-img" />
-            </div>
           </div>
         )}
 
