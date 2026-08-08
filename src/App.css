@@ -18,8 +18,12 @@
   padding: 0;
 }
 
+html {
+  background-color: #FEF3CD; /* Parchment behind the translucent hilltop */
+}
+
 body {
-  background-color: #FEF3CD; /* Parchment fallback behind the faded hilltop */
+  background: transparent;
 }
 
 body::before {
@@ -33,7 +37,7 @@ body::before {
   background-size: cover;
   background-repeat: repeat;
   background-position: center;
-  opacity: 0.35; /* more transparent */
+  opacity: 0.55; /* semi-transparent */
   z-index: -1;
   pointer-events: none;
 }
