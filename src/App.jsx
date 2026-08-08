@@ -548,6 +548,12 @@ export default function App() {
               <h3 className="poem-title">Editor's Choice</h3>
               <p className="poem-body">To be determined...</p>
             </div>
+
+            <div className="home-gallery">
+              <img src="/chatgpt-1.png" alt="" className="home-gallery-img" />
+              <img src="/chatgpt-2.png" alt="" className="home-gallery-img" />
+              <img src="/chatgpt-3.png" alt="" className="home-gallery-img" />
+            </div>
           </div>
         )}
 
@@ -1274,7 +1280,7 @@ export default function App() {
             <div style={{ textAlign: 'center' }}>
               <p style={{ marginBottom: '15px', fontStyle: 'italic' }}>Ready to apply?</p>
               <a href="https://docs.google.com/forms/d/e/1FAIpQLSf7t94PioPBZ6vYIsTg8KTuazKuFvMfB0N8BkygoGE2HI-wow/viewform?usp=sharing&ouid=115181364077200728162" className="btn-primary" style={{ textDecoration: 'none', display: 'inline-block' }} target="_blank" rel="noopener noreferrer">
-                JS Application Form →
+                Application form →
               </a>
             </div>
           </div>
