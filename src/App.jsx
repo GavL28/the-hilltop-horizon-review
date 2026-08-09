@@ -254,7 +254,6 @@ export default function App() {
   const [pastIssues, setPastIssues] = useState([]);
   const [selectedIssue, setSelectedIssue] = useState(null); // <-- Add this new line!
   const [announcements, setAnnouncements] = useState([]);
-  const [totalVisits, setTotalVisits] = useState(null);
   const [isContentLoading, setIsContentLoading] = useState(true);
 
   // Restore a selected-works sub-view (issue or piece) from its URL id
@@ -311,29 +310,6 @@ export default function App() {
       setIsContentLoading(false);
     }
     loadContent();
-  }, []);
-
-  // Count a new visit once per browser session (reloads don't inflate the counter)
-  useEffect(() => {
-    let firstVisit = false;
-    try {
-      if (!localStorage.getItem('thhr_visited')) {
-        localStorage.setItem('thhr_visited', '1');
-        firstVisit = true;
-      }
-    } catch (e) {
-      firstVisit = true;
-    }
-    async function trackAndLoad() {
-      try {
-        const res = await fetch('/api/stats', { method: firstVisit ? 'POST' : 'GET' });
-        const data = await res.json();
-        if (data.success) setTotalVisits(data.totalVisits);
-      } catch (e) {
-        // ignore tracking errors
-      }
-    }
-    trackAndLoad();
   }, []);
 
   // Keep the URL hash in sync with the active tab so reloads stay on the same
@@ -739,10 +715,6 @@ export default function App() {
           <div className="content-box fade-in">
             <h2 className="section-title">Stats</h2>
             <div style={{ display: 'flex', justifyContent: 'center', gap: '60px', flexWrap: 'wrap', marginTop: '30px' }}>
-              <div style={{ padding: '30px 45px', backgroundColor: 'var(--accent-bg)', borderRadius: '8px', textAlign: 'center', minWidth: '240px' }}>
-                <div style={{ fontSize: '3rem', fontFamily: 'var(--font-heading)', fontWeight: 700, color: 'var(--text-main)', lineHeight: 1 }}>{totalVisits ?? '—'}</div>
-                <div style={{ fontSize: '1.1rem', fontWeight: 600, marginTop: '20px', color: 'var(--text-main)' }}>Total Site Visits</div>
-              </div>
               <div style={{ padding: '30px 45px', backgroundColor: 'var(--accent-bg)', borderRadius: '8px', textAlign: 'center', minWidth: '240px' }}>
                 <div style={{ fontSize: '3rem', fontFamily: 'var(--font-heading)', fontWeight: 700, color: 'var(--text-main)', lineHeight: 1 }}>—</div>
                 <div style={{ fontSize: '1.1rem', fontWeight: 600, marginTop: '20px', color: 'var(--text-main)' }}>Submissions Received</div>
