@@ -741,7 +741,7 @@ export default function App() {
             <div style={{ display: 'flex', justifyContent: 'center', gap: '60px', flexWrap: 'wrap', marginTop: '30px' }}>
               <div style={{ padding: '30px 45px', backgroundColor: 'var(--accent-bg)', borderRadius: '8px', textAlign: 'center', minWidth: '240px' }}>
                 <div style={{ fontSize: '3rem', fontFamily: 'var(--font-heading)', fontWeight: 700, color: 'var(--text-main)', lineHeight: 1 }}>{totalVisits ?? '—'}</div>
-                <div style={{ fontSize: '1.1rem', fontWeight: 600, marginTop: '20px', color: 'var(--text-main)' }}>Total Visits</div>
+                <div style={{ fontSize: '1.1rem', fontWeight: 600, marginTop: '20px', color: 'var(--text-main)' }}>Total Site Visits</div>
               </div>
               <div style={{ padding: '30px 45px', backgroundColor: 'var(--accent-bg)', borderRadius: '8px', textAlign: 'center', minWidth: '240px' }}>
                 <div style={{ fontSize: '3rem', fontFamily: 'var(--font-heading)', fontWeight: 700, color: 'var(--text-main)', lineHeight: 1 }}>—</div>
