@@ -350,6 +350,11 @@ export default function App() {
     document.title = `The Hilltop Horizon Review | ${page}`;
   }, [activeTab, selectedStaff, selectedWorksIssue, selectedWorksPiece, selectedIssue]);
 
+  // Scroll back to the top whenever the tab changes, so you don't land mid-page
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [activeTab]);
+
   // React to manual hash edits / back-forward navigation
   useEffect(() => {
     const onHashChange = () => {
