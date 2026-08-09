@@ -5,7 +5,7 @@ import { Editor } from '@tinymce/tinymce-react';
 
 // Centralized Staff Data Array
 const staffData = [
-  { id: 'gavin', name: 'Gavin Liu', pronouns: 'He/Him', grade: 'Junior', role: 'Co-Editor in Chief & IT Developer', shortBio: 'Gavin Liu is a writer (mainly poetry), musician, visual artist, journalist, and avid magnet collector', fullBio: 'Gavin Liu is a writer (mainly poetry), musician, visual artist, journalist, and avid magnet collector from Sammamish, WA. He spends his time writing, playing the piano, gaming, on walks, overthinking, or doing nothing. He has over 200 magnets, which may or may not be a good financial investment but it’s too late to turn back now.', photo: '/IMG_1463.jpeg' },
+  { id: 'gavin', name: 'Gavin Liu', pronouns: 'He/Him', grade: 'Junior', role: 'Co-Editor in Chief &\nIT Developer', shortBio: 'Gavin Liu is a writer (mainly poetry), musician, visual artist, journalist, and avid magnet collector', fullBio: 'Gavin Liu is a writer (mainly poetry), musician, visual artist, journalist, and avid magnet collector from Sammamish, WA. He spends his time writing, playing the piano, gaming, on walks, overthinking, or doing nothing. He has over 200 magnets, which may or may not be a good financial investment but it’s too late to turn back now.', photo: '/IMG_1463.jpeg' },
   { id: 'tawanda', name: 'Tawanda Sibanda', pronouns: 'He/Him', grade: 'Senior', role: 'Co-Editor in Chief & Internal Operations Secretary', shortBio: 'Tawanda Sibanda is mainly a poet and artist from Allentown, Pennsylvania. He spends his time running, working out, baking treats, bopping to J-city pop, or staying up too late to binge anime.', fullBio: 'Tawanda Sibanda is mainly a poet and artist from Allentown, Pennsylvania. He spends his time running, working out, baking treats, bopping to J-city pop, or staying up too late to binge anime.', photo: '/Tawanda Sibanda.jpeg' },
   { id: 'sherry', name: 'Sherry Wang', pronouns: 'She/Her', grade: 'Junior', role: 'Poetry Editor & Social Media Director', shortBio: 'Sherry Wang is a teenage poet, musician, and public speaker from Monmouth County, New Jersey.', fullBio: 'Sherry Wang is a teenage poet, musician, and public speaker from Monmouth County, New Jersey. She began writing in the fifth grade after discovering the works of Shakespeare, whose plays and sonnets sparked her love of language. When she is not searching for her next inspiration, Sherry can be found performing on stage, spending weekends at Speech & Debate tournaments, or eating more sushi than she would like to admit.', photo: '/Sherry Wang..jpg'  },
   { id: 'mia-l', name: 'Mia Lucke', pronouns: 'She/Her', grade: 'Senior', role: 'Poetry Editor & Art Editor', shortBio: 'Mia Lucke is a poet and visual artist. Adopted from Taiwan, she currently lives in Milwaukee, Wisconsin.', fullBio: 'Mia Lucke is a poet and visual artist. Adopted from Taiwan, she currently lives in Milwaukee, Wisconsin. She spends her time writing, doing art, or going on walks. She often can be found performing her poetry for open mics, marathons, or fundraisers. The topics of her writings range from mental health, to biblical and mythological stories, or modern day society and politics. Her poetry focuses on processing both herself and the world around her.', photo: '/Mia_Lucke.jpg' },
@@ -651,7 +651,7 @@ export default function App() {
                 <p style={{ fontSize: '1.1rem', color: 'var(--text-muted)', fontStyle: 'italic', marginBottom: '15px' }}>
                   {selectedStaff.pronouns} • {selectedStaff.grade}
                 </p>
-                <h4>{selectedStaff.role}</h4>
+                <h4 style={{ whiteSpace: 'pre-line' }}>{selectedStaff.role}</h4>
               </div>
             </div>
 
@@ -1228,7 +1228,7 @@ export default function App() {
               </div>
               <div>
                 <h4 style={{ fontSize: '1.2rem', marginBottom: '5px' }}>Fiction Editor</h4>
-                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Currently Seeking: Two. Edits fiction submissions and provides detailed, specific, and in-depth constructive feedback for every piece assigned. Communicates and works together with fellow fiction editors to select a collection of fiction pieces to be published each issue.</p>
+                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Currently Seeking: One. Edits fiction submissions and provides detailed, specific, and in-depth constructive feedback for every piece assigned. Communicates and works together with fellow fiction editors to select a collection of fiction pieces to be published each issue.</p>
                 <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Recommended qualifications: Experience in fiction is a required minimum. Experience editing fiction is a definete plus. Willingsness to work and communicate with fellow editors. Come consistently to meetings. & more.</p>
               </div>
               <div>

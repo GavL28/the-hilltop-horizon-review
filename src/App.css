@@ -410,6 +410,7 @@ body {
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  white-space: pre-line;
 }
 
 /* Forms & Guidelines */
