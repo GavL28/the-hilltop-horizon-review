@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 import { Turnstile } from '@marsidev/react-turnstile';
 import { Editor } from '@tinymce/tinymce-react';
@@ -12,11 +12,11 @@ const staffData = [
   { id: 'grey', name: 'Grey Raymonds', pronouns: 'He/Him', grade: 'Senior', role: 'Poetry Editor', shortBio: 'Coming Soon...', fullBio: 'Full biography coming soon...' },
   { id: 'brielle', name: 'Brielle Tandy', pronouns: 'She/Her', grade: 'Senior', role: 'Poetry Editor', shortBio: 'Coming Soon...', fullBio: 'Full biography coming soon...' },
   { id: 'jayne', name: 'Jayne Kim', pronouns: 'She/Her', grade: 'Senior', role: 'Nonfiction Editor & International Representative (South Korea)', shortBio: 'Coming Soon...', fullBio: 'Full biography coming soon...' },
-  { id: 'stella', name: 'Stella Goldstein', pronouns: 'She/Her', grade: 'Junior', role: 'Nonfiction Editor & International Representative (Japan)', shortBio: 'Stella Goldstein is an aspiring journalist, poet, and fiction author. Born in Shanghai, she lived in Miami for eleven years and now lives in Tokyo.', fullBio: 'Stella Goldstein is an aspiring journalist, poet, and fiction author. Born in Shanghai, she lived in Miami for eleven years and now lives in Tokyo with her dad. Her writing focuses mainly on the teenager experience—eating disorders and social pressure are prominent topics. Outside of writing, she likes biking, yoga, sewing, and drinking matcha.' },
+  { id: 'stella', name: 'Stella Goldstein', pronouns: 'She/Her', grade: 'Junior', role: 'Nonfiction Editor & International Representative (Japan)', shortBio: 'Stella Goldstein is an aspiring journalist, poet, and fiction author. Born in Shanghai, she lived in Miami for eleven years and now lives in Tokyo.', fullBio: 'Stella Goldstein is an aspiring journalist, poet, and fiction author. Born in Shanghai, she lived in Miami for eleven years and now lives in Tokyo with her dad. Her writing focuses mainly on the teenager experience—eating disorders and social pressure are prominent topics. Outside of writing, she likes biking, yoga, sewing, and drinking matcha.', photo: '/Stella Goldstein Headshot.jpg' },
   { id: 'aster', name: 'Aster Ellis', pronouns: 'They/Them', grade: 'Senior', role: 'Nonfiction Editor', shortBio: 'Aster Ellis is a young writer from Memphis, Tennessee. When not writing, they enjoy playing the guitar and sitting in nature.', fullBio: 'Aster Ellis is a young writer from Memphis, Tennessee. When not writing, they enjoy playing the guitar and sitting in nature.', photo: '/Aster.jpg' },
   { id: 'tallulah', name: 'Tallulah Dolan', pronouns: 'She/Her', grade: 'Junior', role: 'Fiction Editor & External Operations Secretary', shortBio: 'Coming Soon...', fullBio: 'Full biography coming soon...' },
   { id: 'juliana', name: 'Juliana Grindel', pronouns: 'She/Her', grade: 'Senior', role: 'Fiction Editor', shortBio: 'Juliana Grindel is a fiction writer, musician, fencer, and artist from Cheshire, Connecticut.', fullBio: 'Juliana Grindel is a fiction writer, musician, fencer, and artist from Cheshire, Connecticut. She has been writing since middle school, and focuses on speculative and flash fiction with psychological themes. Her goal in writing is to write a long form piece of psychological fiction. When she is not writing, she spends her free time playing clarinet, reading, or collecting blind boxes. ', photo: '/Juliana Grindel.jpeg' },
-  { id: 'mia-s', name: 'Mia Song', pronouns: 'She/Her', grade: 'Senior', role: 'Fiction Editor & Website Manager', shortBio: 'Coming Soon...', fullBio: 'Full biography coming soon...' },
+  { id: 'mia-s', name: 'Mia Song', pronouns: 'She/Her', grade: 'Senior', role: 'Fiction Editor', shortBio: 'Coming Soon...', fullBio: 'Full biography coming soon...' },
   { id: 'che', name: 'Che Holts', pronouns: 'He/Him', grade: 'Junior', role: 'Photography Editor', shortBio: 'Che is Californian fiction writer, and athlete. He will tend to draw most inspiration from comic books and indie music.', fullBio: 'Che is Californian fiction writer, and athlete. He will tend to draw most inspiration from comic books and indie music. He started writing in fifth grade during lockdown just because he could and killed time. He loves and cherishes his pet beetles lovingly named Hamster and Dinosaur. Aspires and hopes  to one day  write a superhero novel that can be taught in schools and make people more excited about writing.', photo: '/Che Holts.jpeg' },
   { id: 'rubbi', name: 'Rubbi Chen', pronouns: 'She/Her', grade: 'Senior', role: 'International Representative (China)', shortBio: 'Rubbi is a fiction writer from Shanghai, China. Normally she writes some teenage queer romance, body horror (especially splatterpunk!) and suspense fiction.', fullBio: 'Rubbi is a fiction writer from Shanghai, China. Normally she writes some teenage queer romance, body horror (especially splatterpunk!) and suspense fiction. She started writing in primary school and her first work was a yaoi smut. Except for writing, she claims to have no other artistic talent, so she spends most of her time doing anthropology and queer studies research, advocating for women’s rights, watching women’s hockey, fantasizing about her future wife, and being a cat mom. ', photo: '/Rubbi Chen.jpg' },
 ];
@@ -312,8 +312,14 @@ export default function App() {
     loadContent();
   }, []);
 
-  // Keep the URL hash in sync with the active tab so reloads stay on the same page
+  // Keep the URL hash in sync with the active tab so reloads stay on the same
+  // page and the browser back/forward buttons move between tabs within the site.
+  const skipHashSyncRef = useRef(true);
   useEffect(() => {
+    if (skipHashSyncRef.current) {
+      skipHashSyncRef.current = false;
+      return;
+    }
     let target;
     if (activeTab === 'selected-works-issue' || activeTab === 'selected-works-piece') {
       // Preserve the object id already in the URL until the sub-view is restored
@@ -324,9 +330,9 @@ export default function App() {
     } else {
       target = `#/${activeTab}`;
     }
-    if (window.location.hash !== target) {
-      window.history.replaceState(null, '', target);
-    }
+    // Already on this route (initial restore / back-forward): don't add a duplicate entry.
+    if (getHashRoute().tab === activeTab) return;
+    window.history.pushState(null, '', target);
   }, [activeTab, selectedWorksIssue, selectedWorksPiece]);
 
   // Keep the browser tab title in sync with the active page
