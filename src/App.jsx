@@ -580,7 +580,7 @@ export default function App() {
                     {' '}on July 8th, 2026.
                   </strong>
                 </p>
-                <p>We are a team of 14 Reynolds Young Writers Workshop Class of 2026 alumni from all over the world, including the U.S., China, Japan, and South Korea.</p>
+                <p>We are a team of 15 Reynolds Young Writers Workshop Class of 2026 alumni from all over the world, including the U.S., China, Japan, and South Korea.</p>
                 <p>We accept submissions from high schoolers (ages 14-19).</p>
                 <p>We publish a new issue every two months.</p>
                 <p>If your submission(s) is selected to be published, you will be notified and your work and bio will be added to the issue. Each piece you submit will be carefully reviewed by our wonderful editors, who will provide editing, and detailed, specific, and in-depth feedback.</p>
@@ -617,7 +617,7 @@ export default function App() {
           <div>
             <h2 className="section-title">Editorial Board</h2>
             <p style={{ textAlign: 'center', marginBottom: '10px', color: 'var(--text-muted)' }}>
-              Our masthead consists of 14 dedicated high school editors worldwide. Click any profile to learn more.
+              Our masthead consists of 15 dedicated high school editors worldwide. Click any profile to learn more.
             </p>
             
             <div className="staff-grid">
