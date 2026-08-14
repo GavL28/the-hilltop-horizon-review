@@ -435,6 +435,54 @@ body {
   text-wrap: balance;
 }
 
+.faq-item {
+  border: 1px solid var(--accent-border);
+  border-radius: 6px;
+  margin-bottom: 10px;
+  background-color: var(--card-bg);
+  overflow: hidden;
+}
+
+.faq-question {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: 600;
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-main);
+}
+
+.faq-question:hover,
+.faq-question:focus-visible {
+  background-color: var(--accent-bg);
+  outline: none;
+}
+
+.faq-toggle {
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.faq-answer {
+  padding: 2px 20px 18px;
+  line-height: 1.75;
+  color: var(--text-main);
+}
+
+.faq-answer p {
+  margin: 0;
+}
+
 .form-group {
   margin-bottom: 20px;
 }
