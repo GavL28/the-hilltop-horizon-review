@@ -22,6 +22,28 @@ const staffData = [
   { id: 'rubbi', name: 'Rubbi Chen', pronouns: 'She/Her', grade: 'Senior', role: 'International Representative (China)', shortBio: 'Rubbi is a fiction writer from Shanghai, China. Normally she writes some teenage queer romance, body horror (especially splatterpunk!) and suspense fiction.', fullBio: 'Rubbi is a fiction writer from Shanghai, China. Normally she writes some teenage queer romance, body horror (especially splatterpunk!) and suspense fiction. She started writing in primary school and her first work was a yaoi smut. Except for writing, she claims to have no other artistic talent, so she spends most of her time doing anthropology and queer studies research, advocating for women’s rights, watching women’s hockey, fantasizing about her future wife, and being a cat mom. ', photo: '/Rubbi Chen.jpg' },
 ];
 
+// Frequently Asked Questions (accordion content)
+const FAQ_ITEMS = [
+  { q: 'Does it cost money to submit?', a: 'No, submissions are completely free.' },
+  { q: 'Can I submit multiple pieces?', a: 'Yes, but each genre has its specific limits. Check the specific guidelines for more details.' },
+  { q: 'Am I eligible to submit?', a: 'Any teen ages 14-19 or in high school can submit.' },
+  { q: 'How do I submit?', a: 'Read through the guidelines tab, then go to the submissions tab and fill the form.' },
+  { q: 'Do you accept international submissions?', a: "Yes, from any nation. We're an international youth literary magazine, we seek to grow worldwide. (Check out the International Representative Position in the Join Us tab.)" },
+  { q: 'Do you accept non-English submissions?', a: 'As of now, we do not accept fully non-English submissions, but this may change in the future. Having non-English characters or phrases to a limited extent in a majority English submission is fine, as long as you explain and provide a translation on the submission form.' },
+  { q: 'What are the word counts and limits?', a: 'Check the guidelines tab.' },
+  { q: 'How should I format my submission / document?', a: 'Check the guidelines tab.' },
+  { q: 'Do you accept simultaneous submissions?', a: 'For the first issue, no. Starting from the second issue, yes. (Make sure to immediately contact us if your submission is accepted elsewhere so we can withdraw your submission. Contact info can be found in the contact tab.)' },
+  { q: 'How will each issue be published?', a: 'Online, on this website, in the Issues tab.' },
+  { q: 'Who owns the rights to my work after publication?', a: 'You do! You retain 100% ownership of your work. We only ask for First Serial Rights, meaning we get to be the first to publish your work. After it appears in our issue, all rights revert back to you immediately. You are free to republish, re-share, or include your work in a future collection whenever you like.' },
+  { q: 'Do I need parental or guardian permission to submit?', a: 'Yes, if you are under 18.' },
+  { q: 'Can I use a pen name?', a: 'Yes, but please enter your real full name into the submission form, and request a pen name to be used for if your work is selected.' },
+  { q: 'When will I hear back about my submission?', a: 'Response time varies, but generally ranges from a week or two to a month.' },
+  { q: 'Will I receive feedback?', a: 'Yes, no matter if your piece is selected to be published or not, you will receive detailed, specific, and in-depth feedback from one of our editors.' },
+  { q: 'How often do issues come out?', a: 'Issues come out every two months, except the first issue (1 month) and certain times of the year, e.g. holidays, AP & IB & Finals testing.' },
+  { q: 'What will communication primarily be through?', a: 'Public announcements will be posted on this website and our official instagram account, but communication typically will be through email.' },
+  { q: 'Can I submit to multiple genres / sections?', a: 'Yes; you can technically submit 20 or even more pieces total across the genres and sections. However, you may only fill one submission form per genre / section each issue.' },
+];
+
 // Genres used by Selected Works (section subheadings)
 const SELECTED_WORKS_GENRES = ['Poetry', 'Fiction', 'Nonfiction', 'Art', 'Photography'];
 
@@ -256,6 +278,7 @@ export default function App() {
   const [selectedIssue, setSelectedIssue] = useState(null); // <-- Add this new line!
   const [announcements, setAnnouncements] = useState([]);
   const [isContentLoading, setIsContentLoading] = useState(true);
+  const [openFaq, setOpenFaq] = useState(null);
 
   // Restore a selected-works sub-view (issue or piece) from its URL id
   const restoreRoute = (works) => {
@@ -1034,50 +1057,15 @@ export default function App() {
         {activeTab === 'faq' && (
           <div className="content-box">
             <h2 className="section-title">Frequently Asked Questions</h2>
-            <h4 style={{ fontFamily: 'var(--font-heading)', marginTop: '15px' }}>Does it cost money to submit?</h4>
-            <p style={{ marginBottom: '15px' }}>No, submissions are completely free.</p>
-            <h4 style={{ fontFamily: 'var(--font-heading)', marginTop: '15px' }}>Can I submit multiple pieces?</h4>
-            <p>Yes, but each genre has its specific limits. Check the specific guidelines for more details.</p>
-
-            <h4 style={{ fontFamily: 'var(--font-heading)', marginTop: '15px' }}>Am I eligible to submit?</h4>
-            <p style={{ marginBottom: '15px' }}>Any teen ages 14-19 or in high school can submit.</p>
-            <h4 style={{ fontFamily: 'var(--font-heading)', marginTop: '15px' }}>How do I submit?</h4>
-            <p>Read through the guidelines tab, then go to the submissions tab and fill the form.</p>
-
-            <h4 style={{ fontFamily: 'var(--font-heading)', marginTop: '15px' }}>Do you accept international submissions?</h4>
-            <p style={{ marginBottom: '15px' }}>Yes, from any nation. We're an international youth literary magazine, we seek to grow worldwide. (Check out the International Representative Position in the Join Us tab.)</p>
-            <h4 style={{ fontFamily: 'var(--font-heading)', marginTop: '15px' }}>Do you accept non-English submissions?</h4>
-            <p>As of now, we do not accept fully non-English submissions, but this may change in the future. Having non-English characters or phrases to a limited extent in a majority English submission is fine, as long as you explain and provide a translation on the submission form.</p>
-          
-            <h4 style={{ fontFamily: 'var(--font-heading)', marginTop: '15px' }}>What are the word counts and limits?</h4>
-            <p style={{ marginBottom: '15px' }}>Check the guidelines tab.</p>
-            <h4 style={{ fontFamily: 'var(--font-heading)', marginTop: '15px' }}>How should I format my submission / document?</h4>
-            <p>Check the guidelines tab.</p>
-
-            <h4 style={{ fontFamily: 'var(--font-heading)', marginTop: '15px' }}>Do you accept simultaneous submissions?</h4>
-            <p style={{ marginBottom: '15px' }}>For the first issue, no. Starting from the second issue, yes. (Make sure to immediately contact us if your submission is accepted elsewhere so we can withdraw your submission. Contact info can be found in the contact tab.)</p>
-            <h4 style={{ fontFamily: 'var(--font-heading)', marginTop: '15px' }}>How will each issue be published?</h4>
-            <p>Online, on thi website, in the Issues tab.</p>
-          
-            <h4 style={{ fontFamily: 'var(--font-heading)', marginTop: '15px' }}>Who owns the rights to my work after publication?</h4>
-            <p style={{ marginBottom: '15px' }}>You do! You retain 100% ownership of your work. We only ask for First Serial Rights, meaning we get to be the first to publish your work. After it appears in our issue, all rights revert back to you immediately. You are free to republish, re-share, or include your work in a future collection whenever you like.</p>
-            <h4 style={{ fontFamily: 'var(--font-heading)', marginTop: '15px' }}>Do I need parental or guardian permission to submit?</h4>
-            <p>Yes, if you are under 18.</p>
-
-            <h4 style={{ fontFamily: 'var(--font-heading)', marginTop: '15px' }}>Can I use a pen name?</h4>
-            <p style={{ marginBottom: '15px' }}>Yes, but please enter you real full name into the submission form, and request a pen name to be used for if your work is selected.</p>
-            <h4 style={{ fontFamily: 'var(--font-heading)', marginTop: '15px' }}>When will I hear back about my submission?</h4>
-            <p>Response time varies, but generally ranges from a week or two to a month.</p>
-          
-            <h4 style={{ fontFamily: 'var(--font-heading)', marginTop: '15px' }}>Will I receive feedback?</h4>
-            <p style={{ marginBottom: '15px' }}>Yes, no matter if your piece is selected to be published or not, you will receive detailed, specific, and in-depth feedback from one of our editors.</p>
-            <h4 style={{ fontFamily: 'var(--font-heading)', marginTop: '15px' }}>How often do issues come out?</h4>
-            <p>Issues come out every two months, except the first issue (1 month) and certain times of the year, e.g. holidays, AP & IB & Finals testing.</p>
-          
-            <h4 style={{ fontFamily: 'var(--font-heading)', marginTop: '15px' }}>What will communication primarily be through?</h4>
-            <p style={{ marginBottom: '15px' }}>Public announcements will be posted on this website and our official instagram account, but communication typically will be through email.</p>
-            <h4 style={{ fontFamily: 'var(--font-heading)', marginTop: '15px' }}>Can I submit to multiple genres / secitons?</h4>
-            <p>Yes; you can technically submit 20 or even more pieces total across the genres and sections. However, you may only fill one submission form per genre / section each issue.</p>
+            {FAQ_ITEMS.map((item, i) => (
+              <div key={i} className="faq-item">
+                <button className="faq-question" onClick={() => setOpenFaq(openFaq === i ? null : i)}>
+                  <span>{item.q}</span>
+                  <span className="faq-toggle">{openFaq === i ? '−' : '+'}</span>
+                </button>
+                {openFaq === i && <div className="faq-answer">{item.a}</div>}
+              </div>
+            ))}
 
             <div style={{ marginTop: '45px', padding: '25px', backgroundColor: 'var(--accent-bg)', borderRadius: '4px', textAlign: 'center' }}>
               <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.4rem', marginBottom: '10px' }}>Any other questions?</h4>
