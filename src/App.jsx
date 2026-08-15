@@ -10,7 +10,6 @@ const staffData = [
   { id: 'sherry', name: 'Sherry Wang', pronouns: 'She/Her', grade: 'Junior', role: 'Poetry Editor & Social Media Director', shortBio: 'Sherry Wang is a teenage poet, musician, and public speaker from Monmouth County, New Jersey.', fullBio: 'Sherry Wang is a teenage poet, musician, and public speaker from Monmouth County, New Jersey. She began writing in the fifth grade after discovering the works of Shakespeare, whose plays and sonnets sparked her love of language. When she is not searching for her next inspiration, Sherry can be found performing on stage, spending weekends at Speech & Debate tournaments, or eating more sushi than she would like to admit.', photo: '/Sherry Wang..jpg'  },
   { id: 'mia-l', name: 'Mia Lucke', pronouns: 'She/Her', grade: 'Senior', role: 'Poetry Editor & Art Editor', shortBio: 'Mia Lucke is a poet and visual artist. Adopted from Taiwan, she currently lives in Milwaukee, Wisconsin.', fullBio: 'Mia Lucke is a poet and visual artist. Adopted from Taiwan, she currently lives in Milwaukee, Wisconsin. She spends her time writing, doing art, or going on walks. She often can be found performing her poetry for open mics, marathons, or fundraisers. The topics of her writings range from mental health, to biblical and mythological stories, or modern day society and politics. Her poetry focuses on processing both herself and the world around her.', photo: '/Mia_Lucke.jpg' },
   { id: 'grey', name: 'Gregory Whitworth-Neufeld', pronouns: 'He/Him', grade: 'Senior', role: 'Poetry Editor', shortBio: 'Gregory Whitworth-Neufeld is a poet, playwright, visual artist, actor, and editor. His work engages politics, nature, and small-scale social interactions.', fullBio: 'Gregory Whitworth-Neufeld is a poet, playwright, visual artist, actor, and editor. His work engages politics, nature, and small-scale social interactions. When he isn’t making art, he loves reading, rock climbing, forest walks, and listening to music.', photo: '/Gregory Whitworth-Neufeld (Grey).jpeg' },
-  { id: 'brielle', name: 'Brielle Tandy', pronouns: 'She/Her', grade: 'Senior', role: 'Poetry Editor', shortBio: 'Coming Soon...', fullBio: 'Full biography coming soon...' },
   { id: 'jayne', name: 'Jayne Kim', pronouns: 'She/Her', grade: 'Senior', role: 'Nonfiction Editor & International Representative (South Korea)', shortBio: 'Coming Soon...', fullBio: 'Full biography coming soon...' },
   { id: 'stella', name: 'Stella Goldstein', pronouns: 'She/Her', grade: 'Junior', role: 'Nonfiction Editor & International Representative (Japan)', shortBio: 'Stella Goldstein is an aspiring journalist, poet, and fiction author. Born in Shanghai, she lived in Miami for eleven years and now lives in Tokyo.', fullBio: 'Stella Goldstein is an aspiring journalist, poet, and fiction author. Born in Shanghai, she lived in Miami for eleven years and now lives in Tokyo with her dad. Her writing focuses mainly on the teenager experience—eating disorders and social pressure are prominent topics. Outside of writing, she likes biking, yoga, sewing, and drinking matcha.', photo: '/Stella Goldstein Headshot.jpg' },
   { id: 'aster', name: 'Aster Ellis', pronouns: 'They/Them', grade: 'Senior', role: 'Nonfiction Editor', shortBio: 'Aster Ellis is a young writer from Memphis, Tennessee. When not writing, they enjoy playing the guitar and sitting in nature.', fullBio: 'Aster Ellis is a young writer from Memphis, Tennessee. When not writing, they enjoy playing the guitar and sitting in nature.', photo: '/Aster.jpg' },
@@ -603,7 +602,7 @@ export default function App() {
                     {' '}on July 8th, 2026.
                   </strong>
                 </p>
-                <p>We are a team of 15 Reynolds Young Writers Workshop Class of 2026 alumni from all over the world, including the U.S., China, Japan, and South Korea.</p>
+                <p>We are a team of 14 Reynolds Young Writers Workshop Class of 2026 alumni from all over the world, including the U.S., China, Japan, and South Korea.</p>
                 <p>We accept submissions from high schoolers (ages 14-19).</p>
                 <p>We publish a new issue every two months.</p>
                 <p>If your submission(s) is selected to be published, you will be notified and your work and bio will be added to the issue. Each piece you submit will be carefully reviewed by our wonderful editors, who will provide editing, and detailed, specific, and in-depth feedback.</p>
@@ -640,7 +639,7 @@ export default function App() {
           <div>
             <h2 className="section-title">Editorial Board</h2>
             <p style={{ textAlign: 'center', marginBottom: '10px', color: 'var(--text-muted)' }}>
-              Our masthead consists of 15 dedicated high school editors worldwide. Click any profile to learn more.
+              Our masthead consists of 14 dedicated high school editors worldwide. Click any profile to learn more.
             </p>
             
             <div className="staff-grid">
@@ -1217,57 +1216,57 @@ export default function App() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '30px', marginBottom: '40px' }}>
               <div>
                 <h4 style={{ fontSize: '1.2rem', marginBottom: '5px' }}>Poetry Editor</h4>
-                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Currently Seeking: One. Edits poetry submissions and provides detailed, specific, and in-depth constructive feedback for every piece assigned. Communicates and works together with fellow poetry editors to select a collection of poems to be published each issue.</p>
+                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Number of this position available: Two. Edits poetry submissions and provides detailed, specific, and in-depth constructive feedback for every piece assigned. Communicates and works together with fellow poetry editors to select a collection of poems to be published each issue.</p>
                 <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Recommended qualifications: Experience in poetry is a required minimum. Experience editing poetry is a definete plus. Willingsness to work and communicate with fellow editors. Come consistently to meetings. & more.</p>
               </div>
               <div>
                 <h4 style={{ fontSize: '1.2rem', marginBottom: '5px' }}>Fiction Editor</h4>
-                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Currently Seeking: One. Edits fiction submissions and provides detailed, specific, and in-depth constructive feedback for every piece assigned. Communicates and works together with fellow fiction editors to select a collection of fiction pieces to be published each issue.</p>
+                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Number of this position available: One. Edits fiction submissions and provides detailed, specific, and in-depth constructive feedback for every piece assigned. Communicates and works together with fellow fiction editors to select a collection of fiction pieces to be published each issue.</p>
                 <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Recommended qualifications: Experience in fiction is a required minimum. Experience editing fiction is a definete plus. Willingsness to work and communicate with fellow editors. Come consistently to meetings. & more.</p>
               </div>
               <div>
                 <h4 style={{ fontSize: '1.2rem', marginBottom: '5px' }}>Nonfiction Editor</h4>
-                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Currently Seeking: Two. Edits nonfiction submissions and provides detailed, specific, and in-depth constructive feedback for every piece assigned. Communicates and works together with fellow nonfiction editors to select a collection of nonfiction pieces to be published each issue.</p>
+                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Number of this position available: One. Edits nonfiction submissions and provides detailed, specific, and in-depth constructive feedback for every piece assigned. Communicates and works together with fellow nonfiction editors to select a collection of nonfiction pieces to be published each issue.</p>
                 <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Recommended qualifications: Experience in nonfiction is a required minimum. Experience editing fiction is a definete plus. Willingsness to work and communicate with fellow editors. Come consistently to meetings. & more.</p>
               </div>
               <div>
                 <h4 style={{ fontSize: '1.2rem', marginBottom: '5px' }}>Art Editor</h4>
-                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Currently Seeking: One. Reviews artwork submissions and provides detailed, specific, and in-depth constructive feedback for every piece assigned. Works to select pieces to be published in each issue.</p>
+                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Number of this position available: One. Reviews artwork submissions and provides detailed, specific, and in-depth constructive feedback for every piece assigned. Works to select pieces to be published in each issue.</p>
                 <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Recommended qualifications: Experience in art is a required minimum. Experience reviewing, judging, and providing feedback on artwork is a definete plus, as well as experience in a variety of mediums. Willingsness to work and communicate with fellow editors. Come consistently to meetings. & more.</p>
               </div>
               <div>
                 <h4 style={{ fontSize: '1.2rem', marginBottom: '5px' }}>Photography Editor</h4>
-                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Currently Seeking: One. Reviews photography submissions and provides detailed, specific, and in-depth constructive feedback for every piece assigned. Works to select pieces to be published in each issue.</p>
+                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Number of this position available: One. Reviews photography submissions and provides detailed, specific, and in-depth constructive feedback for every piece assigned. Works to select pieces to be published in each issue.</p>
                 <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Recommended qualifications: Experience in photography is a required minimum. Experience reviewing, judging, and providing feedback on photography is a definete plus. Willingsness to work and communicate with fellow editors. Come consistently to meetings. & more.</p>
               </div>
               <div>
                 <h4 style={{ fontSize: '1.2rem', marginBottom: '5px' }}>Internal Operations Secretary</h4>
-                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Currently Seeking: Zero. Manages internal team schedules, meeting notes, communication channels, announcments, and administrative workflows.</p>
+                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Number of this position available: Zero. Manages internal team schedules, meeting notes, communication channels, announcments, and administrative workflows.</p>
                 <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Recommended qualifications: strong organizational and calendar management skills, excellent communication for team announcements, and proficiency in tools like Slack, Google Workspace, and project management platforms. Come consistently to meetings. & more.</p>
               </div>
               <div>
                 <h4 style={{ fontSize: '1.2rem', marginBottom: '5px' }}>External Operations Secretary</h4>
-                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Currently Seeking: Zero. Manages submissions, general tracking organization, external communication, public relations, and forms.</p>
+                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Number of this position available: Zero. Manages submissions, general tracking organization, external communication, public relations, and forms.</p>
                 <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Recommended qualifications: strong organizational skills, excellent communication with members of the public -- primarily submitters, frequent availability to check and respond to inquiries and requests. Come consistently to meetings. & more.</p>
               </div>
               <div>
                 <h4 style={{ fontSize: '1.2rem', marginBottom: '5px' }}>Website Administrator</h4>
-                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Currently Seeking: Zero. Maintains web infrastructure and security, uploads new issues, adds new features, and ensures smooth site performance.</p>
+                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Number of this position available: Zero. Maintains web infrastructure and security, uploads new issues, adds new features, and ensures smooth site performance.</p>
                 <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Recommended qualifications: Basic coding knowledge is required. Experience and familiarity with IDEs, github, cloudflare, and especially experience with creating / acting as administrator for other websites is recommended. Come consistently to meetings. & more.</p>
               </div>
               <div>
                 <h4 style={{ fontSize: '1.2rem', marginBottom: '5px' }}>Social Media Director</h4>
-                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Currently Seeking: Zero. Runs social channels, designs promotional graphics, and engages with the online young writer community.</p>
+                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Number of this position available: Zero. Runs social channels, designs promotional graphics, and engages with the online young writer community.</p>
                 <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Recommended Qualifications: Experience with handling social media accounts, art & design experience, experience with canva, photoshop, illustrator, etc. Come consistently to meetings. & more.</p>
               </div>
               <div>
                 <h4 style={{ fontSize: '1.2rem', marginBottom: '5px' }}>International Representatives</h4>
-                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Currently Seeking: As many as possible (NOT U.S.A., China, Japan, or South Korea). Builds regional networks, handles promotion in region, and coordinates translation or regional features abroad.</p>
+                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Number of this position available: As many as possible (NOT U.S.A., China, Japan, or South Korea). Builds regional networks, handles promotion in region, and coordinates translation or regional features abroad.</p>
                 <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Recommended Qualifications: MUST be living in a nation that The Hilltop Horizon Review does NOT have an international representative in. Fluency in the nation's language. Experience with creating promotional materials. Does not necessarily require coming to meetings because of time zone differences.</p>
               </div>
               <div>
                 <h4 style={{ fontSize: '1.2rem', marginBottom: '5px' }}>Director of Policy and Standards</h4>
-                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Currently Seeking: One. Ensures adherence to magazine guidelines, ethical standards, plagiarism checks, and AI-free policies. Does not necessarily require coming to meetings because of time zone differences.</p>
+                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Number of this position available: One. Ensures adherence to magazine guidelines, ethical standards, plagiarism checks, and AI-free policies. Does not necessarily require coming to meetings because of time zone differences.</p>
               </div>
             </div>
 
