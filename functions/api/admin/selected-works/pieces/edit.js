@@ -2,6 +2,15 @@ import { requireAdmin } from '../../../../lib/admin-auth.js';
 
 const GENRES = ['Poetry', 'Fiction', 'Nonfiction', 'Art', 'Photography'];
 
+async function hasPieceFontColumn(DB) {
+  try {
+    await DB.prepare("SELECT piece_font FROM selected_works_pieces LIMIT 1").first();
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 export async function onRequestPost(context) {
   const auth = await requireAdmin(context);
   if (auth.error) return auth.error;
@@ -33,9 +42,18 @@ export async function onRequestPost(context) {
   }
 
   const font = pieceFont || 'times';
-  const result = await context.env.DB.prepare(
-    'UPDATE selected_works_pieces SET issue_id = ?, title = ?, author = ?, genre = ?, content = ?, bio = ?, piece_font = ? WHERE id = ?'
-  ).bind(issueId, title.trim(), author.trim(), genre, content, bio?.trim() || '', font, id).run();
+  const hasFont = await hasPieceFontColumn(context.env.DB);
+  let result;
+
+  if (hasFont) {
+    result = await context.env.DB.prepare(
+      'UPDATE selected_works_pieces SET issue_id = ?, title = ?, author = ?, genre = ?, content = ?, bio = ?, piece_font = ? WHERE id = ?'
+    ).bind(issueId, title.trim(), author.trim(), genre, content, bio?.trim() || '', font, id).run();
+  } else {
+    result = await context.env.DB.prepare(
+      'UPDATE selected_works_pieces SET issue_id = ?, title = ?, author = ?, genre = ?, content = ?, bio = ? WHERE id = ?'
+    ).bind(issueId, title.trim(), author.trim(), genre, content, bio?.trim() || '', id).run();
+  }
 
   if (result.meta.changes === 0) {
     return new Response(JSON.stringify({ success: false, error: 'Piece not found' }), {

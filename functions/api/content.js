@@ -31,9 +31,18 @@ export async function onRequestGet(context) {
       const { results: swIssues } = await db.prepare(
         'SELECT id, title FROM selected_works_issues ORDER BY created_at ASC'
       ).all();
-      const { results: swPieces } = await db.prepare(
-        'SELECT id, issue_id, title, author, genre, content, bio, piece_font FROM selected_works_pieces'
-      ).all();
+      let swPieces;
+      try {
+        const result = await db.prepare(
+          'SELECT id, issue_id, title, author, genre, content, bio, piece_font FROM selected_works_pieces'
+        ).all();
+        swPieces = result.results;
+      } catch {
+        const result = await db.prepare(
+          'SELECT id, issue_id, title, author, genre, content, bio FROM selected_works_pieces'
+        ).all();
+        swPieces = result.results;
+      }
       const selectedWorks = swIssues.map((issue) => ({
         id: issue.id,
         title: issue.title,

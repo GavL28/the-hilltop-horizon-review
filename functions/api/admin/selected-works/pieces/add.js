@@ -2,6 +2,15 @@ import { requireAdmin } from '../../../../lib/admin-auth.js';
 
 const GENRES = ['Poetry', 'Fiction', 'Nonfiction', 'Art', 'Photography'];
 
+async function hasPieceFontColumn(DB) {
+  try {
+    const row = await DB.prepare("SELECT piece_font FROM selected_works_pieces LIMIT 1").first();
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 export async function onRequestPost(context) {
   const auth = await requireAdmin(context);
   if (auth.error) return auth.error;
@@ -35,9 +44,17 @@ export async function onRequestPost(context) {
 
   const id = crypto.randomUUID();
   const font = pieceFont || 'times';
-  await context.env.DB.prepare(
-    'INSERT INTO selected_works_pieces (id, issue_id, title, author, genre, content, bio, piece_font) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
-  ).bind(id, issueId, title.trim(), author.trim(), genre, content, bio?.trim() || '', font).run();
+  const hasFont = await hasPieceFontColumn(context.env.DB);
+
+  if (hasFont) {
+    await context.env.DB.prepare(
+      'INSERT INTO selected_works_pieces (id, issue_id, title, author, genre, content, bio, piece_font) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
+    ).bind(id, issueId, title.trim(), author.trim(), genre, content, bio?.trim() || '', font).run();
+  } else {
+    await context.env.DB.prepare(
+      'INSERT INTO selected_works_pieces (id, issue_id, title, author, genre, content, bio) VALUES (?, ?, ?, ?, ?, ?, ?)'
+    ).bind(id, issueId, title.trim(), author.trim(), genre, content, bio?.trim() || '').run();
+  }
 
   return new Response(JSON.stringify({ success: true }), {
     status: 200,
