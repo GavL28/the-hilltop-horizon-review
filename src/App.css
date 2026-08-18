@@ -1,5 +1,5 @@
 /* The Hilltop Horizon Review - Parchment Theme */
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Lora:ital,wght@0,400;0,500;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Lora:ital,wght@0,400;0,500;1,400&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
 
 :root {
   --bg-color: #DFF6EA; /* Light Green */
@@ -886,4 +886,50 @@ body {
   .hero-description {
     font-size: 1rem;
   }
+}
+
+/* Selected Works — Page-like container for editor and reader */
+.piece-page {
+  width: 100%;
+  max-width: 816px;
+  margin: 0 auto;
+  background: #fff;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.piece-page-editor {
+  padding: 0;
+}
+
+.piece-page-editor .tox-tinymce {
+  border: none !important;
+  border-radius: 0 !important;
+}
+
+.piece-page-reader {
+  padding: 72px 96px;
+  min-height: 600px;
+}
+
+@media (max-width: 900px) {
+  .piece-page {
+    max-width: 100%;
+    border-radius: 0;
+  }
+  .piece-page-reader {
+    padding: 40px 24px;
+  }
+}
+
+/* Font classes for piece content */
+.piece-font-times { font-family: 'Times New Roman', Times, serif; }
+.piece-font-garamond { font-family: 'EB Garamond', Garamond, 'Times New Roman', serif; }
+.piece-font-lora { font-family: 'Lora', Georgia, serif; }
+.piece-font-georgia { font-family: Georgia, 'Times New Roman', serif; }
+
+/* TinyMCE page-like styling inside the editor */
+.piece-page-editor .tox .tox-edit-area iframe {
+  background: #fff !important;
 }
