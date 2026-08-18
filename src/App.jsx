@@ -175,17 +175,60 @@ function makePieceTinyMCEInit(font) {
     paste_retain_style: 'all',
     formats: {
       underline: { inline: 'u', styles: {} },
+      block_indent: { selector: 'p', styles: { paddingLeft: '%value' } },
+      block_dedent: { selector: 'p', styles: { paddingLeft: '0' } },
+    },
+    indent_use_margin: false,
+    paste_preprocess: function (plugin, args) {
+      let html = args.content;
+      html = html.replace(/<p([^>]*?)style="([^"]*?)margin-left\s*:\s*([\d.]+(?:pt|px|em))([^"]*)"([^>]*?)>([\s\S]*?)<\/p>/gi,
+        (match, before, stylesPre, value, stylesPost, after, content) => {
+          const newStyle = (stylesPre + 'padding-left:' + value + ';' + stylesPost).replace(/;\s*;/g, ';');
+          return `<p${before}style="${newStyle}" data-mce-style="${newStyle}"${after}>${content}</p>`;
+        }
+      );
+      html = html.replace(/<div([^>]*?)style="([^"]*?)margin-left\s*:\s*([\d.]+(?:pt|px|em))([^"]*)"([^>]*?)>([\s\S]*?)<\/div>/gi,
+        (match, before, stylesPre, value, stylesPost, after, content) => {
+          const newStyle = (stylesPre + 'padding-left:' + value + ';' + stylesPost).replace(/;\s*;/g, ';');
+          return `<div${before}style="${newStyle}" data-mce-style="${newStyle}"${after}>${content}</div>`;
+        }
+      );
+      html = html.replace(/<li([^>]*?)style="([^"]*?)margin-left\s*:\s*([\d.]+(?:pt|px|em))([^"]*)"([^>]*?)>([\s\S]*?)<\/li>/gi,
+        (match, before, stylesPre, value, stylesPost, after, content) => {
+          const newStyle = (stylesPre + 'padding-left:' + value + ';' + stylesPost).replace(/;\s*;/g, ';');
+          return `<li${before}style="${newStyle}" data-mce-style="${newStyle}"${after}>${content}</li>`;
+        }
+      );
+      args.content = html;
+    },
+    paste_postprocess: function (plugin, args) {
+      const node = args.node;
+      if (!node || !node.querySelectorAll) return;
+      const all = node.querySelectorAll('p, div, li');
+      all.forEach((el) => {
+        const ml = el.style.marginLeft;
+        if (ml && ml !== '0') {
+          el.style.paddingLeft = ml;
+          el.style.marginLeft = '0';
+          el.setAttribute('data-mce-style', el.getAttribute('data-mce-style') ? el.getAttribute('data-mce-style').replace(/margin-left[^;]*/g, '').replace(/;\s*;/g, ';').trim() + ';padding-left:' + ml : 'padding-left:' + ml);
+        }
+      });
     },
     setup: function (editor) {
       editor.on('paste', function (e) {
         setTimeout(() => {
           const body = editor.getBody();
           if (!body) return;
-          const paragraphs = body.querySelectorAll('p');
+          const paragraphs = body.querySelectorAll('p, div, li');
           paragraphs.forEach((p) => {
             const text = p.textContent;
             if (text && text.includes('\t')) {
               p.textContent = text.replace(/\t/g, '\u2003\u2003');
+            }
+            const ds = p.getAttribute('data-mce-style') || '';
+            const plMatch = ds.match(/padding-left\s*:\s*([\d.]+(?:pt|px|em))/i);
+            if (plMatch && (!p.style.paddingLeft || p.style.paddingLeft === '0')) {
+              p.style.paddingLeft = plMatch[1];
             }
           });
           const walk = document.createTreeWalker(body, NodeFilter.SHOW_TEXT, null);
@@ -197,24 +240,6 @@ function makePieceTinyMCEInit(font) {
             }
           }
         }, 0);
-      });
-
-      editor.on('PastePostProcess', function (e) {
-        const node = e.node;
-        if (!node || !node.querySelectorAll) return;
-        const paragraphs = node.querySelectorAll('p, div');
-        paragraphs.forEach((el) => {
-          const style = el.getAttribute('style') || '';
-          const marginMatch = style.match(/margin-left\s*:\s*([\d.]+(?:pt|px|em))/i);
-          const indentMatch = style.match(/text-indent\s*:\s*([\d.]+(?:pt|px|em))/i);
-          if (marginMatch) {
-            el.style.paddingLeft = marginMatch[1];
-            el.style.marginLeft = '0';
-          }
-          if (indentMatch) {
-            el.style.textIndent = indentMatch[1];
-          }
-        });
       });
     },
   };
@@ -973,7 +998,7 @@ export default function App() {
               <span style={{ color: 'var(--text-main)', fontWeight: 'bold' }}>{selectedWorksPiece.author}</span>
               <span style={{ color: 'var(--text-muted)', fontStyle: 'italic' }}>{selectedWorksPiece.genre}</span>
             </div>
-            <div className={`piece-font-${selectedWorksPiece.piece_font || 'times'}`} style={{ textAlign: 'left', maxWidth: '816px', margin: '0 auto' }}>
+            <div className={`piece-font-${selectedWorksPiece.piece_font || 'times'}`} style={{ textAlign: 'left' }}>
               {selectedWorksPiece.content && selectedWorksPiece.content.trim().startsWith('<') ? (
                 <div dangerouslySetInnerHTML={{ __html: selectedWorksPiece.content }} />
               ) : (
