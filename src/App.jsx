@@ -140,15 +140,11 @@ const TINYMCE_INIT = {
 
 const PIECE_FONT_MAP = {
   times: "'Times New Roman', Times, serif",
-  garamond: "'EB Garamond', Garamond, 'Times New Roman', serif",
-  lora: "'Lora', Georgia, serif",
   georgia: "Georgia, 'Times New Roman', serif",
 };
 
 const PIECE_FONTS = [
   { value: 'times', label: 'Times New Roman' },
-  { value: 'garamond', label: 'Garamond' },
-  { value: 'lora', label: 'Lora' },
   { value: 'georgia', label: 'Georgia' },
 ];
 
@@ -169,8 +165,6 @@ function makePieceTinyMCEInit(font) {
       'outdent indent | bullist numlist | lineheight | removeformat | help',
     font_family_formats:
       "Times New Roman='Times New Roman';" +
-      "EB Garamond='EB Garamond';" +
-      "Lora='Lora';" +
       "Georgia='Georgia'",
     line_height_formats: '1 1.15 1.5 2',
     content_style: `body { font-family: ${fontFamily}; font-size: 12pt; margin: 72px 80px; color: #000; }`,
@@ -203,6 +197,24 @@ function makePieceTinyMCEInit(font) {
             }
           }
         }, 0);
+      });
+
+      editor.on('PastePostProcess', function (e) {
+        const node = e.node;
+        if (!node || !node.querySelectorAll) return;
+        const paragraphs = node.querySelectorAll('p, div');
+        paragraphs.forEach((el) => {
+          const style = el.getAttribute('style') || '';
+          const marginMatch = style.match(/margin-left\s*:\s*([\d.]+(?:pt|px|em))/i);
+          const indentMatch = style.match(/text-indent\s*:\s*([\d.]+(?:pt|px|em))/i);
+          if (marginMatch) {
+            el.style.paddingLeft = marginMatch[1];
+            el.style.marginLeft = '0';
+          }
+          if (indentMatch) {
+            el.style.textIndent = indentMatch[1];
+          }
+        });
       });
     },
   };
@@ -961,7 +973,7 @@ export default function App() {
               <span style={{ color: 'var(--text-main)', fontWeight: 'bold' }}>{selectedWorksPiece.author}</span>
               <span style={{ color: 'var(--text-muted)', fontStyle: 'italic' }}>{selectedWorksPiece.genre}</span>
             </div>
-            <div className={`piece-font-${selectedWorksPiece.piece_font || 'times'}`} style={{ textAlign: 'left' }}>
+            <div className={`piece-font-${selectedWorksPiece.piece_font || 'times'}`} style={{ textAlign: 'left', maxWidth: '816px', margin: '0 auto' }}>
               {selectedWorksPiece.content && selectedWorksPiece.content.trim().startsWith('<') ? (
                 <div dangerouslySetInnerHTML={{ __html: selectedWorksPiece.content }} />
               ) : (
