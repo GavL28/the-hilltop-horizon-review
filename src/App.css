@@ -924,10 +924,14 @@ body {
 }
 
 /* Font classes for piece content */
-.piece-font-times { font-family: 'Times New Roman', Times, serif; }
-.piece-font-garamond { font-family: 'EB Garamond', Garamond, 'Times New Roman', serif; }
-.piece-font-lora { font-family: 'Lora', Georgia, serif; }
-.piece-font-georgia { font-family: Georgia, 'Times New Roman', serif; }
+.piece-font-times { font-family: 'Times New Roman', Times, serif !important; }
+.piece-font-times * { font-family: inherit !important; }
+.piece-font-garamond { font-family: 'EB Garamond', Garamond, 'Times New Roman', serif !important; }
+.piece-font-garamond * { font-family: inherit !important; }
+.piece-font-lora { font-family: 'Lora', Georgia, serif !important; }
+.piece-font-lora * { font-family: inherit !important; }
+.piece-font-georgia { font-family: Georgia, 'Times New Roman', serif !important; }
+.piece-font-georgia * { font-family: inherit !important; }
 
 /* TinyMCE page-like styling inside the editor */
 .piece-page-editor .tox .tox-edit-area iframe {

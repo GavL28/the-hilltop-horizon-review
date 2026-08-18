@@ -173,12 +173,12 @@ function makePieceTinyMCEInit(font) {
       "Lora='Lora';" +
       "Georgia='Georgia'",
     line_height_formats: '1 1.15 1.5 2',
-    content_style: `body { font-family: ${fontFamily}; font-size: 12pt; margin: 72px 80px; color: #000; } p { margin: 0; }`,
+    content_style: `body { font-family: ${fontFamily}; font-size: 12pt; margin: 72px 80px; color: #000; }`,
     paste_as_text: false,
     paste_data_images: false,
     paste_strip_class_names: '',
     paste_merge_formats: true,
-    paste_retain_style: 'font,size,color,margin-left,margin-right,margin-top,margin-bottom,padding-left,padding-right,padding-top,padding-bottom,text-indent,text-align',
+    paste_retain_style: 'all',
     formats: {
       underline: { inline: 'u', styles: {} },
     },
@@ -187,12 +187,19 @@ function makePieceTinyMCEInit(font) {
         setTimeout(() => {
           const body = editor.getBody();
           if (!body) return;
+          const paragraphs = body.querySelectorAll('p');
+          paragraphs.forEach((p) => {
+            const text = p.textContent;
+            if (text && text.includes('\t')) {
+              p.textContent = text.replace(/\t/g, '\u2003\u2003');
+            }
+          });
           const walk = document.createTreeWalker(body, NodeFilter.SHOW_TEXT, null);
           let node;
           while ((node = walk.nextNode())) {
             const text = node.textContent;
             if (text && text.includes('\t')) {
-              node.textContent = text.replace(/\t/g, '&emsp;&emsp;');
+              node.textContent = text.replace(/\t/g, '\u2003\u2003');
             }
           }
         }, 0);
@@ -954,7 +961,7 @@ export default function App() {
               <span style={{ color: 'var(--text-main)', fontWeight: 'bold' }}>{selectedWorksPiece.author}</span>
               <span style={{ color: 'var(--text-muted)', fontStyle: 'italic' }}>{selectedWorksPiece.genre}</span>
             </div>
-            <div className={`piece-page piece-page-reader piece-font-${selectedWorksPiece.piece_font || 'times'}`}>
+            <div className={`piece-font-${selectedWorksPiece.piece_font || 'times'}`} style={{ textAlign: 'left' }}>
               {selectedWorksPiece.content && selectedWorksPiece.content.trim().startsWith('<') ? (
                 <div dangerouslySetInnerHTML={{ __html: selectedWorksPiece.content }} />
               ) : (
