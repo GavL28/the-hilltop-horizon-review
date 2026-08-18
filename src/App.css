@@ -929,6 +929,12 @@ body {
 .piece-font-georgia { font-family: Georgia, 'Times New Roman', serif !important; }
 .piece-font-georgia * { font-family: inherit !important; }
 
+/* Preserve indentation in reader display */
+.piece-font-times p[style*="padding-left"],
+.piece-font-georgia p[style*="padding-left"] {
+  margin-left: 0;
+}
+
 /* TinyMCE page-like styling inside the editor */
 .piece-page-editor .tox .tox-edit-area iframe {
   background: #fff !important;
