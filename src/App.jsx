@@ -162,22 +162,23 @@ function makePieceTinyMCEInit(font) {
     plugins: [
       'advlist', 'autolink', 'lists', 'link', 'charmap', 'preview',
       'searchreplace', 'visualblocks', 'code', 'fullscreen',
-      'table', 'help', 'wordcount', 'paste'
+      'table', 'help', 'wordcount', 'paste', 'lineheight'
     ],
     toolbar: 'undo redo | fontfamily fontsize | ' +
       'bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | ' +
-      'outdent indent | bullist numlist | removeformat | help',
+      'outdent indent | bullist numlist | lineheight | removeformat | help',
     font_family_formats:
       "Times New Roman='Times New Roman';" +
       "EB Garamond='EB Garamond';" +
       "Lora='Lora';" +
       "Georgia='Georgia'",
-    content_style: `body { font-family: ${fontFamily}; font-size: 12pt; line-height: 2.0; margin: 72px 80px; color: #000; } p { margin: 0 0 0.5em; }`,
+    line_height_formats: '1 1.15 1.5 2',
+    content_style: `body { font-family: ${fontFamily}; font-size: 12pt; margin: 72px 80px; color: #000; } p { margin: 0; }`,
     paste_as_text: false,
     paste_data_images: false,
     paste_strip_class_names: '',
     paste_merge_formats: true,
-    paste_retain_style: 'font,size,color',
+    paste_retain_style: 'font,size,color,margin-left,margin-right,margin-top,margin-bottom,padding-left,padding-right,padding-top,padding-bottom,text-indent,text-align',
     formats: {
       underline: { inline: 'u', styles: {} },
     },
