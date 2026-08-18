@@ -6,7 +6,7 @@ export async function onRequestPost(context) {
   const auth = await requireAdmin(context);
   if (auth.error) return auth.error;
 
-  const { id, issueId, title, author, genre, content, bio } = await context.request.json();
+  const { id, issueId, title, author, genre, content, bio, pieceFont } = await context.request.json();
 
   if (!id || !issueId || !title?.trim() || !author?.trim() || !content?.trim()) {
     return new Response(JSON.stringify({ success: false, error: 'ID, issue, title, author, and content are required' }), {
@@ -32,9 +32,10 @@ export async function onRequestPost(context) {
     });
   }
 
+  const font = pieceFont || 'times';
   const result = await context.env.DB.prepare(
-    'UPDATE selected_works_pieces SET issue_id = ?, title = ?, author = ?, genre = ?, content = ?, bio = ? WHERE id = ?'
-  ).bind(issueId, title.trim(), author.trim(), genre, content, bio?.trim() || '', id).run();
+    'UPDATE selected_works_pieces SET issue_id = ?, title = ?, author = ?, genre = ?, content = ?, bio = ?, piece_font = ? WHERE id = ?'
+  ).bind(issueId, title.trim(), author.trim(), genre, content, bio?.trim() || '', font, id).run();
 
   if (result.meta.changes === 0) {
     return new Response(JSON.stringify({ success: false, error: 'Piece not found' }), {

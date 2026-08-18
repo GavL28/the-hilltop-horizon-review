@@ -15,7 +15,7 @@ const staffData = [
   { id: 'aster', name: 'Aster Ellis', pronouns: 'They/Them', grade: 'Senior', role: 'Nonfiction Editor', shortBio: 'Aster Ellis is a young writer from Memphis, Tennessee. When not writing, they enjoy playing the guitar and sitting in nature.', fullBio: 'Aster Ellis is a young writer from Memphis, Tennessee. When not writing, they enjoy playing the guitar and sitting in nature.', photo: '/Aster.jpg' },
   { id: 'tallulah', name: 'Tallulah Dolan', pronouns: 'She/Her', grade: 'Junior', role: 'Fiction Editor & External Operations Secretary', shortBio: 'Coming Soon...', fullBio: 'Full biography coming soon...' },
   { id: 'juliana', name: 'Juliana Grindel', pronouns: 'She/Her', grade: 'Senior', role: 'Fiction Editor', shortBio: 'Juliana Grindel is a fiction writer, musician, fencer, and artist from Cheshire, Connecticut.', fullBio: 'Juliana Grindel is a fiction writer, musician, fencer, and artist from Cheshire, Connecticut. She has been writing since middle school, and focuses on speculative and flash fiction with psychological themes. Her goal in writing is to write a long form piece of psychological fiction. When she is not writing, she spends her free time playing clarinet, reading, or collecting blind boxes. ', photo: '/Juliana Grindel.jpeg' },
-  { id: 'mia-s', name: 'Mia Song', pronouns: 'She/Her', grade: 'Senior', role: 'Fiction Editor', shortBio: 'Mia Song is an ambitious but amateur writer located in the depths of Florida\'s notorious swamps. She is a high school student who dedicates her passions for writing, drawing, singing, and dancing in her school community.', fullBio: 'Mia Song is an ambitious but amateur writer located in the depths of Florida\'s notorious swamps. She is a high school student who dedicates her passions for writing, drawing, singing, and dancing in her school community. In her free time, Mia enjoys writing poems, learning code, and participating in debate competitions. In her actual free time, you can find her glued to her phone screen, mostly consisting of cute kitty content and teenage brainrot.', photo: '/MiaSong.JPG' },
+  { id: 'mia-s', name: 'Mia Song', pronouns: 'She/Her', grade: 'Senior', role: 'Poetry Editor', shortBio: 'Mia Song is an ambitious but amateur writer located in the depths of Florida\'s notorious swamps. She is a high school student who dedicates her passions for writing, drawing, singing, and dancing in her school community.', fullBio: 'Mia Song is an ambitious but amateur writer located in the depths of Florida\'s notorious swamps. She is a high school student who dedicates her passions for writing, drawing, singing, and dancing in her school community. In her free time, Mia enjoys writing poems, learning code, and participating in debate competitions. In her actual free time, you can find her glued to her phone screen, mostly consisting of cute kitty content and teenage brainrot.', photo: '/MiaSong.JPG' },
   { id: 'katelyn', name: 'Katelyn Gaubatz', pronouns: 'She/Her', grade: 'Senior', role: 'Fiction Editor', shortBio: 'Katelyn Gaubatz is a fiction and non-fiction writer from Richmond, Virginia. When she is not writing, she enjoys playing volleyball, violin, and pickleball.', fullBio: 'Katelyn Gaubatz is a fiction and non-fiction writer from Richmond, Virginia. When she is not writing, she enjoys playing volleyball, violin, and pickleball.', photo: '/Katelyn Gaubatz.jpg' },
   { id: 'che', name: 'Che Holts', pronouns: 'He/Him', grade: 'Junior', role: 'Photography Editor', shortBio: 'Che is Californian fiction writer, and athlete. He will tend to draw most inspiration from comic books and indie music.', fullBio: 'Che is Californian fiction writer, and athlete. He will tend to draw most inspiration from comic books and indie music. He started writing in fifth grade during lockdown just because he could and killed time. He loves and cherishes his pet beetles lovingly named Hamster and Dinosaur. Aspires and hopes  to one day  write a superhero novel that can be taught in schools and make people more excited about writing.', photo: '/Che Holts.jpeg' },
   { id: 'rubbi', name: 'Rubbi Chen', pronouns: 'She/Her', grade: 'Senior', role: 'International Representative (China)', shortBio: 'Rubbi is a fiction writer from Shanghai, China. Normally she writes some teenage queer romance, body horror (especially splatterpunk!) and suspense fiction.', fullBio: 'Rubbi is a fiction writer from Shanghai, China. Normally she writes some teenage queer romance, body horror (especially splatterpunk!) and suspense fiction. She started writing in primary school and her first work was a yaoi smut. Except for writing, she claims to have no other artistic talent, so she spends most of her time doing anthropology and queer studies research, advocating for women’s rights, watching women’s hockey, fantasizing about her future wife, and being a cat mom. ', photo: '/Rubbi Chen.jpg' },
@@ -138,6 +138,68 @@ const TINYMCE_INIT = {
   content_style: 'body { font-family:Lora,Georgia,serif; font-size:16px }',
 };
 
+const PIECE_FONT_MAP = {
+  times: "'Times New Roman', Times, serif",
+  garamond: "'EB Garamond', Garamond, 'Times New Roman', serif",
+  lora: "'Lora', Georgia, serif",
+  georgia: "Georgia, 'Times New Roman', serif",
+};
+
+const PIECE_FONTS = [
+  { value: 'times', label: 'Times New Roman' },
+  { value: 'garamond', label: 'Garamond' },
+  { value: 'lora', label: 'Lora' },
+  { value: 'georgia', label: 'Georgia' },
+];
+
+function makePieceTinyMCEInit(font) {
+  const fontFamily = PIECE_FONT_MAP[font] || PIECE_FONT_MAP.times;
+  return {
+    height: 520,
+    menubar: false,
+    branding: false,
+    resize: true,
+    plugins: [
+      'advlist', 'autolink', 'lists', 'link', 'charmap', 'preview',
+      'searchreplace', 'visualblocks', 'code', 'fullscreen',
+      'table', 'help', 'wordcount', 'paste'
+    ],
+    toolbar: 'undo redo | fontfamily fontsize | ' +
+      'bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | ' +
+      'outdent indent | bullist numlist | removeformat | help',
+    font_family_formats:
+      "Times New Roman='Times New Roman';" +
+      "EB Garamond='EB Garamond';" +
+      "Lora='Lora';" +
+      "Georgia='Georgia'",
+    content_style: `body { font-family: ${fontFamily}; font-size: 12pt; line-height: 2.0; margin: 72px 80px; color: #000; } p { margin: 0 0 0.5em; }`,
+    paste_as_text: false,
+    paste_data_images: false,
+    paste_strip_class_names: '',
+    paste_merge_formats: true,
+    paste_retain_style: 'font,size,color',
+    formats: {
+      underline: { inline: 'u', styles: {} },
+    },
+    setup: function (editor) {
+      editor.on('paste', function (e) {
+        setTimeout(() => {
+          const body = editor.getBody();
+          if (!body) return;
+          const walk = document.createTreeWalker(body, NodeFilter.SHOW_TEXT, null);
+          let node;
+          while ((node = walk.nextNode())) {
+            const text = node.textContent;
+            if (text && text.includes('\t')) {
+              node.textContent = text.replace(/\t/g, '&emsp;&emsp;');
+            }
+          }
+        }, 0);
+      });
+    },
+  };
+}
+
 function GuidelinesSection({ title, isOpen, onToggle, children }) {
   return (
     <div style={{ border: '1px solid var(--accent-border)', borderRadius: '4px', marginBottom: '15px', overflow: 'hidden' }}>
@@ -236,6 +298,7 @@ export default function App() {
   const [swPieceGenre, setSwPieceGenre] = useState('Poetry');
   const [swPieceContent, setSwPieceContent] = useState('');
   const [swPieceBio, setSwPieceBio] = useState('');
+  const [swPieceFont, setSwPieceFont] = useState('times');
   const [editSWPieceId, setEditSWPieceId] = useState('');
   const [editSWPieceIssueId, setEditSWPieceIssueId] = useState('');
   const [editSWPieceTitle, setEditSWPieceTitle] = useState('');
@@ -243,6 +306,7 @@ export default function App() {
   const [editSWPieceGenre, setEditSWPieceGenre] = useState('Poetry');
   const [editSWPieceContent, setEditSWPieceContent] = useState('');
   const [editSWPieceBio, setEditSWPieceBio] = useState('');
+  const [editSWPieceFont, setEditSWPieceFont] = useState('times');
 
   const scrollToForm = (id) => {
     setTimeout(() => {
@@ -889,8 +953,12 @@ export default function App() {
               <span style={{ color: 'var(--text-main)', fontWeight: 'bold' }}>{selectedWorksPiece.author}</span>
               <span style={{ color: 'var(--text-muted)', fontStyle: 'italic' }}>{selectedWorksPiece.genre}</span>
             </div>
-            <div className="issue-content" style={{ lineHeight: '1.8', whiteSpace: 'pre-wrap' }}>
-              {selectedWorksPiece.content}
+            <div className={`piece-page piece-page-reader piece-font-${selectedWorksPiece.piece_font || 'times'}`}>
+              {selectedWorksPiece.content && selectedWorksPiece.content.trim().startsWith('<') ? (
+                <div dangerouslySetInnerHTML={{ __html: selectedWorksPiece.content }} />
+              ) : (
+                <div style={{ whiteSpace: 'pre-wrap' }}>{selectedWorksPiece.content}</div>
+              )}
             </div>
             {selectedWorksPiece.bio && (
               <div style={{ marginTop: '40px' }}>
@@ -2082,6 +2150,7 @@ export default function App() {
                               genre: swPieceGenre,
                               content: swPieceContent,
                               bio: swPieceBio,
+                              pieceFont: swPieceFont,
                             });
                             if (ok) {
                               alert('Piece added.');
@@ -2089,6 +2158,7 @@ export default function App() {
                               setSwPieceAuthor('');
                               setSwPieceContent('');
                               setSwPieceBio('');
+                              setSwPieceFont('times');
                               await refreshSiteContent();
                             } else {
                               alert(`Failed to add: ${data.error || 'Unknown error'}`);
@@ -2148,16 +2218,30 @@ export default function App() {
                               </select>
                             </div>
                             <div className="form-group">
-                              <label>Piece Content</label>
-                              <textarea
+                              <label>Font</label>
+                              <select
                                 className="form-control"
-                                rows={8}
-                                value={swPieceContent}
-                                onChange={(e) => setSwPieceContent(e.target.value)}
-                                onKeyDown={handleTextareaTab(swPieceContent, setSwPieceContent)}
-                                required
-                                placeholder="Paste the piece here. Line breaks are preserved."
-                              />
+                                value={swPieceFont}
+                                onChange={(e) => setSwPieceFont(e.target.value)}
+                              >
+                                {PIECE_FONTS.map((f) => (
+                                  <option key={f.value} value={f.value}>{f.label}</option>
+                                ))}
+                              </select>
+                            </div>
+                            <div className="form-group">
+                              <label>Piece Content (paste from Google Docs)</label>
+                              <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '10px' }}>
+                                Copy from your Google Doc and paste directly into the editor below. Formatting, indentation, and spacing will be preserved.
+                              </p>
+                              <div className="piece-page piece-page-editor">
+                                <Editor
+                                  apiKey='vi6do892krmboei0izctd0jz9q98379bnrr3h3g7fcejsi5h'
+                                  value={swPieceContent}
+                                  onEditorChange={(content) => setSwPieceContent(content)}
+                                  init={makePieceTinyMCEInit(swPieceFont)}
+                                />
+                              </div>
                             </div>
                             <div className="form-group">
                               <label>Author Bio (optional)</label>
@@ -2189,6 +2273,7 @@ export default function App() {
                               genre: editSWPieceGenre,
                               content: editSWPieceContent,
                               bio: editSWPieceBio,
+                              pieceFont: editSWPieceFont,
                             });
                             if (ok) {
                               alert('Piece updated.');
@@ -2216,6 +2301,7 @@ export default function App() {
                                     setEditSWPieceGenre(piece?.genre || 'Poetry');
                                     setEditSWPieceContent(piece?.content || '');
                                     setEditSWPieceBio(piece?.bio || '');
+                                    setEditSWPieceFont(piece?.piece_font || 'times');
                                   }}
                                   required
                                 >
@@ -2279,15 +2365,30 @@ export default function App() {
                                   </select>
                                 </div>
                                 <div className="form-group">
-                                  <label>Piece Content</label>
-                                  <textarea
+                                  <label>Font</label>
+                                  <select
                                     className="form-control"
-                                    rows={8}
-                                    value={editSWPieceContent}
-                                    onChange={(e) => setEditSWPieceContent(e.target.value)}
-                                    onKeyDown={handleTextareaTab(editSWPieceContent, setEditSWPieceContent)}
-                                    required
-                                  />
+                                    value={editSWPieceFont}
+                                    onChange={(e) => setEditSWPieceFont(e.target.value)}
+                                  >
+                                    {PIECE_FONTS.map((f) => (
+                                      <option key={f.value} value={f.value}>{f.label}</option>
+                                    ))}
+                                  </select>
+                                </div>
+                                <div className="form-group">
+                                  <label>Piece Content (paste from Google Docs)</label>
+                                  <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '10px' }}>
+                                    Copy from your Google Doc and paste directly into the editor below. Formatting, indentation, and spacing will be preserved.
+                                  </p>
+                                  <div className="piece-page piece-page-editor">
+                                    <Editor
+                                      apiKey='vi6do892krmboei0izctd0jz9q98379bnrr3h3g7fcejsi5h'
+                                      value={editSWPieceContent}
+                                      onEditorChange={(content) => setEditSWPieceContent(content)}
+                                      init={makePieceTinyMCEInit(editSWPieceFont)}
+                                    />
+                                  </div>
                                 </div>
                                 <div className="form-group">
                                   <label>Author Bio (optional)</label>
