@@ -747,7 +747,7 @@ export default function App() {
           <div>
             <h2 className="section-title">Editorial Board</h2>
             <p style={{ textAlign: 'center', marginBottom: '10px', color: 'var(--text-muted)' }}>
-              Our masthead consists of 14 dedicated high school editors worldwide. Click any profile to learn more.
+              Our masthead consists of 13 dedicated high school editors worldwide. Click any profile to learn more.
             </p>
             
             <div className="staff-grid">
