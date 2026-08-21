@@ -710,7 +710,7 @@ export default function App() {
                     {' '}on July 8th, 2026.
                   </strong>
                 </p>
-                <p>We are a team of 13 Reynolds Young Writers Workshop Class of 2026 alumni from all over the world, including the U.S., China, Japan, and South Korea.</p>
+                <p>We are a team of writers, artists, and photographers from the Reynolds Young Writers Workshop Class of 2026 alumni from all over the world, including the U.S., China, Japan, and South Korea.</p>
                 <p>We accept submissions from high schoolers (ages 14-19).</p>
                 <p>We publish a new issue every two months.</p>
                 <p>If your submission(s) is selected to be published, you will be notified and your work and bio will be added to the issue. Each piece you submit will be carefully reviewed by our wonderful editors, who will provide editing, and detailed, specific, and in-depth feedback.</p>
@@ -1153,7 +1153,7 @@ export default function App() {
               Ready to submit? Fill out our submission form below. Make sure to review our <a href="#" style={{ color: 'var(--text-main)' }} onClick={(e) => { e.preventDefault(); setActiveTab('submit-guidelines'); }}>guidelines</a> first!
             </p>
             <a
-              href="https://docs.google.com/forms/d/e/1FAIpQLSfT9l99n-TwHVNZySCyWboYuV-G8s6ydGyHLbYMhvTHOz_0oA/viewform?usp=sharing&ouid=115181364077200728162"
+              href="https://forms.gle/CASTwShJ39BMpmms6"
               target="_blank"
               rel="noopener noreferrer"
               className="btn-primary"
