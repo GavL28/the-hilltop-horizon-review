@@ -28,9 +28,19 @@ export async function onRequestGet(context) {
       ).all();
 
       // 5. Fetch all selected works (issues + their pieces)
-      const { results: swIssues } = await db.prepare(
-        'SELECT id, title FROM selected_works_issues ORDER BY created_at ASC'
-      ).all();
+      let swIssues;
+      try {
+        const result = await db.prepare(
+          'SELECT id, title, is_visible FROM selected_works_issues ORDER BY created_at ASC'
+        ).all();
+        swIssues = result.results;
+      } catch {
+        const result = await db.prepare(
+          'SELECT id, title FROM selected_works_issues ORDER BY created_at ASC'
+        ).all();
+        swIssues = result.results;
+      }
+      const visibleIssues = swIssues.filter((issue) => issue.is_visible === undefined || issue.is_visible === 1);
       let swPieces;
       try {
         const result = await db.prepare(
@@ -46,6 +56,7 @@ export async function onRequestGet(context) {
       const selectedWorks = swIssues.map((issue) => ({
         id: issue.id,
         title: issue.title,
+        is_visible: issue.is_visible !== undefined ? issue.is_visible : 1,
         pieces: swPieces.filter((piece) => piece.issue_id === issue.id),
       }));
 
