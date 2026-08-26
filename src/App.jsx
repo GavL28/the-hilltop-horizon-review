@@ -888,11 +888,11 @@ export default function App() {
             <p style={{ textAlign: 'center', marginBottom: '20px', color: 'var(--text-muted)' }}>
               Browse the pieces selected for publication, organized by issue. Click an issue to view its selected works.
             </p>
-            {selectedWorks.length === 0 && (
+            {selectedWorks.filter((issue) => issue.is_visible !== 0).length === 0 && (
               <p style={{ textAlign: 'center', fontStyle: 'italic', color: 'var(--text-muted)' }}>No issues available yet.</p>
             )}
             <ul style={{ listStyleType: 'none', padding: 0 }}>
-              {selectedWorks.map((issue) => (
+              {selectedWorks.filter((issue) => issue.is_visible !== 0).map((issue) => (
                 <li
                   key={issue.id}
                   onClick={() => {
@@ -2008,11 +2008,12 @@ export default function App() {
                         <h3 style={{ fontFamily: 'var(--font-heading)', marginBottom: '15px' }}>Selected Works</h3>
 
                         <div style={{ display: 'flex', gap: '10px', marginBottom: '25px', flexWrap: 'wrap' }}>
-                          {['add-issue', 'edit-issue', 'delete-issue', 'add-piece', 'edit-piece', 'delete-piece'].map((mode) => {
+                          {['add-issue', 'edit-issue', 'delete-issue', 'toggle-visibility', 'add-piece', 'edit-piece', 'delete-piece'].map((mode) => {
                             const labels = {
                               'add-issue': 'Add Issue',
                               'edit-issue': 'Edit Issue Title',
                               'delete-issue': 'Delete Issue',
+                              'toggle-visibility': 'Hide/Show Issue',
                               'add-piece': 'Add Piece',
                               'edit-piece': 'Edit Piece',
                               'delete-piece': 'Delete Piece',
@@ -2175,6 +2176,64 @@ export default function App() {
                                     </button>
                                   </li>
                                 ))}
+                              </ul>
+                            )}
+                          </div>
+                        )}
+
+                        {adminSWMode === 'toggle-visibility' && (
+                          <div id="sw-toggle-visibility-form">
+                            {selectedWorks.length === 0 ? (
+                              <p style={{ fontStyle: 'italic', color: 'var(--text-muted)' }}>No issues yet.</p>
+                            ) : (
+                              <ul style={{ listStyleType: 'none', padding: 0 }}>
+                                {selectedWorks.map((issue) => {
+                                  const isVisible = issue.is_visible !== 0;
+                                  return (
+                                    <li
+                                      key={issue.id}
+                                      style={{
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        alignItems: 'center',
+                                        padding: '12px 15px',
+                                        backgroundColor: 'var(--accent-bg)',
+                                        borderRadius: '4px',
+                                        marginBottom: '10px'
+                                      }}
+                                    >
+                                      <div>
+                                        <strong>{issue.title}</strong>
+                                        <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+                                          {issue.pieces.length} piece{issue.pieces.length === 1 ? '' : 's'} · {isVisible ? 'Visible' : 'Hidden'}
+                                        </div>
+                                      </div>
+                                      <button
+                                        type="button"
+                                        className="btn-primary"
+                                        style={{
+                                          backgroundColor: isVisible ? '#f0ad4e' : '#5cb85c',
+                                          borderColor: isVisible ? '#ec971f' : '#449d44',
+                                          color: '#fff',
+                                          padding: '5px 12px',
+                                          borderRadius: '4px',
+                                          marginLeft: '15px'
+                                        }}
+                                        onClick={async () => {
+                                          const { ok, data } = await apiPost('/api/admin/selected-works/issues/toggle-visibility', { id: issue.id });
+                                          if (ok) {
+                                            alert(`"${issue.title}" is now ${isVisible ? 'hidden' : 'visible'}.`);
+                                            await refreshSiteContent();
+                                          } else {
+                                            alert(`Failed: ${data.error || 'Unknown error'}`);
+                                          }
+                                        }}
+                                      >
+                                        {isVisible ? 'Hide' : 'Show'}
+                                      </button>
+                                    </li>
+                                  );
+                                })}
                               </ul>
                             )}
                           </div>
