@@ -1,4 +1,5 @@
 import { requireAdmin } from '../../lib/admin-auth.js';
+import { sanitizeHtml } from '../../lib/sanitize.js';
 
 export async function onRequestPost(context) {
   const auth = await requireAdmin(context);
@@ -13,9 +14,12 @@ export async function onRequestPost(context) {
     });
   }
 
+  const safeTitle = title.trim().substring(0, 500);
+  const safeContent = sanitizeHtml(contentHtml);
+
   const result = await context.env.DB.prepare(
     'UPDATE issues SET title = ?, content_html = ? WHERE id = ?'
-  ).bind(title.trim(), contentHtml, issueId).run();
+  ).bind(safeTitle, safeContent, issueId).run();
 
   if (result.meta.changes === 0) {
     return new Response(JSON.stringify({ success: false, error: 'Issue not found' }), {

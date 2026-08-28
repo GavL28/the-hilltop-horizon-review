@@ -1,4 +1,5 @@
 import { requireAdmin } from '../../../../lib/admin-auth.js';
+import { sanitizeHtml } from '../../../../lib/sanitize.js';
 
 const GENRES = ['Poetry', 'Fiction', 'Nonfiction', 'Art', 'Photography'];
 
@@ -43,16 +44,20 @@ export async function onRequestPost(context) {
 
   const font = pieceFont || 'times';
   const hasFont = await hasPieceFontColumn(context.env.DB);
+  const safeTitle = title.trim().substring(0, 500);
+  const safeAuthor = author.trim().substring(0, 200);
+  const safeContent = sanitizeHtml(content);
+  const safeBio = bio ? sanitizeHtml(bio.trim()).substring(0, 5000) : '';
   let result;
 
   if (hasFont) {
     result = await context.env.DB.prepare(
       'UPDATE selected_works_pieces SET issue_id = ?, title = ?, author = ?, genre = ?, content = ?, bio = ?, piece_font = ? WHERE id = ?'
-    ).bind(issueId, title.trim(), author.trim(), genre, content, bio?.trim() || '', font, id).run();
+    ).bind(issueId, safeTitle, safeAuthor, genre, safeContent, safeBio, font, id).run();
   } else {
     result = await context.env.DB.prepare(
       'UPDATE selected_works_pieces SET issue_id = ?, title = ?, author = ?, genre = ?, content = ?, bio = ? WHERE id = ?'
-    ).bind(issueId, title.trim(), author.trim(), genre, content, bio?.trim() || '', id).run();
+    ).bind(issueId, safeTitle, safeAuthor, genre, safeContent, safeBio, id).run();
   }
 
   if (result.meta.changes === 0) {

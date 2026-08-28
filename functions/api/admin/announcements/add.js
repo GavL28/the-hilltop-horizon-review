@@ -1,4 +1,5 @@
 import { requireAdmin } from '../../../lib/admin-auth.js';
+import { sanitizeHtml } from '../../../lib/sanitize.js';
 
 export async function onRequestPost(context) {
   const auth = await requireAdmin(context);
@@ -13,9 +14,11 @@ export async function onRequestPost(context) {
     });
   }
 
+  const safeMessage = sanitizeHtml(message.trim()).substring(0, 10000);
+
   const id = crypto.randomUUID();
   await context.env.DB.prepare('INSERT INTO announcements (id, message) VALUES (?, ?)')
-    .bind(id, message.trim())
+    .bind(id, safeMessage)
     .run();
 
   return new Response(JSON.stringify({ success: true }), {

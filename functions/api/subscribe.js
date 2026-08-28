@@ -3,6 +3,26 @@ export async function onRequestPost(context) {
       const inputData = await context.request.json();
       const { name, country, token } = inputData;
       const email = (inputData.email || '').toLowerCase().trim();
+
+      // Basic input validation / length caps
+      if (typeof name !== 'string' || name.length > 200) {
+        return new Response(JSON.stringify({ success: false, error: 'Invalid name' }), {
+          status: 400,
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }
+      if (typeof country !== 'string' || country.length > 100) {
+        return new Response(JSON.stringify({ success: false, error: 'Invalid country' }), {
+          status: 400,
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 320) {
+        return new Response(JSON.stringify({ success: false, error: 'Invalid email' }), {
+          status: 400,
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }
       
       // 1. Verify Turnstile Captcha token first
       if (!token) {
