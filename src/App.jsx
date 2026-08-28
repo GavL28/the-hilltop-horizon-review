@@ -17,6 +17,7 @@ const staffData = [
   { id: 'katelyn', name: 'Katelyn Gaubatz', pronouns: 'She/Her', grade: 'Senior', role: 'Fiction Editor', shortBio: 'Katelyn Gaubatz is a fiction and non-fiction writer from Richmond, Virginia. When she is not writing, she enjoys playing volleyball, violin, and pickleball.', fullBio: 'Katelyn Gaubatz is a fiction and non-fiction writer from Richmond, Virginia. When she is not writing, she enjoys playing volleyball, violin, and pickleball.', photo: '/Katelyn Gaubatz.jpg' },
   { id: 'che', name: 'Che Holts', pronouns: 'He/Him', grade: 'Junior', role: 'Photography Editor', shortBio: 'Che is Californian fiction writer, and athlete. He will tend to draw most inspiration from comic books and indie music.', fullBio: 'Che is Californian fiction writer, and athlete. He will tend to draw most inspiration from comic books and indie music. He started writing in fifth grade during lockdown just because he could and killed time. He loves and cherishes his pet beetles lovingly named Hamster and Dinosaur. Aspires and hopes  to one day  write a superhero novel that can be taught in schools and make people more excited about writing.', photo: '/Che Holts.jpeg' },
   { id: 'rubbi', name: 'Rubbi Chen', pronouns: 'She/Her', grade: 'Senior', role: 'International Representative (China)', shortBio: 'Rubbi is a fiction writer from Shanghai, China. Normally she writes some teenage queer romance, body horror (especially splatterpunk!) and suspense fiction.', fullBio: 'Rubbi is a fiction writer from Shanghai, China. Normally she writes some teenage queer romance, body horror (especially splatterpunk!) and suspense fiction. She started writing in primary school and her first work was a yaoi smut. Except for writing, she claims to have no other artistic talent, so she spends most of her time doing anthropology and queer studies research, advocating for women’s rights, watching women’s hockey, fantasizing about her future wife, and being a cat mom. ', photo: '/Rubbi Chen.jpg' },
+  { id: 'elina', name: 'Elina Dayel', pronouns: '', grade: '', role: '', shortBio: 'Coming Soon...', fullBio: 'Full biography coming soon...', photo: '' },
 ];
 
 // Frequently Asked Questions (accordion content)
@@ -1379,6 +1380,12 @@ export default function App() {
                 <h4 style={{ fontSize: '1.2rem', marginBottom: '5px' }}>Director of Policy and Standards</h4>
                 <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Number of this position available: One. Ensures adherence to magazine guidelines, ethical standards, plagiarism checks, and AI-free policies. Does not necessarily require coming to meetings because of time zone differences.</p>
               </div>
+            </div>
+
+            <div style={{ textAlign: 'center', marginBottom: '25px' }}>
+              <p style={{ fontStyle: 'italic', color: 'var(--text-muted)' }}>
+                Anyone who applies to be an editor and is accepted will go through a one full issue cycle (2 months) as an editorial intern to learn and prove their commitment.
+              </p>
             </div>
 
             <div style={{ textAlign: 'center' }}>
