@@ -62,6 +62,7 @@ const VALID_TABS = new Set([
   'issue-detail',
   'submit-guidelines',
   'submit-links',
+  'submit-junior',
   'faq',
   'contact',
   'join',
@@ -104,6 +105,7 @@ const PAGE_TITLES = {
   'issues-archive': 'Issues Archive',
   'submit-guidelines': 'Submit: Guidelines',
   'submit-links': 'Submit: Submissions Links',
+  'submit-junior': 'Submit: Junior',
   faq: 'FAQ',
   contact: 'Contact Us',
   join: 'Join Us',
@@ -528,7 +530,7 @@ export default function App() {
       home: ['home'],
       about: ['about-litmag', 'about-mission', 'about-staff', 'staff-detail', 'announcements', 'about-stats'],
       issues: ['selected-works', 'selected-works-issue', 'selected-works-piece', 'digital-magazine', 'issues-archive'],
-      submit: ['submit-guidelines', 'submit-links'],
+      submit: ['submit-guidelines', 'submit-links', 'submit-junior'],
       faq: ['faq'],
       contact: ['contact'],
       join: ['join'],
@@ -595,6 +597,7 @@ export default function App() {
             <ul className="dropdown">
               <li><button className="dropdown-link" onClick={() => setActiveTab('submit-guidelines')}>Guidelines</button></li>
               <li><button className="dropdown-link" onClick={() => setActiveTab('submit-links')}>Submissions Links</button></li>
+              <li><button className="dropdown-link" onClick={() => setActiveTab('submit-junior')}>Junior</button></li>
             </ul>
           </li>
           <li className="nav-item">
@@ -847,7 +850,7 @@ export default function App() {
             <h2 className="section-title">Stats</h2>
             <div style={{ display: 'flex', justifyContent: 'center', gap: '60px', flexWrap: 'wrap', marginTop: '30px' }}>
               <div style={{ padding: '30px 45px', backgroundColor: 'var(--accent-bg)', borderRadius: '8px', textAlign: 'center', minWidth: '240px' }}>
-                <div style={{ fontSize: '3rem', fontFamily: 'var(--font-heading)', fontWeight: 700, color: 'var(--text-main)', lineHeight: 1 }}>—</div>
+                <div style={{ fontSize: '3rem', fontFamily: 'var(--font-heading)', fontWeight: 700, color: 'var(--text-main)', lineHeight: 1 }}>40</div>
                 <div style={{ fontSize: '1.1rem', fontWeight: 600, marginTop: '20px', color: 'var(--text-main)' }}>Submissions Received</div>
               </div>
               <div style={{ padding: '30px 45px', backgroundColor: 'var(--accent-bg)', borderRadius: '8px', textAlign: 'center', minWidth: '240px' }}>
@@ -1161,6 +1164,15 @@ export default function App() {
             >
               Access Submission Form →
             </a>
+          </div>
+        )}
+
+        {activeTab === 'submit-junior' && (
+          <div className="content-box" style={{ maxWidth: '650px', margin: '0 auto', textAlign: 'center' }}>
+            <h2 className="section-title">Junior Submissions</h2>
+            <p style={{ fontStyle: 'italic', color: 'var(--text-muted)', marginTop: '10px' }}>
+              Coming soon...
+            </p>
           </div>
         )}
 
@@ -2621,6 +2633,7 @@ export default function App() {
                     <span className="footer-tab">Submit</span>
                     <button onClick={() => setActiveTab('submit-guidelines')}>Guidelines</button>
                     <button onClick={() => setActiveTab('submit-links')}>Submissions Links</button>
+                    <button onClick={() => setActiveTab('submit-junior')}>Junior</button>
                   </div>
                   <div className="footer-col">
                     <span className="footer-tab">Announcements</span>
