@@ -1,10 +1,22 @@
 import { requireAdmin } from '../../lib/admin-auth.js';
+import { sanitizeHtml } from '../../lib/sanitize.js';
 
 export async function onRequestPost(context) {
     const auth = await requireAdmin(context);
     if (auth.error) return auth.error;
 
     const { title, contentHtml, announcementMessage } = await context.request.json();
+
+    if (!title?.trim() || !contentHtml?.trim()) {
+      return new Response(JSON.stringify({ success: false, error: 'Title and content are required' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
+    const safeTitle = title.trim().substring(0, 500);
+    const safeContent = sanitizeHtml(contentHtml);
+    const safeAnnouncement = announcementMessage ? sanitizeHtml(announcementMessage.trim()) : '';
   
     // 2. Database Transaction: Archive old, insert new issue & announcement
     const db = context.env.DB;
@@ -14,8 +26,8 @@ export async function onRequestPost(context) {
     // Batch operations to ensure data consistency
     await db.batch([
       db.prepare('UPDATE issues SET is_current = 0 WHERE is_current = 1'),
-      db.prepare('INSERT INTO issues (id, title, content_html, is_current) VALUES (?, ?, ?, 1)').bind(newIssueId, title, contentHtml),
-      db.prepare('INSERT INTO announcements (id, message) VALUES (?, ?)').bind(newAnnouncementId, announcementMessage)
+      db.prepare('INSERT INTO issues (id, title, content_html, is_current) VALUES (?, ?, ?, 1)').bind(newIssueId, safeTitle, safeContent),
+      db.prepare('INSERT INTO announcements (id, message) VALUES (?, ?)').bind(newAnnouncementId, safeAnnouncement)
     ]);
   
     // 3. Fetch all active subscribers
@@ -37,8 +49,8 @@ export async function onRequestPost(context) {
           from: 'The Hilltop Horizon Review <noreply@thehilltophorizonreview.com>',
           to: 'gavinliu20162025@gmail.com',
           bcc: emailList, // Use BCC to protect subscriber privacy
-          subject: `New Issue Published: ${title}`,
-          html: `<h2>The wait is over!</h2><p>${title} is now live on our website.</p><p><a href="https://yourwebsite.com">Read it now</a></p>`
+          subject: `New Issue Published: ${safeTitle}`,
+          html: `<h2>The wait is over!</h2><p>${safeTitle} is now live on our website.</p><p><a href="https://yourwebsite.com">Read it now</a></p>`
         })
       });
     }

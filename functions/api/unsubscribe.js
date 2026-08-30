@@ -2,8 +2,15 @@ export async function onRequestPost(context) {
     try {
       const inputData = await context.request.json();
       const { token } = inputData;
-      const email = (inputData.email || '').toLowerCase().trim();  
+      const email = (inputData.email || '').toLowerCase().trim();
 
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 320) {
+        return new Response(JSON.stringify({ success: false, error: 'Invalid email' }), {
+          status: 400,
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }
+      
       // 1. Verify Turnstile Captcha token
       if (!token) {
         return new Response(JSON.stringify({ success: false, error: 'Captcha token missing' }), {

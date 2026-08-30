@@ -1,4 +1,5 @@
 import { requireAdmin } from '../../../lib/admin-auth.js';
+import { sanitizeHtml } from '../../../lib/sanitize.js';
 
 export async function onRequestPost(context) {
   const auth = await requireAdmin(context);
@@ -13,8 +14,10 @@ export async function onRequestPost(context) {
     });
   }
 
+  const safeMessage = sanitizeHtml(message.trim()).substring(0, 10000);
+
   const result = await context.env.DB.prepare('UPDATE announcements SET message = ? WHERE id = ?')
-    .bind(message.trim(), id)
+    .bind(safeMessage, id)
     .run();
 
   if (result.meta.changes === 0) {

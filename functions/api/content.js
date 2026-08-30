@@ -40,7 +40,6 @@ export async function onRequestGet(context) {
         ).all();
         swIssues = result.results;
       }
-      const visibleIssues = swIssues.filter((issue) => issue.is_visible === undefined || issue.is_visible === 1);
       let swPieces;
       try {
         const result = await db.prepare(
