@@ -17,7 +17,7 @@ const staffData = [
   { id: 'katelyn', name: 'Katelyn Gaubatz', pronouns: 'She/Her', grade: 'Senior', role: 'Fiction Editor', shortBio: 'Katelyn Gaubatz is a fiction and non-fiction writer from Richmond, Virginia. When she is not writing, she enjoys playing volleyball, violin, and pickleball.', fullBio: 'Katelyn Gaubatz is a fiction and non-fiction writer from Richmond, Virginia. When she is not writing, she enjoys playing volleyball, violin, and pickleball.', photo: '/Katelyn Gaubatz.jpg' },
   { id: 'che', name: 'Che Holts', pronouns: 'He/Him', grade: 'Junior', role: 'Photography Editor', shortBio: 'Che is Californian fiction writer, and athlete. He will tend to draw most inspiration from comic books and indie music.', fullBio: 'Che is Californian fiction writer, and athlete. He will tend to draw most inspiration from comic books and indie music. He started writing in fifth grade during lockdown just because he could and killed time. He loves and cherishes his pet beetles lovingly named Hamster and Dinosaur. Aspires and hopes  to one day  write a superhero novel that can be taught in schools and make people more excited about writing.', photo: '/Che Holts.jpeg' },
   { id: 'rubbi', name: 'Rubbi Chen', pronouns: 'She/Her', grade: 'Senior', role: 'International Representative (China)', shortBio: 'Rubbi is a fiction writer from Shanghai, China. Normally she writes some teenage queer romance, body horror (especially splatterpunk!) and suspense fiction.', fullBio: 'Rubbi is a fiction writer from Shanghai, China. Normally she writes some teenage queer romance, body horror (especially splatterpunk!) and suspense fiction. She started writing in primary school and her first work was a yaoi smut. Except for writing, she claims to have no other artistic talent, so she spends most of her time doing anthropology and queer studies research, advocating for women’s rights, watching women’s hockey, fantasizing about her future wife, and being a cat mom. ', photo: '/Rubbi Chen.jpg' },
-  { id: 'elina', name: 'Elina Dayel', pronouns: '', grade: '', role: '', shortBio: 'Elina Dayel is a teen writer from New Jersey who, in addition to writing nonfiction and poetry, enjoys reading, practicing her flute and piano, and watching movies with family and friends. She has had a love for language all her life, and is excited to share it with others.', fullBio: 'Elina Dayel is a teen writer from New Jersey who, in addition to writing nonfiction and poetry, enjoys reading, practicing her flute and piano, and watching movies with family and friends. She has had a love for language all her life, and is excited to share it with others.', photo: '/elina dayel.jpg' },
+  { id: 'elina', name: 'Elina Dayel', pronouns: 'She/Her', grade: 'Sophomore', role: 'Editorial Intern - Nonfiction', shortBio: 'Elina Dayel is a teen writer from New Jersey who, in addition to writing nonfiction and poetry, enjoys reading, practicing her flute and piano, and watching movies with family and friends. She has had a love for language all her life, and is excited to share it with others.', fullBio: 'Elina Dayel is a teen writer from New Jersey who, in addition to writing nonfiction and poetry, enjoys reading, practicing her flute and piano, and watching movies with family and friends. She has had a love for language all her life, and is excited to share it with others.', photo: '/elina dayel.jpg' },
 ];
 
 // Frequently Asked Questions (accordion content)
@@ -25,6 +25,7 @@ const FAQ_ITEMS = [
   { q: 'Does it cost money to submit?', a: 'No, submissions are completely free.' },
   { q: 'Can I submit multiple pieces?', a: 'Yes, but each genre has its specific limits. Check the specific guidelines for more details.' },
   { q: 'Am I eligible to submit?', a: 'Any teen ages 14-19 or in high school can submit.' },
+  { q: 'If I am 14, can I submit to both general submissions and junior category?', a: 'No, only submit to one. We do suggest the junior category though, because you will not be competing against high school seniors, but if you want a challenge, you can submit to the general submissions.' },
   { q: 'How do I submit?', a: 'Read through the guidelines tab, then go to the submissions tab and fill the form.' },
   { q: 'Do you accept international submissions?', a: "Yes, from any nation. We're an international youth literary magazine, we seek to grow worldwide. (Check out the International Representative Position in the Join Us tab.)" },
   { q: 'Do you accept non-English submissions?', a: 'As of now, we do not accept fully non-English submissions, but this may change in the future. Having non-English characters or phrases to a limited extent in a majority English submission is fine, as long as you explain and provide a translation on the submission form.' },
@@ -285,11 +286,16 @@ export default function App() {
   const [openMobileDropdown, setOpenMobileDropdown] = useState(null);
   const [selectedStaff, setSelectedStaff] = useState(null);
   const [openGuidelines, setOpenGuidelines] = useState('general');
+  const [openRole, setOpenRole] = useState('poetry');
   const [selectedWorksIssue, setSelectedWorksIssue] = useState(null);
   const [selectedWorksPiece, setSelectedWorksPiece] = useState(null);
 
   const toggleGuidelines = (section) => {
     setOpenGuidelines((prev) => (prev === section ? null : section));
+  };
+
+  const toggleRole = (role) => {
+    setOpenRole((prev) => (prev === role ? null : role));
   };
 
   // Subscription Form State
@@ -713,8 +719,8 @@ export default function App() {
                     {' '}on July 8th, 2026.
                   </strong>
                 </p>
-                <p>We are a team of writers, artists, and photographers from the Reynolds Young Writers Workshop Class of 2026 alumni from all over the world, including the U.S., China, Japan, and South Korea.</p>
-                <p>We accept submissions from high schoolers (ages 14-19).</p>
+                <p>We are a team of writers, artists, and photographers from all over the world, including the U.S., China, Japan, and South Korea.</p>
+                <p>We accept submissions from high schoolers (ages 11-19).</p>
                 <p>We publish a new issue every two months.</p>
                 <p>If your submission(s) is selected to be published, you will be notified and your work and bio will be added to the issue. Each piece you submit will be carefully reviewed by our wonderful editors, who will provide editing, and detailed, specific, and in-depth feedback.</p>
                 <p>Communication will be by email.</p>
@@ -891,6 +897,9 @@ export default function App() {
             <p style={{ textAlign: 'center', marginBottom: '20px', color: 'var(--text-muted)' }}>
               Browse the pieces selected for publication, organized by issue. Click an issue to view its selected works.
             </p>
+            <p style={{ textAlign: 'center', fontWeight: 700, marginBottom: '20px', color: 'var(--text-main)' }}>
+              The first issue will be published Oct 1st!
+            </p>
             {selectedWorks.filter((issue) => issue.is_visible !== 0).length === 0 && (
               <p style={{ textAlign: 'center', fontStyle: 'italic', color: 'var(--text-muted)' }}>No issues available yet.</p>
             )}
@@ -1025,8 +1034,11 @@ export default function App() {
         {activeTab === 'digital-magazine' && (
           <div className="content-box fade-in" style={{ textAlign: 'center' }}>
             <h2 className="section-title">Digital Magazine</h2>
-            <p style={{ marginBottom: '30px', color: 'var(--text-muted)' }}>
+            <p style={{ marginBottom: '15px', color: 'var(--text-muted)' }}>
               Read each issue in our interactive digital magazine edition.
+            </p>
+            <p style={{ textAlign: 'center', fontWeight: 700, marginBottom: '30px', color: 'var(--text-main)' }}>
+              The first issue will be published Oct 1st!
             </p>
             {digitalEditions.length === 0 ? (
               <p style={{ fontStyle: 'italic', color: 'var(--text-muted)' }}>No digital editions available yet. Check back soon!</p>
@@ -1053,6 +1065,9 @@ export default function App() {
         {activeTab === 'submit-guidelines' && (
           <div className="content-box">
             <h2 className="section-title">Submission Guidelines</h2>
+            <p style={{ fontSize: '1.15rem', fontWeight: 700, textAlign: 'center', marginBottom: '20px', color: 'var(--text-main)' }}>
+              If you submit, you MUST follow guidelines, and whatever the submission form requires, in order for your submission to be considered.
+            </p>
             <p style={{ marginBottom: '20px' }}>
               Thank you for taking the time to submit to our literary magazine! Please review the information below before making your submission. Good luck!
             </p>
@@ -1155,24 +1170,47 @@ export default function App() {
             <p style={{ marginBottom: '20px' }}>
               Ready to submit? Fill out our submission form below. Make sure to review our <a href="#" style={{ color: 'var(--text-main)' }} onClick={(e) => { e.preventDefault(); setActiveTab('submit-guidelines'); }}>guidelines</a> first!
             </p>
-            <a
-              href="https://forms.gle/CASTwShJ39BMpmms6"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-primary"
-              style={{ textDecoration: 'none', display: 'inline-block' }}
-            >
-              Access Submission Form →
-            </a>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', alignItems: 'center' }}>
+              <a
+                href="https://forms.gle/CASTwShJ39BMpmms6"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-primary"
+                style={{ textDecoration: 'none', display: 'inline-block' }}
+              >
+                General Submissions (ages 14-19) →
+              </a>
+              <a
+                href="https://docs.google.com/forms/d/e/1FAIpQLSeBDT0s8Bd1VuoL2ktm0CXz6pPeNoqsLaJT9jCIucZk43--Rg/viewform?usp=sharing&ouid=115181364077200728162"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-primary"
+                style={{ textDecoration: 'none', display: 'inline-block' }}
+              >
+                Junior Submissions (ages 11-14) →
+              </a>
+            </div>
           </div>
         )}
 
         {activeTab === 'submit-junior' && (
           <div className="content-box" style={{ maxWidth: '650px', margin: '0 auto', textAlign: 'center' }}>
             <h2 className="section-title">Junior Submissions</h2>
-            <p style={{ fontStyle: 'italic', color: 'var(--text-muted)', marginTop: '10px' }}>
-              Coming soon...
+            <p style={{ marginBottom: '20px' }}>
+              Welcome to the junior submission category! This category is for middle schoolers (or students who would be at that age), meaning ages 11-14. Welcome!
             </p>
+            <p style={{ marginBottom: '20px' }}>
+              Submission guidelines are the same as general (high schooler) submissions. It's best if you have a guardian look over everything such as the form information for you. Everything is the same as high schooler submissions, except a different link, and you will be judged in a separate pool, alongside other middle schoolers. If you are selected to be published, it will be in the same issue as the high schooler pieces published. Have fun!
+            </p>
+            <a
+              href="https://docs.google.com/forms/d/e/1FAIpQLSeBDT0s8Bd1VuoL2ktm0CXz6pPeNoqsLaJT9jCIucZk43--Rg/viewform?usp=sharing&ouid=115181364077200728162"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary"
+              style={{ textDecoration: 'none', display: 'inline-block' }}
+            >
+              Junior Submissions (ages 11-14) →
+            </a>
           </div>
         )}
 
@@ -1337,61 +1375,42 @@ export default function App() {
               The Hilltop Horizon Review is entirely run by high schoolers. We look for passionate, dedicated individuals who want to help shape our global literary community. Open to teens ages 14–19. Link to apply coming soon...
             </p>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '30px', marginBottom: '40px' }}>
-              <div>
-                <h4 style={{ fontSize: '1.2rem', marginBottom: '5px' }}>Poetry Editor</h4>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', marginBottom: '40px' }}>
+              <GuidelinesSection title="Poetry Editor" isOpen={openRole === 'poetry'} onToggle={() => toggleRole('poetry')}>
                 <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Number of this position available: Two. Edits poetry submissions and provides detailed, specific, and in-depth constructive feedback for every piece assigned. Communicates and works together with fellow poetry editors to select a collection of poems to be published each issue.</p>
                 <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Recommended qualifications: Experience in poetry is a required minimum. Experience editing poetry is a definete plus. Willingsness to work and communicate with fellow editors. Come consistently to meetings. & more.</p>
-              </div>
-              <div>
-                <h4 style={{ fontSize: '1.2rem', marginBottom: '5px' }}>Fiction Editor</h4>
+              </GuidelinesSection>
+              <GuidelinesSection title="Fiction Editor" isOpen={openRole === 'fiction'} onToggle={() => toggleRole('fiction')}>
                 <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Number of this position available: One. Edits fiction submissions and provides detailed, specific, and in-depth constructive feedback for every piece assigned. Communicates and works together with fellow fiction editors to select a collection of fiction pieces to be published each issue.</p>
                 <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Recommended qualifications: Experience in fiction is a required minimum. Experience editing fiction is a definete plus. Willingsness to work and communicate with fellow editors. Come consistently to meetings. & more.</p>
-              </div>
-              <div>
-                <h4 style={{ fontSize: '1.2rem', marginBottom: '5px' }}>Nonfiction Editor</h4>
-                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Number of this position available: One. Edits nonfiction submissions and provides detailed, specific, and in-depth constructive feedback for every piece assigned. Communicates and works together with fellow nonfiction editors to select a collection of nonfiction pieces to be published each issue.</p>
-                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Recommended qualifications: Experience in nonfiction is a required minimum. Experience editing fiction is a definete plus. Willingsness to work and communicate with fellow editors. Come consistently to meetings. & more.</p>
-              </div>
-              <div>
-                <h4 style={{ fontSize: '1.2rem', marginBottom: '5px' }}>Art Editor</h4>
+              </GuidelinesSection>
+              <GuidelinesSection title="Nonfiction Editor" isOpen={openRole === 'nonfiction'} onToggle={() => toggleRole('nonfiction')}>
+                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Number of this position available: Closed. We are currently not accepting applications for this position.</p>
+              </GuidelinesSection>
+              <GuidelinesSection title="Art Editor" isOpen={openRole === 'art'} onToggle={() => toggleRole('art')}>
                 <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Number of this position available: One. Reviews artwork submissions and provides detailed, specific, and in-depth constructive feedback for every piece assigned. Works to select pieces to be published in each issue.</p>
                 <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Recommended qualifications: Experience in art is a required minimum. Experience reviewing, judging, and providing feedback on artwork is a definete plus, as well as experience in a variety of mediums. Willingsness to work and communicate with fellow editors. Come consistently to meetings. & more.</p>
-              </div>
-              <div>
-                <h4 style={{ fontSize: '1.2rem', marginBottom: '5px' }}>Photography Editor</h4>
+              </GuidelinesSection>
+              <GuidelinesSection title="Photography Editor" isOpen={openRole === 'photography'} onToggle={() => toggleRole('photography')}>
                 <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Number of this position available: One. Reviews photography submissions and provides detailed, specific, and in-depth constructive feedback for every piece assigned. Works to select pieces to be published in each issue.</p>
                 <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Recommended qualifications: Experience in photography is a required minimum. Experience reviewing, judging, and providing feedback on photography is a definete plus. Willingsness to work and communicate with fellow editors. Come consistently to meetings. & more.</p>
-              </div>
-              <div>
-                <h4 style={{ fontSize: '1.2rem', marginBottom: '5px' }}>Internal Operations Secretary</h4>
-                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Number of this position available: Zero. Manages internal team schedules, meeting notes, communication channels, announcments, and administrative workflows.</p>
-                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Recommended qualifications: strong organizational and calendar management skills, excellent communication for team announcements, and proficiency in tools like Slack, Google Workspace, and project management platforms. Come consistently to meetings. & more.</p>
-              </div>
-              <div>
-                <h4 style={{ fontSize: '1.2rem', marginBottom: '5px' }}>External Operations Secretary</h4>
-                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Number of this position available: Zero. Manages submissions, general tracking organization, external communication, public relations, and forms.</p>
-                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Recommended qualifications: strong organizational skills, excellent communication with members of the public -- primarily submitters, frequent availability to check and respond to inquiries and requests. Come consistently to meetings. & more.</p>
-              </div>
-              <div>
-                <h4 style={{ fontSize: '1.2rem', marginBottom: '5px' }}>Website Administrator</h4>
+              </GuidelinesSection>
+              <GuidelinesSection title="Secretary" isOpen={openRole === 'secretary'} onToggle={() => toggleRole('secretary')}>
+                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Number of this position available: One. Manages internal team schedules, meeting notes, communication channels, announcements, and administrative workflows, as well as submissions, general tracking organization, external communication, public relations, and forms.</p>
+                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Recommended qualifications: strong organizational and calendar management skills, excellent communication for team announcements and with members of the public -- primarily submitters, frequent availability to check and respond to inquiries and requests, and proficiency in tools like Slack, Google Workspace, and project management platforms. Come consistently to meetings. & more.</p>
+              </GuidelinesSection>
+              <GuidelinesSection title="Website Administrator" isOpen={openRole === 'webadmin'} onToggle={() => toggleRole('webadmin')}>
                 <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Number of this position available: Zero. Maintains web infrastructure and security, uploads new issues, adds new features, and ensures smooth site performance.</p>
                 <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Recommended qualifications: Basic coding knowledge is required. Experience and familiarity with IDEs, github, cloudflare, and especially experience with creating / acting as administrator for other websites is recommended. Come consistently to meetings. & more.</p>
-              </div>
-              <div>
-                <h4 style={{ fontSize: '1.2rem', marginBottom: '5px' }}>Social Media Director</h4>
+              </GuidelinesSection>
+              <GuidelinesSection title="Social Media Director" isOpen={openRole === 'social'} onToggle={() => toggleRole('social')}>
                 <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Number of this position available: Zero. Runs social channels, designs promotional graphics, and engages with the online young writer community.</p>
                 <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Recommended Qualifications: Experience with handling social media accounts, art & design experience, experience with canva, photoshop, illustrator, etc. Come consistently to meetings. & more.</p>
-              </div>
-              <div>
-                <h4 style={{ fontSize: '1.2rem', marginBottom: '5px' }}>International Representatives</h4>
+              </GuidelinesSection>
+              <GuidelinesSection title="International Representatives" isOpen={openRole === 'intl'} onToggle={() => toggleRole('intl')}>
                 <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Number of this position available: As many as possible (NOT U.S.A., China, Japan, or South Korea). Builds regional networks, handles promotion in region, and coordinates translation or regional features abroad.</p>
                 <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Recommended Qualifications: MUST be living in a nation that The Hilltop Horizon Review does NOT have an international representative in. Fluency in the nation's language. Experience with creating promotional materials. Does not necessarily require coming to meetings because of time zone differences.</p>
-              </div>
-              <div>
-                <h4 style={{ fontSize: '1.2rem', marginBottom: '5px' }}>Director of Policy and Standards</h4>
-                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Number of this position available: One. Ensures adherence to magazine guidelines, ethical standards, plagiarism checks, and AI-free policies. Does not necessarily require coming to meetings because of time zone differences.</p>
-              </div>
+              </GuidelinesSection>
             </div>
 
             <div style={{ textAlign: 'center', marginBottom: '25px' }}>
