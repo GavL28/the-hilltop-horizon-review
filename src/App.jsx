@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
-import { Turnstile } from '@marsidev/react-turnstile';
 import { Editor } from '@tinymce/tinymce-react';
 
 // Centralized Staff Data Array
 const staffData = [
   { id: 'gavin', name: 'Gavin Liu', pronouns: 'He/Him', grade: 'Junior', role: 'Co-Editor-in-Chief & IT Developer & Marketing Director', shortBio: 'Gavin Liu is a writer (mainly poetry), musician, visual artist, journalist, and avid magnet collector', fullBio: 'Gavin Liu is a writer (mainly poetry), musician, visual artist, journalist, and avid magnet collector from Sammamish, WA. He spends his time writing, playing the piano, gaming, on walks, overthinking, or doing nothing. He has over 200 magnets, which may or may not be a good financial investment but it’s too late to turn back now.', photo: '/IMG_1463.jpeg' },
   { id: 'tawanda', name: 'Tawanda Sibanda', pronouns: 'He/Him', grade: 'Senior', role: 'Co-Editor in Chief & Secretary', shortBio: 'Tawanda Sibanda is mainly a poet and artist from Allentown, Pennsylvania. He spends his time running, working out, baking treats, bopping to J-city pop, or staying up too late to binge anime.', fullBio: 'Tawanda Sibanda is mainly a poet and artist from Allentown, Pennsylvania. He spends his time running, working out, baking treats, bopping to J-city pop, or staying up too late to binge anime.', photo: '/Tawanda Sibanda.jpeg' },
-  { id: 'sherry', name: 'Sherry Wang', pronouns: 'She/Her', grade: 'Junior', role: 'Poetry Editor & Social Media Director', shortBio: 'Sherry Wang is a teenage poet, musician, and public speaker from Monmouth County, New Jersey.', fullBio: 'Sherry Wang is a teenage poet, musician, and public speaker from Monmouth County, New Jersey. She began writing in the fifth grade after discovering the works of Shakespeare, whose plays and sonnets sparked her love of language. When she is not searching for her next inspiration, Sherry can be found performing on stage, spending weekends at Speech & Debate tournaments, or eating more sushi than she would like to admit.', photo: '/Sherry Wang..jpg'  },
+  { id: 'sherry', name: 'Sherry Wang', pronouns: 'She/Her', grade: 'Junior', role: 'Poetry Editor', shortBio: 'Sherry Wang is a teenage poet, musician, and public speaker from Monmouth County, New Jersey.', fullBio: 'Sherry Wang is a teenage poet, musician, and public speaker from Monmouth County, New Jersey. She began writing in the fifth grade after discovering the works of Shakespeare, whose plays and sonnets sparked her love of language. When she is not searching for her next inspiration, Sherry can be found performing on stage, spending weekends at Speech & Debate tournaments, or eating more sushi than she would like to admit.', photo: '/Sherry Wang..jpg'  },
   { id: 'mia-l', name: 'Mia Lucke', pronouns: 'She/Her', grade: 'Senior', role: 'Poetry Editor & Art Editor', shortBio: 'Mia Lucke is a poet and visual artist. Adopted from Taiwan, she currently lives in Milwaukee, Wisconsin.', fullBio: 'Mia Lucke is a poet and visual artist. Adopted from Taiwan, she currently lives in Milwaukee, Wisconsin. She spends her time writing, doing art, or going on walks. She often can be found performing her poetry for open mics, marathons, or fundraisers. The topics of her writings range from mental health, to biblical and mythological stories, or modern day society and politics. Her poetry focuses on processing both herself and the world around her.', photo: '/Mia_Lucke.jpg' },
   { id: 'grey', name: 'Gregory Whitworth-Neufeld', pronouns: 'He/Him', grade: 'Senior', role: 'Poetry Editor', shortBio: 'Gregory Whitworth-Neufeld is a poet, playwright, visual artist, actor, and editor. His work engages politics, nature, and small-scale social interactions.', fullBio: 'Gregory Whitworth-Neufeld is a poet, playwright, visual artist, actor, and editor. His work engages politics, nature, and small-scale social interactions. When he isn’t making art, he loves reading, rock climbing, forest walks, and listening to music.', photo: '/Gregory Whitworth-Neufeld (Grey).jpeg' },
   { id: 'jayne', name: 'Jayne Kim', pronouns: 'She/Her', grade: 'Senior', role: 'Nonfiction Editor & International Representative (South Korea)', shortBio: 'Coming Soon...', fullBio: 'Full biography coming soon...' },
@@ -297,13 +296,6 @@ export default function App() {
   const toggleRole = (role) => {
     setOpenRole((prev) => (prev === role ? null : role));
   };
-
-  // Subscription Form State
-  const [subName, setSubName] = useState('');
-  const [subEmail, setSubEmail] = useState('');
-  const [subCountry, setSubCountry] = useState('');
-  const [subCaptchaToken, setSubCaptchaToken] = useState('');
-  const [subActionType, setSubActionType] = useState('subscribe');
 
   // Admin Login State
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
@@ -694,12 +686,7 @@ export default function App() {
               </button>
             </div>
             
-            <h2 className="section-title">Featured Piece</h2>
-            <div className="featured-poem">
-              <h3 className="poem-title">Editor's Choice</h3>
-              <p className="poem-body">To be determined...</p>
             </div>
-          </div>
         )}
 
         {/* ABOUT SUBTABS */}
@@ -856,7 +843,7 @@ export default function App() {
             <h2 className="section-title">Stats</h2>
             <div style={{ display: 'flex', justifyContent: 'center', gap: '60px', flexWrap: 'wrap', marginTop: '30px' }}>
               <div style={{ padding: '30px 45px', backgroundColor: 'var(--accent-bg)', borderRadius: '8px', textAlign: 'center', minWidth: '240px' }}>
-                <div style={{ fontSize: '3rem', fontFamily: 'var(--font-heading)', fontWeight: 700, color: 'var(--text-main)', lineHeight: 1 }}>40</div>
+                <div style={{ fontSize: '3rem', fontFamily: 'var(--font-heading)', fontWeight: 700, color: 'var(--text-main)', lineHeight: 1 }}>41</div>
                 <div style={{ fontSize: '1.1rem', fontWeight: 600, marginTop: '20px', color: 'var(--text-main)' }}>Submissions Received</div>
               </div>
               <div style={{ padding: '30px 45px', backgroundColor: 'var(--accent-bg)', borderRadius: '8px', textAlign: 'center', minWidth: '240px' }}>
@@ -1264,107 +1251,7 @@ export default function App() {
               </div>
             </div>
 
-            <p style={{ textAlign: 'center', marginBottom: '25px', color: 'var(--text-muted)' }}>
-              Subscribe to receive notifications when a new issue drops:
-            </p>
-            
-            <form onSubmit={async (e) => {
-              e.preventDefault();
-              if (!subCaptchaToken) {
-                alert('Please complete the captcha verification.');
-                return;
-              }
-
-              // Determine the correct endpoint based on which button was clicked
-              const endpoint = subActionType === 'subscribe' ? '/api/subscribe' : '/api/unsubscribe';
-
-              try {
-                const response = await fetch(endpoint, {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  // Unsubscribe only strictly needs the email and token, but sending the whole payload is fine
-                  body: JSON.stringify({ name: subName, email: subEmail, country: subCountry, token: subCaptchaToken }),
-                });
-
-                const data = await response.json();
-                if (data.success) {
-                  alert(subActionType === 'subscribe' ? 'Subscribed successfully!' : 'Unsubscribed successfully.');
-                  setSubName('');
-                  setSubEmail('');
-                  setSubCountry('');
-                } else {
-                  alert('Error: ' + data.error);
-                }
-              } catch (err) {
-                alert(`An error occurred while trying to ${subActionType}.`);
-              }
-            }}>
-              <div className="form-group">
-                <label>Name</label>
-                <input 
-                  type="text" 
-                  className="form-control" 
-                  value={subName} 
-                  onChange={(e) => setSubName(e.target.value)} 
-                  required={subActionType === 'subscribe'} // Only required for subscribing
-                />
-              </div>
-              <div className="form-group">
-                <label>Email Address</label>
-                <input 
-                  type="email" 
-                  className="form-control" 
-                  value={subEmail} 
-                  onChange={(e) => setSubEmail(e.target.value)} 
-                  required 
-                />
-              </div>
-              <div className="form-group">
-                <label>Country</label>
-                <input 
-                  type="text" 
-                  className="form-control" 
-                  value={subCountry} 
-                  onChange={(e) => setSubCountry(e.target.value)} 
-                  required={subActionType === 'subscribe'} // Only required for subscribing
-                />
-              </div>
-              <div style={{ margin: '20px 0', display: 'flex', justifyContent: 'center' }}>
-                <Turnstile 
-                  siteKey="0x4AAAAAAEEsA5qQZtd99Uc8" 
-                  onSuccess={(token) => setSubCaptchaToken(token)} 
-                />
-              </div>
-              
-              {/* Button Group */}
-              <div style={{ display: 'flex', gap: '15px', justifyContent: 'center', marginTop: '15px' }}>
-                <button 
-                  type="submit" 
-                  className="btn-primary" 
-                  onClick={() => setSubActionType('subscribe')}
-                >
-                  Subscribe
-                </button>
-                <button 
-                  type="submit" 
-                  className="btn-secondary" 
-                  onClick={() => setSubActionType('unsubscribe')}
-                  style={{ 
-                    background: 'transparent', 
-                    border: '1px solid var(--text-main)', 
-                    color: 'var(--text-main)',
-                    padding: '10px 20px',
-                    borderRadius: '4px',
-                    cursor: 'pointer',
-                    fontFamily: 'var(--font-heading)'
-                  }}
-                >
-                  Unsubscribe
-                </button>
-              </div>
-            </form>
-
-          </div>
+            </div>
         )}
 
         {/* JOIN US TAB */}

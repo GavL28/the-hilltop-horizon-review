@@ -5,4 +5,7 @@ INSERT INTO announcements (id, message, created_at) VALUES
    '2026-08-03 14:00:00'),
   ('annc-team-recruiting',
    'We''re Recruiting: We are expanding our team and looking for passionate members across many roles — including editors, secretaries, policy directors, social media directors, and more. If you''re excited to help shape our global literary community, check our "Join Us" page to apply.',
-   '2026-08-03 12:00:00');
+   '2026-08-03 12:00:00'),
+  ('annc-issue1-soon',
+   'Issue One will be published very soon -- keep an eye out!',
+   '2026-09-19 12:00:00');
