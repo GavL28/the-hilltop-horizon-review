@@ -584,9 +584,8 @@ export default function App() {
             </ul>
           </li>
           <li className={openMobileDropdown === 'issues' ? 'nav-item dropdown-open' : 'nav-item'}>
-            <button className={isNavActive('issues') ? 'nav-link active' : 'nav-link'} onClick={handleParentNavClick('issues', 'selected-works')}>Issues / Selected Works ▾</button>
+            <button className={isNavActive('issues') ? 'nav-link active' : 'nav-link'} onClick={handleParentNavClick('issues', 'digital-magazine')}>Issues ▾</button>
             <ul className="dropdown">
-              <li><button className="dropdown-link" onClick={() => setActiveTab('selected-works')}>Selected Works</button></li>
               <li><button className="dropdown-link" onClick={() => setActiveTab('digital-magazine')}>Digital Magazine</button></li>
             </ul>
           </li>
@@ -627,7 +626,7 @@ export default function App() {
       {activeTab === 'home' && (
         <section className="container" style={{ paddingTop: '15px' }}>
           <div className="hero-banner">
-            <img src="/IMG_6051.jpeg" alt="The Hilltop Horizon Review" className="hero-image" />
+            <img src="/Issue One (2).png" alt="The Hilltop Horizon Review" className="hero-image" />
             <p className="hero-description">
               We are an international youth literary magazine, run by high schoolers, for high schoolers.
             </p>
@@ -1024,23 +1023,23 @@ export default function App() {
             <p style={{ marginBottom: '15px', color: 'var(--text-muted)' }}>
               Read each issue in our interactive digital magazine edition.
             </p>
-            <p style={{ textAlign: 'center', fontWeight: 700, marginBottom: '30px', color: 'var(--text-main)' }}>
-              The first issue will be published Oct 1st!
-            </p>
             {digitalEditions.length === 0 ? (
               <p style={{ fontStyle: 'italic', color: 'var(--text-muted)' }}>No digital editions available yet. Check back soon!</p>
             ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', alignItems: 'center' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '25px', alignItems: 'center' }}>
                 {digitalEditions.map((edition) => (
                   <a
                     key={edition.id}
                     href={edition.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="btn-primary"
-                    style={{ textDecoration: 'none', display: 'inline-block', fontSize: '1.1rem', padding: '15px 30px' }}
+                    style={{ display: 'inline-block' }}
                   >
-                    {edition.title} →
+                    <img
+                      src="/Issue One (2).png"
+                      alt={edition.title}
+                      style={{ width: '280px', height: 'auto', borderRadius: '4px', boxShadow: '0 4px 12px rgba(0,0,0,0.2)' }}
+                    />
                   </a>
                 ))}
               </div>
@@ -2531,8 +2530,7 @@ export default function App() {
                     <button onClick={() => setActiveTab('about-stats')}>Stats</button>
                   </div>
                   <div className="footer-col">
-                    <span className="footer-tab">Issues / Selected Works</span>
-                    <button onClick={() => setActiveTab('selected-works')}>Selected Works</button>
+                    <span className="footer-tab">Issues</span>
                     <button onClick={() => setActiveTab('digital-magazine')}>Digital Magazine</button>
                   </div>
                   <div className="footer-col">
