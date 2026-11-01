@@ -1164,13 +1164,13 @@ export default function App() {
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', alignItems: 'center' }}>
               <a
-                href="https://forms.gle/CASTwShJ39BMpmms6"
+                href="https://docs.google.com/forms/d/e/1FAIpQLScbD413Lmd9w3yOxHhz3M5eKifCMXhRj3OymJzWFtAMDEAJ_w/viewform?usp=dialog"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-primary"
                 style={{ textDecoration: 'none', display: 'inline-block' }}
               >
-                General Submissions (ages 14-19) →
+                Issue 3 General Submission (14-19) →
               </a>
               <a
                 href="https://docs.google.com/forms/d/e/1FAIpQLSeBDT0s8Bd1VuoL2ktm0CXz6pPeNoqsLaJT9jCIucZk43--Rg/viewform?usp=sharing&ouid=115181364077200728162"
