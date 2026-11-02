@@ -848,11 +848,11 @@ export default function App() {
             <h2 className="section-title">Stats</h2>
             <div style={{ display: 'flex', justifyContent: 'center', gap: '60px', flexWrap: 'wrap', marginTop: '30px' }}>
               <div style={{ padding: '30px 45px', backgroundColor: 'var(--accent-bg)', borderRadius: '8px', textAlign: 'center', minWidth: '240px' }}>
-                <div style={{ fontSize: '3rem', fontFamily: 'var(--font-heading)', fontWeight: 700, color: 'var(--text-main)', lineHeight: 1 }}>41</div>
+                <div style={{ fontSize: '3rem', fontFamily: 'var(--font-heading)', fontWeight: 700, color: 'var(--text-main)', lineHeight: 1 }}>81</div>
                 <div style={{ fontSize: '1.1rem', fontWeight: 600, marginTop: '20px', color: 'var(--text-main)' }}>Submissions Received</div>
               </div>
               <div style={{ padding: '30px 45px', backgroundColor: 'var(--accent-bg)', borderRadius: '8px', textAlign: 'center', minWidth: '240px' }}>
-                <div style={{ fontSize: '3rem', fontFamily: 'var(--font-heading)', fontWeight: 700, color: 'var(--text-main)', lineHeight: 1 }}>4</div>
+                <div style={{ fontSize: '3rem', fontFamily: 'var(--font-heading)', fontWeight: 700, color: 'var(--text-main)', lineHeight: 1 }}>6</div>
                 <div style={{ fontSize: '1.1rem', fontWeight: 600, marginTop: '20px', color: 'var(--text-main)' }}>Nations Reached</div>
               </div>
             </div>
