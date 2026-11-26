@@ -677,9 +677,25 @@ export default function App() {
       {activeTab === 'home' && (
         <section className="container" style={{ paddingTop: '15px' }}>
           <div className="hero-banner">
-            <p className="hero-description">
-              We are an international youth literary magazine, run by high schoolers, for high schoolers.
-            </p>
+            <div className="hero-copy">
+              <div className="hero-badge">
+                Ages 11-19 • Specific, detailed, and in-depth feedback for every single piece you submit.
+              </div>
+              <h1 className="hero-headline">
+                Where emerging voices meet the <em className="orange-word">horizon</em>.
+              </h1>
+              <p className="hero-copy-text">
+                A youth-led literary review curating bimonthly collections of poetry, fiction,  nonfiction, photography, and art -- editorial feedback on <span className="orange-word">every</span> submission.
+              </p>
+              <div className="hero-cta-group">
+                <button className="hero-cta-primary" onClick={() => setActiveTab('digital-magazine')}>
+                  Read the Current Release <span aria-hidden="true">→</span>
+                </button>
+                <button className="hero-cta-secondary" onClick={() => setActiveTab('submit-links')}>
+                  Open Call for Original Work
+                </button>
+              </div>
+            </div>
             <div className="issue-card">
               <div className="issue-card-header">
                 <span className="issue-card-label">Current Release</span>

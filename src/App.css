@@ -273,6 +273,19 @@ body {
     text-align: center;
   }
 
+  .hero-copy {
+    text-align: center;
+    max-width: 100%;
+  }
+
+  .hero-headline {
+    font-size: 2rem;
+  }
+
+  .hero-cta-group {
+    justify-content: center;
+  }
+
   .issue-card {
     margin: 0 auto;
   }
@@ -362,6 +375,85 @@ body {
   margin-bottom: 20px;
   padding: 15px 20px 10px; 
   border-bottom: 1px solid var(--accent-border);
+}
+
+.hero-copy {
+  flex: 1 1 auto;
+  max-width: 620px;
+  text-align: left;
+}
+
+.hero-badge {
+  display: inline-block;
+  background-color: #FFFFFF;
+  border-radius: 8px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.12);
+  padding: 10px 16px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.85rem;
+  color: var(--text-main);
+}
+
+.hero-headline {
+  font-family: var(--font-heading);
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #000000;
+  margin: 24px 0 16px;
+}
+
+.orange-word {
+  color: #EA580C;
+}
+
+.hero-copy-text {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #6B7280;
+}
+
+.hero-cta-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 26px;
+}
+
+.hero-cta-primary,
+.hero-cta-secondary {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  border-radius: 8px;
+  padding: 12px 20px;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.hero-cta-primary {
+  background-color: #15803D;
+  color: #FFFFFF;
+  border: 2px solid #15803D;
+}
+
+.hero-cta-primary:hover {
+  background-color: #166534;
+}
+
+.hero-cta-primary span {
+  margin-left: 8px;
+}
+
+.hero-cta-secondary {
+  background-color: transparent;
+  color: #374151;
+  border: 2px solid #4B5563;
+}
+
+.hero-cta-secondary:hover {
+  background-color: #F5ECDA;
 }
 
 .issue-card {
@@ -460,12 +552,12 @@ body {
 .marquee-track {
   display: flex;
   width: max-content;
-  animation: marquee-scroll 90s linear infinite;
+  animation: marquee-scroll 65s linear infinite;
 }
 
 .marquee-item {
-  flex: 0 0 480px;
-  width: 480px;
+  flex: 0 0 620px;
+  width: 620px;
   margin-right: 48px;
   min-height: 200px;
   display: flex;
@@ -1047,8 +1139,8 @@ body {
   }
 
   .marquee-item {
-    flex-basis: 300px;
-    width: 300px;
+    flex-basis: 380px;
+    width: 380px;
     margin-right: 32px;
   }
 
