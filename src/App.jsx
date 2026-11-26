@@ -276,9 +276,9 @@ const TESTIMONIAL_CAROUSELS = [
   ],
 ];
 
-function TestimonialCarousel({ items }) {
+function TestimonialCarousel({ items, variant }) {
   return (
-    <div className="testimonial-marquee">
+    <div className={`testimonial-marquee ${variant === 'second' ? 'testimonial-marquee-second' : ''}`}>
       <div className="marquee-track">
         {[...items, ...items].map((item, i) => (
           <div className="marquee-item" key={i}>
@@ -326,6 +326,8 @@ function GuidelinesSection({ title, isOpen, onToggle, children }) {
 
 export default function App() {
   const [activeTab, setActiveTab] = useState(getTabFromHash);
+  const [welcomeVisible, setWelcomeVisible] = useState(true);
+  const closeWelcome = () => setWelcomeVisible(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openMobileDropdown, setOpenMobileDropdown] = useState(null);
   const [selectedStaff, setSelectedStaff] = useState(null);
@@ -660,17 +662,11 @@ export default function App() {
         </ul>
       </nav>
 
-      {/* Header & Logo (home page only) */}
-      {activeTab === 'home' && (
-        <header className="site-header">
-          <div className="container">
-            <a href="#" className="logo-container" onClick={() => setActiveTab('home')}>
-              <img src="https://raw.githubusercontent.com/GavL28/the-hilltop-horizon-review/main/public/THHR.logo (1).png" alt="Logo" />
-            </a>
-            <div className="site-title">The Hilltop Horizon Review</div>
-            <div className="site-subtitle">an international youth literary magazine</div>
-          </div>
-        </header>
+      {activeTab === 'home' && welcomeVisible && (
+        <div className="welcome-bar">
+          <span>Welcome to the close-knit community of The Hilltop Horizon Review! -Gavin | Co-founder &amp; Editor in Chief</span>
+          <button className="welcome-close" onClick={closeWelcome} aria-label="Close welcome message">×</button>
+        </div>
       )}
 
       {/* Home: hero (above the main content) */}
@@ -720,7 +716,7 @@ export default function App() {
           <div className="testimonials-inner">
             <h2 className="section-title">What people have said</h2>
             {TESTIMONIAL_CAROUSELS.map((items, i) => (
-              <TestimonialCarousel key={i} items={items} />
+              <TestimonialCarousel key={i} items={items} variant={i === 1 ? 'second' : 'first'} />
             ))}
           </div>
         </section>
