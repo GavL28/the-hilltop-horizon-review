@@ -553,7 +553,10 @@ export default function App() {
       <nav className="nav-bar">
         <a href="#" className="nav-logo" onClick={() => { setActiveTab('home'); setMobileMenuOpen(false); }} title="The Hilltop Horizon Review">
           <img src="https://raw.githubusercontent.com/GavL28/the-hilltop-horizon-review/main/public/THHR.logo (1).png" alt="Logo" />
-          <span className="nav-brand">The Hilltop Horizon Review</span>
+          <div className="nav-brand-group">
+            <span className="nav-brand">The Hilltop Horizon Review</span>
+            <span className="nav-brand-subtitle">A Youth Literary Magazine</span>
+          </div>
         </a>
         <button
           className="nav-toggle"
@@ -604,6 +607,9 @@ export default function App() {
           </li>
           <li className="nav-item">
             <button className={isNavActive('join') ? 'nav-link active' : 'nav-link'} onClick={() => setActiveTab('join')}>Join Us</button>
+          </li>
+          <li className="nav-item nav-submit-item">
+            <button className="nav-submit-button" onClick={() => setActiveTab('submit-links')}>Submit</button>
           </li>
         </ul>
       </nav>
