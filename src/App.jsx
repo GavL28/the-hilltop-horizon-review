@@ -277,22 +277,15 @@ const TESTIMONIAL_CAROUSELS = [
 ];
 
 function TestimonialCarousel({ items }) {
-  const [index, setIndex] = useState(0);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setIndex((current) => (current + 1) % items.length);
-    }, 6000);
-    return () => clearInterval(timer);
-  }, [items.length]);
-
-  const item = items[index];
-
   return (
-    <div className="testimonial-carousel">
-      <div className="carousel-content" key={index}>
-        <p className="testimonial-quote">"{item.quote}"</p>
-        <p className="testimonial-name">{item.name}</p>
+    <div className="testimonial-marquee">
+      <div className="marquee-track">
+        {[...items, ...items].map((item, i) => (
+          <div className="marquee-item" key={i}>
+            <p className="testimonial-quote">"{item.quote}"</p>
+            <p className="testimonial-name">{item.name}</p>
+          </div>
+        ))}
       </div>
     </div>
   );
