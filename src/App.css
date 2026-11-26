@@ -125,6 +125,32 @@ body {
   white-space: nowrap;
 }
 
+.welcome-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #FFFFFF;
+  border-bottom: 1px solid var(--accent-border);
+  padding: 10px 50px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.welcome-close {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--text-main);
+}
+
 .nav-list {
   display: flex;
   list-style: none;
@@ -390,17 +416,17 @@ body {
   box-shadow: 0 3px 12px rgba(0, 0, 0, 0.12);
   padding: 10px 16px;
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   color: var(--text-main);
 }
 
 .hero-headline {
   font-family: var(--font-heading);
-  font-size: 2.5rem;
+  font-size: 3rem;
   font-weight: 700;
   line-height: 1.2;
   color: #000000;
-  margin: 24px 0 16px;
+  margin: 12px 0 16px;
 }
 
 .orange-word {
@@ -411,7 +437,7 @@ body {
   font-family: var(--font-body);
   font-size: 1rem;
   line-height: 1.7;
-  color: #6B7280;
+  color: #4B5563;
 }
 
 .hero-cta-group {
@@ -556,14 +582,19 @@ body {
 }
 
 .marquee-item {
-  flex: 0 0 620px;
-  width: 620px;
+  flex: 0 0 760px;
+  width: 760px;
   margin-right: 48px;
   min-height: 200px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   text-align: center;
+}
+
+.testimonial-marquee-second .marquee-track {
+  animation-duration: 88s;
+  animation-delay: -22s;
 }
 
 @keyframes marquee-scroll {
@@ -1130,6 +1161,15 @@ body {
     margin-top: 12px;
   }
 
+  .welcome-bar {
+    padding: 10px 40px 10px 16px;
+    font-size: 0.8rem;
+  }
+
+  .welcome-close {
+    right: 10px;
+  }
+
   .container {
     padding: 0 16px;
   }
@@ -1139,8 +1179,8 @@ body {
   }
 
   .marquee-item {
-    flex-basis: 380px;
-    width: 380px;
+    flex-basis: 460px;
+    width: 460px;
     margin-right: 32px;
   }
 
