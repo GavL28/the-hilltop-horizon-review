@@ -143,15 +143,15 @@ body {
   padding: 10px 12px;
   color: var(--text-main);
   text-decoration: none;
-  font-size: 0.92rem;
-  font-weight: 800;
+  font-size: 0.84rem;
+  font-weight: 900;
   letter-spacing: 0.03em;
   text-transform: uppercase;
   white-space: nowrap;
   background: none;
   border: none;
   cursor: pointer;
-  font-family: var(--font-body);
+  font-family: Arial, Helvetica, sans-serif;
   transition: color 0.2s;
 }
 
@@ -163,7 +163,7 @@ body {
   background-color: #15803D;
   color: #FFFFFF;
   border: none;
-  border-radius: 999px;
+  border-radius: 8px;
   padding: 10px 22px;
   font-family: var(--font-body);
   font-size: 1.05rem;
@@ -257,7 +257,7 @@ body {
 
   .nav-link {
     padding: 12px 30px;
-    font-size: 0.92rem;
+    font-size: 0.84rem;
     letter-spacing: 0.03em;
     text-align: left;
     width: 100%;
@@ -265,6 +265,16 @@ body {
 
   .nav-submit-button {
     margin: 8px 30px;
+  }
+
+  .hero-banner {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .issue-card {
+    margin: 0 auto;
   }
 
   .nav-link.active {
@@ -344,10 +354,26 @@ body {
 
 /* Hero & Poem Styles */
 .hero-banner {
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  text-align: left;
   margin-bottom: 20px;
   padding: 15px 20px 10px; 
   border-bottom: 1px solid var(--accent-border);
+}
+
+.issue-card {
+  background-color: #FFFFFF;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  padding: 16px;
+  flex: 0 0 auto;
+  margin-left: auto;
+  max-width: 480px;
+  width: 100%;
+  text-align: center;
 }
 
 .hero-image {

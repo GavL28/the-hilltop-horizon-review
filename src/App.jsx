@@ -631,19 +631,21 @@ export default function App() {
       {activeTab === 'home' && (
         <section className="container" style={{ paddingTop: '15px' }}>
           <div className="hero-banner">
-            {digitalEditions.length > 0 ? (
-              <a href={digitalEditions[0].url} target="_blank" rel="noopener noreferrer">
-                <img src="/Issue One (2).png" alt="The Hilltop Horizon Review" className="hero-image" />
-              </a>
-            ) : (
-              <img src="/Issue One (2).png" alt="The Hilltop Horizon Review" className="hero-image" />
-            )}
-            <p className="hero-description" style={{ marginTop: '25px' }}>
-              Click here to read the first issue!
-            </p>
             <p className="hero-description">
               We are an international youth literary magazine, run by high schoolers, for high schoolers.
             </p>
+            <div className="issue-card">
+              {digitalEditions.length > 0 ? (
+                <a href={digitalEditions[0].url} target="_blank" rel="noopener noreferrer">
+                  <img src="/Issue One (2).png" alt="The Hilltop Horizon Review" className="hero-image" />
+                </a>
+              ) : (
+                <img src="/Issue One (2).png" alt="The Hilltop Horizon Review" className="hero-image" />
+              )}
+              <p className="hero-description" style={{ marginTop: '25px' }}>
+                Click here to read the first issue!
+              </p>
+            </div>
           </div>
         </section>
       )}
