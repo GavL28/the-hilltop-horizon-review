@@ -278,27 +278,22 @@ const TESTIMONIAL_CAROUSELS = [
 
 function TestimonialCarousel({ items }) {
   const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setIndex((current) => (current + 1) % items.length);
+    }, 6000);
+    return () => clearInterval(timer);
+  }, [items.length]);
+
   const item = items[index];
-  const go = (direction) => setIndex((current) => (current + direction + items.length) % items.length);
 
   return (
     <div className="testimonial-carousel">
-      <button className="carousel-arrow" onClick={() => go(-1)} aria-label="Previous quote">‹</button>
-      <div className="carousel-content">
+      <div className="carousel-content" key={index}>
         <p className="testimonial-quote">"{item.quote}"</p>
         <p className="testimonial-name">{item.name}</p>
-        <div className="carousel-dots">
-          {items.map((_, i) => (
-            <button
-              key={i}
-              className={i === index ? 'carousel-dot active' : 'carousel-dot'}
-              onClick={() => setIndex(i)}
-              aria-label={`Quote ${i + 1}`}
-            />
-          ))}
-        </div>
       </div>
-      <button className="carousel-arrow" onClick={() => go(1)} aria-label="Next quote">›</button>
     </div>
   );
 }
@@ -704,9 +699,7 @@ export default function App() {
               ) : (
                 <img src="/Issue One (2).png" alt="The Hilltop Horizon Review" className="hero-image" />
               )}
-              <p className="hero-description" style={{ marginTop: '25px' }}>
-                60 pages • Digital Reader
-              </p>
+              <p className="issue-card-reader">60 pages • Digital Reader</p>
             </div>
           </div>
         </section>
