@@ -48,7 +48,6 @@ const SELECTED_WORKS_GENRES = ['Poetry', 'Fiction', 'Nonfiction', 'Art', 'Photog
 const VALID_TABS = new Set([
   'home',
   'about-litmag',
-  'about-mission',
   'about-staff',
   'staff-detail',
   'announcements',
@@ -94,8 +93,7 @@ function getTabFromHash() {
 
 const PAGE_TITLES = {
   home: 'Home',
-  'about-litmag': 'About the Lit Mag',
-  'about-mission': 'Our Mission',
+  'about-litmag': 'About',
   'about-staff': 'Staff / Team',
   announcements: 'Announcements',
   'about-stats': 'Stats',
@@ -274,6 +272,14 @@ const TESTIMONIAL_CAROUSELS = [
       name: '-Moty Makanjuola (Selected Contributor - Issue Two)',
     },
   ],
+];
+
+const ABOUT_STATS = [
+  { value: '100%', label: 'Feedback Rate', detail: 'Guaranteed quality feedback for every piece you submit.', highlight: true },
+  { value: '$0', label: 'Submission is free', detail: 'Accessible to everyone' },
+  { value: '7', label: 'Nations reached', detail: 'A global community and readership.' },
+  { value: '2 Day Max', label: 'Communication response time', detail: 'We value your time' },
+  { value: '87', label: 'pages', detail: 'of feedback given' },
 ];
 
 function TestimonialCarousel({ items, variant }) {
@@ -573,7 +579,7 @@ export default function App() {
   const isNavActive = (group) => {
     const groups = {
       home: ['home'],
-      about: ['about-litmag', 'about-mission', 'about-staff', 'staff-detail', 'announcements', 'about-stats'],
+      about: ['about-litmag', 'about-staff', 'staff-detail', 'announcements', 'about-stats'],
       issues: ['selected-works', 'selected-works-issue', 'selected-works-piece', 'digital-magazine', 'issues-archive'],
       submit: ['submit-guidelines', 'submit-links', 'submit-junior'],
       faq: ['faq'],
@@ -626,8 +632,7 @@ export default function App() {
           <li className={openMobileDropdown === 'about' ? 'nav-item dropdown-open' : 'nav-item'}>
             <button className={isNavActive('about') ? 'nav-link active' : 'nav-link'} onClick={handleParentNavClick('about', 'about-litmag')}>About ▾</button>
             <ul className="dropdown">
-              <li><button className="dropdown-link" onClick={() => setActiveTab('about-litmag')}>About the Lit Mag</button></li>
-              <li><button className="dropdown-link" onClick={() => setActiveTab('about-mission')}>Our Mission</button></li>
+              <li><button className="dropdown-link" onClick={() => setActiveTab('about-litmag')}>About</button></li>
               <li><button className="dropdown-link" onClick={() => setActiveTab('about-staff')}>Staff / Team</button></li>
               <li><button className="dropdown-link" onClick={() => setActiveTab('announcements')}>Announcements</button></li>
               <li><button className="dropdown-link" onClick={() => setActiveTab('about-stats')}>Stats</button></li>
@@ -691,6 +696,12 @@ export default function App() {
                   Open Call for Original Work
                 </button>
               </div>
+              {announcements.length > 0 && (
+                <div className="hero-announcement">
+                  <span className="hero-announcement-label">📢 Latest Announcement</span>
+                  <span>{announcements[0].message}</span>
+                </div>
+              )}
             </div>
             <div className="issue-card">
               <div className="issue-card-header">
@@ -725,84 +736,60 @@ export default function App() {
       {/* Main Content Area */}
       <main className="main-content container">
 
-        {/* HOME TAB */}
-        {activeTab === 'home' && (
-          <div>
 
-            {/* Announcements (from DB, newest 3 shown on home) */}
-            <div className="announcement-banner" style={{ maxWidth: '1000px', margin: '0 auto 40px auto' }}>
-              <button className="announcement-heading" onClick={() => setActiveTab('announcements')}>
-                <span className="loud-speaker">📢</span> Announcements
-              </button>
-              {isContentLoading && (
-                <p style={{ textAlign: 'center', fontStyle: 'italic', color: 'var(--text-muted)' }}>Loading announcements...</p>
-              )}
-              {!isContentLoading && announcements.length === 0 && (
-                <p style={{ textAlign: 'center', fontStyle: 'italic', color: 'var(--text-muted)' }}>No announcements yet. Check back soon!</p>
-              )}
-              {announcements.length > 0 && (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                  {announcements.slice(0, 3).map((a) => (
-                    <div key={a.id}>
-                      <div className="announcement-message">{a.message}</div>
-                      <div className="announcement-date">{formatAnnouncementDate(a.created_at)}</div>
-                    </div>
-                  ))}
-                </div>
-              )}
-              <button className="announcement-view-all" onClick={() => setActiveTab('announcements')}>
-                (click to view all announcements)
-              </button>
-            </div>
-            
-            </div>
-        )}
-
-        {/* ABOUT SUBTABS */}
+        {/* ABOUT TAB */}
         {activeTab === 'about-litmag' && (
-          <div className="content-box">
-            <h2 className="section-title">About The Hilltop Horizon Review</h2>
-            <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.5rem', marginBottom: '8px' }}>The Hilltop Horizon Review</h3>
-            <p style={{ fontStyle: 'italic', color: 'var(--text-muted)' }}>An international youth literary magazine, founded by high schoolers, for high schoolers.</p>
-            <div className="about-split">
-              <div className="about-text">
-                <p>
-                  <strong>
-                    Founded by{' '}
-                    <button className="link-button" onClick={() => handleStaffClick(staffData.find((s) => s.id === 'gavin'))}>Gavin Liu</button>
-                    {' '}and Tawanda Sibanda on July 8th, 2026.
-                  </strong>
-                </p>
-                <p>We are a team of writers, artists, and photographers from all over the world, including the U.S., China, Japan, and South Korea.</p>
-                <p>We accept submissions from high schoolers (ages 11-19).</p>
-                <p>We publish a new issue every two months.</p>
-                <p>If your submission(s) is selected to be published, you will be notified and your work and bio will be added to the issue. Each piece you submit will be carefully reviewed by our wonderful editors, who will provide editing, and detailed, specific, and in-depth feedback.</p>
-                <p>Communication will be by email.</p>
-                <p style={{ marginTop: '20px', fontWeight: 600 }}>
-                  Find out more about our team{' '}
-                  <button
-                    className="link-button"
-                    onClick={() => setActiveTab('about-staff')}
-                    style={{ color: '#064e3b', fontWeight: 700 }}
-                  >
-                    here
-                  </button>
-                  .
-                </p>
+          <>
+            <div className="content-box">
+              <h2 className="section-title">About The Hilltop Horizon Review</h2>
+              <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.5rem', marginBottom: '8px' }}>The Hilltop Horizon Review</h3>
+              <p style={{ fontStyle: 'italic', color: 'var(--text-muted)' }}>An international youth literary magazine, founded by high schoolers, for high schoolers.</p>
+              <div className="about-split">
+                <div className="about-text">
+                  <p>
+                    <strong>
+                      Founded by{' '}
+                      <button className="link-button" onClick={() => handleStaffClick(staffData.find((s) => s.id === 'gavin'))}>Gavin Liu</button>
+                      {' '}and Tawanda Sibanda on July 8th, 2026.
+                    </strong>
+                  </p>
+                  <p>We are a team of writers, artists, and photographers from all over the world, including the U.S., China, Japan, and South Korea.</p>
+                  <p>We accept submissions from high schoolers (ages 11-19).</p>
+                  <p>We publish a new issue every two months.</p>
+                  <p>If your submission(s) is selected to be published, you will be notified and your work and bio will be added to the issue. Each piece you submit will be carefully reviewed by our wonderful editors, who will provide editing, and detailed, specific, and in-depth feedback.</p>
+                  <p>Communication will be by email.</p>
+                  <p style={{ marginTop: '20px', fontWeight: 600 }}>
+                    Find out more about our team{' '}
+                    <button
+                      className="link-button"
+                      onClick={() => setActiveTab('about-staff')}
+                      style={{ color: '#064e3b', fontWeight: 700 }}
+                    >
+                      here
+                    </button>
+                    .
+                  </p>
+                </div>
+                <div className="about-image">
+                  <img src="/IMG_5975.jpeg" alt="The Hilltop Horizon Review team" />
+                </div>
               </div>
-              <div className="about-image">
-                <img src="/IMG_5975.jpeg" alt="The Hilltop Horizon Review team" />
+              <div style={{ marginTop: '30px' }}>
+                <h2 className="section-title">Our Mission</h2>
+                <p>We seek to provide a welcoming and interactive community for young writers to join, as it can be difficult to find such a community locally.</p>
+                <p>Though we are mainly a literary magazine, we also accept art and photography. Submissions are reviewed blindly. We believe that feedback to every single submission no matter published or not is essential to supporting young writers and artists. If you don't get selected for an issue, come back and submit to the next issue!</p>
               </div>
             </div>
-          </div>
-        )}
-
-        {activeTab === 'about-mission' && (
-          <div className="content-box">
-            <h2 className="section-title">Our Mission</h2>
-            <p>We seek to provide a welcoming and interactive community for young writers to join, as it can be difficult to find such a community locally.</p>
-            <p>Though we are mainly a literary magazine, we also accept art and photography. Submissions are reviewed blindly. We believe that feedback to every single submission no matter published or not is essential to supporting young writers and artists. If you don't get selected for an issue, come back and submit to the next issue!</p>
-          </div>
+            <div className="about-stats-row">
+              {ABOUT_STATS.map((stat) => (
+                <div className={stat.highlight ? 'stat-box stat-box-highlight' : 'stat-box'} key={stat.label}>
+                  <div className="stat-value">{stat.value}</div>
+                  <div className="stat-label">{stat.label}</div>
+                  <div className="stat-detail">{stat.detail}</div>
+                </div>
+              ))}
+            </div>
+          </>
         )}
 
         {/* STAFF DIRECTORY GRID */}
@@ -2576,8 +2563,7 @@ export default function App() {
                   </div>
                   <div className="footer-col">
                     <span className="footer-tab">About</span>
-                    <button onClick={() => setActiveTab('about-litmag')}>About the Lit Mag</button>
-                    <button onClick={() => setActiveTab('about-mission')}>Our Mission</button>
+                    <button onClick={() => setActiveTab('about-litmag')}>About</button>
                     <button onClick={() => setActiveTab('about-staff')}>Staff / Team</button>
                     <button onClick={() => setActiveTab('about-stats')}>Stats</button>
                   </div>
