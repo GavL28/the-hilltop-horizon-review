@@ -414,10 +414,28 @@ body {
   background-color: #FFFFFF;
   border-radius: 8px;
   box-shadow: 0 3px 12px rgba(0, 0, 0, 0.12);
-  padding: 10px 16px;
+  padding: 7px 12px;
+  margin-top: -10px;
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 0.75rem;
+  font-size: 0.68rem;
   color: var(--text-main);
+}
+
+.hero-announcement {
+  margin-top: 22px;
+  padding: 12px 16px;
+  background-color: #FFFFFF;
+  border-radius: 8px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.85rem;
+}
+
+.hero-announcement-label {
+  display: block;
+  font-weight: 700;
+  color: #15803D;
+  margin-bottom: 4px;
 }
 
 .hero-headline {
@@ -697,6 +715,49 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.05em;
   white-space: pre-line;
+}
+
+.about-stats-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+.stat-box {
+  flex: 1 1 180px;
+  max-width: 220px;
+  background-color: #FFFFFF;
+  border-radius: 10px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+  padding: 20px 16px;
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.stat-value {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.stat-box-highlight .stat-value {
+  font-size: 2rem;
+  color: #EA580C;
+}
+
+.stat-label {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #4B5563;
+}
+
+.stat-detail {
+  margin-top: 6px;
+  font-size: 0.75rem;
+  color: #9CA3AF;
 }
 
 /* Forms & Guidelines */
