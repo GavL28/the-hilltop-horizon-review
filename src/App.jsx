@@ -245,6 +245,64 @@ function makePieceTinyMCEInit(font) {
   };
 }
 
+const TESTIMONIAL_CAROUSELS = [
+  [
+    {
+      quote: 'The best part of my experience with The Hilltop Horizon Review was being able to receive feedback on all my pieces, not just the one that was accepted. This is somewhat unconventional for literary magazines/publications, which made this experience particularly memorable.',
+      name: '-Ishani Agrawal (Selected Contributor - Issue Two)',
+    },
+    {
+      quote: "How effective and organized the publication is. Compared to other publications I've reached out too (that are run by adults) Hilltop is much better.",
+      name: '-Marisol Flaggert (Selected Contributor - Issue Two)',
+    },
+    {
+      quote: 'Your publication offers the unique experience to receive personalized feedback within a pretty short time frame, and I think this creates a great environment for young creatives.',
+      name: '-Ishani Agrawal (Selected Contributor - Issue Two)',
+    },
+  ],
+  [
+    {
+      quote: 'I chose to submit because I found other markets are very exclusive, and it was difficult to be considered as an unpublished writer. However, The Hilltop Horizon Review seemed welcoming, and I was looking forward to receiving feedback on my work.',
+      name: '-Ellie Keyser (Selected Contributor - Issue Two)',
+    },
+    {
+      quote: 'I found it was very friendly to beginner writers like me, and I think teen writers could benefit from a magazine like this.',
+      name: '-Ellie Keyser (Selected Contributor - Issue Two)',
+    },
+    {
+      quote: 'The communication and feedback were also really helpful when revising my piece, since they gave me insight on how I could get the rhythm woven into my poetry across to the reader.',
+      name: '-Moty Makanjuola (Selected Contributor - Issue Two)',
+    },
+  ],
+];
+
+function TestimonialCarousel({ items }) {
+  const [index, setIndex] = useState(0);
+  const item = items[index];
+  const go = (direction) => setIndex((current) => (current + direction + items.length) % items.length);
+
+  return (
+    <div className="testimonial-carousel">
+      <button className="carousel-arrow" onClick={() => go(-1)} aria-label="Previous quote">‹</button>
+      <div className="carousel-content">
+        <p className="testimonial-quote">"{item.quote}"</p>
+        <p className="testimonial-name">{item.name}</p>
+        <div className="carousel-dots">
+          {items.map((_, i) => (
+            <button
+              key={i}
+              className={i === index ? 'carousel-dot active' : 'carousel-dot'}
+              onClick={() => setIndex(i)}
+              aria-label={`Quote ${i + 1}`}
+            />
+          ))}
+        </div>
+      </div>
+      <button className="carousel-arrow" onClick={() => go(1)} aria-label="Next quote">›</button>
+    </div>
+  );
+}
+
 function GuidelinesSection({ title, isOpen, onToggle, children }) {
   return (
     <div style={{ border: '1px solid var(--accent-border)', borderRadius: '4px', marginBottom: '15px', overflow: 'hidden' }}>
@@ -635,6 +693,10 @@ export default function App() {
               We are an international youth literary magazine, run by high schoolers, for high schoolers.
             </p>
             <div className="issue-card">
+              <div className="issue-card-header">
+                <span className="issue-card-label">Current Release</span>
+                <span className="issue-card-season">Summer 2026</span>
+              </div>
               {digitalEditions.length > 0 ? (
                 <a href={digitalEditions[0].url} target="_blank" rel="noopener noreferrer">
                   <img src="/Issue One (2).png" alt="The Hilltop Horizon Review" className="hero-image" />
@@ -643,27 +705,21 @@ export default function App() {
                 <img src="/Issue One (2).png" alt="The Hilltop Horizon Review" className="hero-image" />
               )}
               <p className="hero-description" style={{ marginTop: '25px' }}>
-                Click here to read the first issue!
+                60 pages • Digital Reader
               </p>
             </div>
           </div>
         </section>
       )}
 
-      {/* Editors' Desk (full-width white section) */}
+      {/* Reader testimonials */}
       {activeTab === 'home' && (
         <section className="editors-desk">
-          <div style={{ maxWidth: '700px', margin: '0 auto' }}>
-            <h2 className="section-title">From the Co-Editors in Chiefs' Desk</h2>
-            <p style={{ maxWidth: '700px', margin: '0 auto', marginBottom: '20px' }}>
-              Welcome to the digital home of The Hilltop Horizon Review! Run by a team of devoted and eager young writers, we seek to build a world-wide community for young writers to chase their dreams.
-            </p>
-            <p style={{ fontStyle: 'italic', color: 'var(--text-muted)' }}>
-              —{' '}
-              <button className="link-button" onClick={() => setActiveTab('about-staff')}>
-                Gavin, Co-Editor in Chief
-              </button>
-            </p>
+          <div className="testimonials-inner">
+            <h2 className="section-title">What people have said</h2>
+            {TESTIMONIAL_CAROUSELS.map((items, i) => (
+              <TestimonialCarousel key={i} items={items} />
+            ))}
           </div>
         </section>
       )}
