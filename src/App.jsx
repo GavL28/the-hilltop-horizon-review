@@ -1166,12 +1166,40 @@ export default function App() {
       )}
 
       {activeTab === 'home' && (
-        <section className="krillion-section">
+        <section className="home-blog-section">
           <div className="container">
-            <figure>
-              <img src="/krillion.png" alt="Krillion recognition" />
-              <figcaption>Recognized by Krillion!</figcaption>
-            </figure>
+            <h2 className="section-title">From the Blog</h2>
+            {blogPosts.length === 0 ? (
+              <p className="home-blog-empty">No blog posts yet. Check back soon!</p>
+            ) : (
+              <div className="home-blog-grid">
+                {blogPosts.slice(0, 2).map((post) => (
+                  <button key={post.id} type="button" className="blog-post-card" onClick={() => openBlogPost(post)}>
+                    {post.cover_image ? (
+                      <img className="blog-card-image" src={post.cover_image} alt={`Cover for ${post.title}`} />
+                    ) : (
+                      <div className="blog-card-image blog-card-placeholder">The Hilltop Horizon Review</div>
+                    )}
+                    <div className="blog-card-body">
+                      <span className="blog-kind">{post.category || 'Blog'}</span>
+                      <h3 className="blog-card-title">{post.title}</h3>
+                      {post.subtitle && <p className="blog-card-subtitle">{post.subtitle}</p>}
+                      <div className="blog-card-meta">
+                        {post.author && <span>By {post.author}</span>}
+                        {post.published_at && <span>{formatBlogDate(post.published_at)}</span>}
+                        {post.reading_time && <span>{post.reading_time}</span>}
+                      </div>
+                      <span className="blog-card-read">Read post →</span>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
+            <div className="home-blog-action">
+              <button type="button" className="btn-primary home-blog-all-button" onClick={() => setActiveTab('blog')}>
+                See all blog posts
+              </button>
+            </div>
           </div>
         </section>
       )}
