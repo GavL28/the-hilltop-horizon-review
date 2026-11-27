@@ -23,8 +23,7 @@ const staffData = [
 const FAQ_ITEMS = [
   { q: 'Does it cost money to submit?', a: 'No, submissions are completely free.' },
   { q: 'Can I submit multiple pieces?', a: 'Yes, but each genre has its specific limits. Check the specific guidelines for more details.' },
-  { q: 'Am I eligible to submit?', a: 'Any teen ages 14-19 or in high school can submit.' },
-  { q: 'If I am 14, can I submit to both general submissions and junior category?', a: 'No, only submit to one. We do suggest the junior category though, because you will not be competing against high school seniors, but if you want a challenge, you can submit to the general submissions.' },
+  { q: 'Am I eligible to submit?', a: 'Any writer ages 11-19 can submit.' },
   { q: 'How do I submit?', a: 'Read through the guidelines tab, then go to the submissions tab and fill the form.' },
   { q: 'Do you accept international submissions?', a: "Yes, from any nation. We're an international youth literary magazine, we seek to grow worldwide. (Check out the International Representative Position in the Join Us tab.)" },
   { q: 'Do you accept non-English submissions?', a: 'As of now, we do not accept fully non-English submissions, but this may change in the future. Having non-English characters or phrases to a limited extent in a majority English submission is fine, as long as you explain and provide a translation on the submission form.' },
@@ -62,7 +61,6 @@ const VALID_TABS = new Set([
   'blog',
   'submit-guidelines',
   'submit-links',
-  'submit-junior',
   'faq',
   'contact',
   'join',
@@ -105,7 +103,6 @@ const PAGE_TITLES = {
   blog: 'Blog',
   'submit-guidelines': 'Submit: Guidelines',
   'submit-links': 'Submit: Submissions Links',
-  'submit-junior': 'Submit: Junior',
   faq: 'FAQ',
   contact: 'Contact Us',
   join: 'Join Us',
@@ -749,7 +746,7 @@ export default function App() {
       about: ['about-litmag', 'about-staff', 'staff-detail', 'announcements', 'about-stats'],
       issues: ['selected-works', 'selected-works-issue', 'selected-works-piece', 'digital-magazine', 'issues-archive'],
       blog: ['blog'],
-      submit: ['submit-guidelines', 'submit-links', 'submit-junior'],
+      submit: ['submit-guidelines', 'submit-links'],
       faq: ['faq'],
       contact: ['contact'],
       join: ['join'],
@@ -773,17 +770,15 @@ export default function App() {
     ? 'art-page guidelines-art'
     : activeTab === 'submit-links'
       ? 'art-page submission-art'
-      : activeTab === 'submit-junior'
-        ? 'art-page junior-art'
-        : activeTab === 'faq'
-          ? 'art-page faq-art'
-          : activeTab === 'contact'
-            ? 'art-page contact-art'
-            : activeTab === 'join'
-              ? 'art-page join-art'
-              : ['digital-magazine', 'issues-archive', 'selected-works', 'selected-works-issue', 'selected-works-piece'].includes(activeTab)
-                ? 'art-page issues-art'
-                : '';
+      : activeTab === 'faq'
+        ? 'art-page faq-art'
+        : activeTab === 'contact'
+          ? 'art-page contact-art'
+          : activeTab === 'join'
+            ? 'art-page join-art'
+            : ['digital-magazine', 'issues-archive', 'selected-works', 'selected-works-issue', 'selected-works-piece'].includes(activeTab)
+              ? 'art-page issues-art'
+              : '';
 
   return (
     <div className={pageArtClass ? `app ${pageArtClass}` : 'app'}>
@@ -834,7 +829,6 @@ export default function App() {
             <ul className="dropdown">
               <li><button className="dropdown-link" onClick={() => setActiveTab('submit-guidelines')}>Guidelines</button></li>
               <li><button className="dropdown-link" onClick={() => setActiveTab('submit-links')}>Submissions Links</button></li>
-              <li><button className="dropdown-link" onClick={() => setActiveTab('submit-junior')}>Junior</button></li>
             </ul>
           </li>
           <li className="nav-item">
@@ -989,7 +983,7 @@ export default function App() {
                     </strong>
                   </p>
                   <p>We are a team of writers, artists, and photographers from all over the world, including the U.S., China, Japan, and South Korea.</p>
-                  <p>We accept submissions from high schoolers (ages 11-19).</p>
+                  <p>We accept submissions from writers ages 11-19.</p>
                   <p>We publish a new issue every two months.</p>
                   <p>If your submission(s) is selected to be published, you will be notified and your work and bio will be added to the issue. Each piece you submit will be carefully reviewed by our wonderful editors, who will provide editing, and detailed, specific, and in-depth feedback.</p>
                   <p>Communication will be by email.</p>
@@ -1456,7 +1450,7 @@ export default function App() {
           <div className="content-box">
             <h2 className="section-title">Submissions Links</h2>
             <p className="submission-links-intro">
-              Ready to submit? Choose the form for your age group. Make sure to review our{' '}
+              Ready to submit? Use the form below. Make sure to review our{' '}
               <a href="#" className="link-button" onClick={(e) => { e.preventDefault(); setActiveTab('submit-guidelines'); }}>guidelines</a> first!
             </p>
             <div className="submission-links-grid">
@@ -1471,38 +1465,7 @@ export default function App() {
                 <span className="submission-link-time">5 minute form</span>
                 <span className="submission-link-arrow">→</span>
               </a>
-              <a
-                href="https://docs.google.com/forms/d/e/1FAIpQLSeBDT0s8Bd1VuoL2ktm0CXz6pPeNoqsLaJT9jCIucZk43--Rg/viewform?usp=sharing&ouid=115181364077200728162"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="submission-link-card junior"
-              >
-                <span className="submission-link-title">Junior Submissions (ISSUE THREE)</span>
-                <span className="submission-link-age">Ages 11-14</span>
-                <span className="submission-link-time">5 minute form</span>
-                <span className="submission-link-arrow">→</span>
-              </a>
             </div>
-          </div>
-        )}
-
-        {activeTab === 'submit-junior' && (
-          <div className="content-box junior-page">
-            <h2 className="section-title">Junior Submissions</h2>
-            <p style={{ marginBottom: '20px' }}>
-              Welcome to the junior submission category! This category is for middle schoolers (or students who would be at that age), meaning ages 11-14. Welcome!
-            </p>
-            <p style={{ marginBottom: '20px' }}>
-              Submission guidelines are the same as general (high schooler) submissions. It's best if you have a guardian look over everything such as the form information for you. Everything is the same as high schooler submissions, except a different link, and you will be judged in a separate pool, alongside other middle schoolers. If you are selected to be published, it will be in the same issue as the high schooler pieces published. Have fun!
-            </p>
-            <a
-              href="https://docs.google.com/forms/d/e/1FAIpQLSeBDT0s8Bd1VuoL2ktm0CXz6pPeNoqsLaJT9jCIucZk43--Rg/viewform?usp=sharing&ouid=115181364077200728162"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="junior-submit-button"
-            >
-              Junior Submissions (ages 11-14) →
-            </a>
           </div>
         )}
 
@@ -1574,7 +1537,7 @@ export default function App() {
           <div className="content-box join-page">
             <h2 className="section-title">Join Our Team</h2>
             <p className="join-intro">
-              The Hilltop Horizon Review is entirely run by high schoolers. We look for passionate, dedicated individuals who want to help shape our global literary community. Open to teens ages 14–19. Link to apply coming soon...
+              The Hilltop Horizon Review is entirely run by high schoolers. We look for passionate, dedicated individuals who want to help shape our global literary community. Open to teens ages 11–19. Link to apply coming soon...
             </p>
 
             <div className="join-roles-list">
@@ -2862,7 +2825,6 @@ export default function App() {
                     <span className="footer-tab">Guidelines</span>
                     <button onClick={() => setActiveTab('submit-guidelines')}>Guidelines</button>
                     <button onClick={() => setActiveTab('submit-links')}>Submissions Links</button>
-                    <button onClick={() => setActiveTab('submit-junior')}>Junior</button>
                   </div>
                   <div className="footer-col">
                     <button className="footer-tab" onClick={() => setActiveTab('faq')}>FAQ</button>
