@@ -8,6 +8,7 @@
   --text-muted: #000000;
   --accent-ink: #2A3439;
   --accent-border: #E7E5E4;
+  --warm-green: #4F7C3A;
   --font-heading: 'Playfair Display', Georgia, serif;
   --font-body: 'Lora', Georgia, serif;
 }
@@ -38,12 +39,8 @@ textarea:focus-visible {
   background-attachment: fixed;
 }
 
-.app.about-art {
-  background-image: linear-gradient(rgba(253, 250, 243, 0.62), rgba(253, 250, 243, 0.62)), url('/IMG_5975.jpeg');
-}
-
 .app.guidelines-art {
-  background-image: linear-gradient(rgba(253, 250, 243, 0.58), rgba(253, 250, 243, 0.58)), url('/Ocean_Lov_Searching - Ocean Lov (1).jpg');
+  background-image: linear-gradient(rgba(253, 250, 243, 0.42), rgba(253, 250, 243, 0.42)), url('/Ocean_Lov_Searching - Ocean Lov (1).jpg');
 }
 
 .app.submission-art {
@@ -51,11 +48,11 @@ textarea:focus-visible {
 }
 
 .app.junior-art {
-  background-image: linear-gradient(rgba(253, 250, 243, 0.56), rgba(253, 250, 243, 0.56)), url('/Ocean_Lov_Strike a Pose - Ocean Lov (1).jpg');
+  background-image: linear-gradient(rgba(253, 250, 243, 0.4), rgba(253, 250, 243, 0.4)), url('/Ocean_Lov_Strike a Pose - Ocean Lov (1).jpg');
 }
 
 .app.faq-art {
-  background-image: linear-gradient(rgba(253, 250, 243, 0.55), rgba(253, 250, 243, 0.55)), url('/Ocean_Lov_Untitled - Ocean Lov (1).jpg');
+  background-image: linear-gradient(rgba(253, 250, 243, 0.38), rgba(253, 250, 243, 0.38)), url('/Ocean_Lov_Untitled - Ocean Lov (1).jpg');
 }
 
 .app.contact-art {
@@ -63,7 +60,7 @@ textarea:focus-visible {
 }
 
 .app.join-art {
-  background-image: linear-gradient(rgba(253, 250, 243, 0.6), rgba(253, 250, 243, 0.6)), url('/Untitled Design (4).png');
+  background-image: url('/Untitled Design (4).png');
 }
 
 .app.issues-art {
@@ -833,12 +830,12 @@ textarea:focus-visible {
 
 .about-image {
   flex: 1 1 45%;
-  min-height: 420px;
-  border-radius: 18px;
-  background-image: linear-gradient(rgba(253, 250, 243, 0.12), rgba(253, 250, 243, 0.12)), url('/IMG_5975.jpeg');
-  background-size: cover;
-  background-position: center;
-  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.18);
+}
+
+.about-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
 }
 
 @media (max-width: 768px) {
@@ -873,9 +870,9 @@ textarea:focus-visible {
   display: inline-block;
   padding: 6px 12px;
   border-radius: 999px;
-  background-color: #DFF6EA;
+  background-color: #E7F0D9;
   font-size: 0.85rem;
-  color: #166534;
+  color: var(--warm-green);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -926,6 +923,12 @@ textarea:focus-visible {
   padding: 20px 16px;
   text-align: center;
   font-family: Arial, Helvetica, sans-serif;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.stat-box:hover {
+  transform: translateY(-6px) rotate(-1deg);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.16);
 }
 
 .stat-value {
@@ -1168,6 +1171,7 @@ textarea:focus-visible {
 }
 
 .nations-map {
+  position: relative;
   max-width: 900px;
   margin: 0 auto;
   text-align: center;
@@ -1187,26 +1191,40 @@ textarea:focus-visible {
   stroke: #FFFFFF;
   stroke-width: 1.5;
   cursor: default;
-  transition: fill 0.2s;
+  transition: fill 0.2s ease, filter 0.2s ease;
+}
+
+.country-shape:hover {
+  fill: #F5C99A;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
 }
 
 .nations-map.editable .country-shape {
   cursor: pointer;
 }
 
-.nations-map.editable .country-shape:hover {
-  fill: #F5C99A;
-}
-
 .country-shape.filled {
   fill: #EA580C;
 }
 
-.nations-map-hint {
-  margin-top: 14px;
+.country-shape.filled:hover {
+  fill: #F97316;
+}
+
+.nations-map-tooltip {
+  position: absolute;
+  z-index: 5;
+  padding: 5px 10px;
+  border-radius: 6px;
+  background-color: rgba(17, 24, 39, 0.9);
+  color: #FFFFFF;
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 0.85rem;
-  color: #6B7280;
+  font-size: 0.8rem;
+  font-weight: 700;
+  white-space: nowrap;
+  pointer-events: none;
+  transform: translate(-50%, -130%);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 /* Forms & Guidelines */
@@ -1390,11 +1408,11 @@ textarea:focus-visible {
 }
 
 .submission-link-card.general {
-  background-image: linear-gradient(rgba(21, 128, 61, 0.84), rgba(21, 128, 61, 0.84)), url('/Ocean_Lov_Untitled - Ocean Lov (1).jpg');
+  background-image: linear-gradient(rgba(21, 128, 61, 0.66), rgba(21, 128, 61, 0.66)), url('/Ocean_Lov_Untitled - Ocean Lov (1).jpg');
 }
 
 .submission-link-card.junior {
-  background-image: linear-gradient(rgba(22, 101, 52, 0.84), rgba(22, 101, 52, 0.84)), url('/Ocean_Lov_Strike a Pose - Ocean Lov (1).jpg');
+  background-image: linear-gradient(rgba(22, 101, 52, 0.66), rgba(22, 101, 52, 0.66)), url('/Ocean_Lov_Searching - Ocean Lov (1).jpg');
 }
 
 .submission-link-title {
@@ -1993,7 +2011,7 @@ textarea:focus-visible {
 .staff-card {
   background-color: rgba(255, 255, 255, 0.82);
   padding: 30px 22px;
-  border: 1px solid rgba(21, 128, 61, 0.18);
+  border: 1px solid rgba(79, 124, 58, 0.25);
   border-radius: 16px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
   text-align: center;
@@ -2005,9 +2023,9 @@ textarea:focus-visible {
 }
 
 .staff-card:hover {
-  border-color: #15803D;
+  border-color: var(--warm-green);
   background-color: rgba(255, 255, 255, 0.95);
-  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.16);
+  box-shadow: 0 16px 30px rgba(79, 124, 58, 0.2);
   transform: translateY(-5px);
 }
 
@@ -2016,8 +2034,8 @@ textarea:focus-visible {
   height: 110px;
   border-radius: 50%;
   background-color: rgba(0, 0, 0, 0.04);
-  border: 3px solid #15803D;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.16);
+  border: 3px solid var(--warm-green);
+  box-shadow: 0 6px 16px rgba(79, 124, 58, 0.22);
   object-fit: cover;
   margin-bottom: 18px;
 }
@@ -2043,7 +2061,7 @@ textarea:focus-visible {
 .staff-read-more {
   margin-top: 20px;
   font-size: 0.75rem;
-  color: var(--text-muted);
+  color: var(--warm-green);
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -2051,7 +2069,7 @@ textarea:focus-visible {
 }
 
 .staff-card:hover .staff-read-more {
-  color: var(--accent-ink);
+  color: #2F5C24;
 }
 
 /* Individual Staff Profile View */
@@ -2072,14 +2090,28 @@ textarea:focus-visible {
   color: var(--text-main);
 }
 
+.staff-detail-page {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 36px 40px;
+  background-color: rgba(255, 255, 255, 0.86);
+  border: 1px solid rgba(79, 124, 58, 0.22);
+  border-radius: 20px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.12);
+}
+
+.staff-detail-page .btn-back:hover {
+  color: var(--warm-green);
+}
+
 .staff-detail-header {
   display: flex;
   flex-wrap: wrap;
   gap: 40px;
   align-items: center;
-  margin-bottom: 40px;
-  border-bottom: 1px solid var(--accent-border);
-  padding-bottom: 40px;
+  margin-bottom: 36px;
+  border-bottom: 1px solid rgba(79, 124, 58, 0.22);
+  padding-bottom: 36px;
 }
 
 .staff-photo-large {
@@ -2087,13 +2119,62 @@ textarea:focus-visible {
   height: 280px;
   border-radius: 50%;
   background-color: rgba(0, 0, 0, 0.04);
-  border: 1px dashed var(--accent-border);
+  border: 5px solid var(--warm-green);
+  box-shadow: 0 12px 28px rgba(79, 124, 58, 0.22);
+  object-fit: cover;
   flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.staff-photo-large:hover {
+  transform: scale(1.03);
+}
+
+.staff-detail-intro {
+  flex: 1 1 320px;
+}
+
+.staff-detail-eyebrow {
+  display: inline-block;
+  margin-bottom: 10px;
+  color: var(--warm-green);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.staff-detail-header h2 {
+  font-family: var(--font-heading);
+  font-size: 2.6rem;
+  line-height: 1.15;
+}
+
+.staff-detail-meta {
+  margin-bottom: 18px;
+  font-size: 1.05rem;
+  font-style: italic;
+}
+
+.staff-detail-role {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background-color: #E7F0D9;
+  color: var(--warm-green) !important;
+  font-size: 0.9rem;
+  font-weight: 700;
+  white-space: pre-line;
 }
 
 .staff-bio-full {
   line-height: 1.9;
   font-size: 1.05rem;
+  padding: 26px 30px;
+  background-color: #FDFAF3;
+  border-left: 4px solid var(--warm-green);
+  border-radius: 12px;
 }
 
 /* --- Readability Fixes for Individual Staff Profiles --- */
@@ -2107,7 +2188,6 @@ textarea:focus-visible {
 
 /* Fixes the pronouns, grade, role, and the full biography text */
 .staff-detail-header p,
-.staff-detail-header h4,
 .staff-bio-full {
   color: #000000 !important;
   font-weight: 500;
