@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import './App.css';
 import { Editor } from '@tinymce/tinymce-react';
 import countryShapes, { VIEW_BOX } from 'world-map-country-shapes';
@@ -216,7 +216,7 @@ function makePieceTinyMCEInit(font) {
       });
     },
     setup: function (editor) {
-      editor.on('paste', function (e) {
+      editor.on('paste', function () {
         setTimeout(() => {
           const body = editor.getBody();
           if (!body) return;
@@ -326,7 +326,7 @@ const TIMELINE_EVENTS = [
 const getTimelinePosition = (date) => ((date - TIMELINE_START) / (TIMELINE_END - TIMELINE_START)) * 100;
 
 function TimelineBar() {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(() => typeof window === 'undefined' || window.innerWidth > 880);
   const [today, setToday] = useState(() => new Date());
 
   useEffect(() => {
@@ -347,7 +347,8 @@ function TimelineBar() {
         {open ? '▼' : '▲'}
       </button>
       <div className="timeline-bar-head">
-        <strong>Key Dates</strong>
+        <strong>Timeline</strong>
+        <span className="timeline-separator" aria-hidden="true"></span>
         <span>Today: {today.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
       </div>
       {open && (
@@ -361,7 +362,7 @@ function TimelineBar() {
             return (
               <div
                 key={event.label}
-                className={`timeline-event ${reached ? 'reached' : ''} ${index % 2 === 0 ? 'timeline-event-above' : 'timeline-event-below'} ${position <= 2 ? 'timeline-event-start' : position >= 98 ? 'timeline-event-end' : ''}`}
+                className={`timeline-event ${reached ? 'reached' : ''} ${index % 2 === 0 ? 'timeline-event-above' : 'timeline-event-below'} ${position <= 2 ? 'timeline-event-start' : ''} ${position >= 98 ? 'timeline-event-end' : ''} ${position >= 80 ? 'timeline-event-late' : ''}`}
                 style={{ left: `${position}%` }}
               >
                 <span className="timeline-dot"></span>
@@ -446,26 +447,45 @@ export default function App() {
   const [activeTab, setActiveTab] = useState(getTabFromHash);
   const [welcomeVisible, setWelcomeVisible] = useState(true);
   const closeWelcome = () => setWelcomeVisible(false);
-  const [reachedNations, setReachedNations] = useState(() => {
+  const [reachedNations, setReachedNations] = useState(new Set());
+  const refreshNations = useCallback(async () => {
     try {
-      return new Set(JSON.parse(localStorage.getItem('thhr-nations') || '[]'));
-    } catch {
-      return new Set();
-    }
-  });
-  const persistNations = (nations) => {
-    try {
-      localStorage.setItem('thhr-nations', JSON.stringify([...nations]));
+      const res = await fetch('/api/nations');
+      const data = await res.json();
+      if (data.success && Array.isArray(data.nations)) {
+        setReachedNations(new Set(data.nations));
+        return;
+      }
     } catch {
       return;
     }
-  };
-  const toggleNation = (id) => {
+    try {
+      setReachedNations(new Set(JSON.parse(localStorage.getItem('thhr-nations') || '[]')));
+    } catch {
+      setReachedNations(new Set());
+    }
+  }, []);
+  const toggleNation = async (id) => {
     const next = new Set(reachedNations);
     if (next.has(id)) next.delete(id);
     else next.add(id);
     setReachedNations(next);
-    persistNations(next);
+    if (!isAdminLoggedIn) return;
+    try {
+      const res = await fetch('/api/nations', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nations: [...next] }),
+      });
+      const data = await res.json();
+      if (data.success && Array.isArray(data.nations)) setReachedNations(new Set(data.nations));
+    } catch {
+      try {
+        localStorage.setItem('thhr-nations', JSON.stringify([...next]));
+      } catch {
+        return;
+      }
+    }
   };
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openMobileDropdown, setOpenMobileDropdown] = useState(null);
@@ -630,6 +650,18 @@ export default function App() {
     }
     loadContent();
   }, []);
+
+  useEffect(() => {
+    const load = () => { Promise.resolve().then(refreshNations); };
+    load();
+    const timer = setInterval(load, 30000);
+    const onFocus = () => load();
+    window.addEventListener('focus', onFocus);
+    return () => {
+      clearInterval(timer);
+      window.removeEventListener('focus', onFocus);
+    };
+  }, [refreshNations]);
 
   // Keep the URL hash in sync with the active tab so reloads stay on the same
   // page and the browser back/forward buttons move between tabs within the site.

@@ -32,7 +32,7 @@ textarea:focus-visible {
 }
 
 .app {
-  padding-bottom: 180px;
+  padding-bottom: 120px;
 }
 
 .app.art-page {
@@ -44,31 +44,45 @@ textarea:focus-visible {
 }
 
 .app.guidelines-art {
-  background-image: linear-gradient(rgba(253, 250, 243, 0.58), rgba(253, 250, 243, 0.58)), url('/Ocean_Lov_Searching - Ocean Lov (1).jpg');
+  --art-overlay: linear-gradient(rgba(253, 250, 243, 0.58), rgba(253, 250, 243, 0.58));
+  --art-image: url('/Ocean_Lov_Searching - Ocean Lov (1).jpg');
+  background-image: var(--art-overlay), var(--art-image);
 }
 
 .app.submission-art {
-  background-image: linear-gradient(rgba(253, 250, 243, 0.56), rgba(253, 250, 243, 0.56)), url('/Ocean_Lov_Strike a Pose - Ocean Lov (1).jpg');
+  --art-overlay: linear-gradient(rgba(253, 250, 243, 0.56), rgba(253, 250, 243, 0.56));
+  --art-image: url('/Ocean_Lov_Strike a Pose - Ocean Lov (1).jpg');
+  background-image: var(--art-overlay), var(--art-image);
 }
 
 .app.junior-art {
-  background-image: linear-gradient(rgba(253, 250, 243, 0.4), rgba(253, 250, 243, 0.4)), url('/Ocean_Lov_Strike a Pose - Ocean Lov (1).jpg');
+  --art-overlay: linear-gradient(rgba(253, 250, 243, 0.4), rgba(253, 250, 243, 0.4));
+  --art-image: url('/Ocean_Lov_Strike a Pose - Ocean Lov (1).jpg');
+  background-image: var(--art-overlay), var(--art-image);
 }
 
 .app.faq-art {
-  background-image: linear-gradient(rgba(253, 250, 243, 0.38), rgba(253, 250, 243, 0.38)), url('/Ocean_Lov_Untitled - Ocean Lov (1).jpg');
+  --art-overlay: linear-gradient(rgba(253, 250, 243, 0.38), rgba(253, 250, 243, 0.38));
+  --art-image: url('/Ocean_Lov_Untitled - Ocean Lov (1).jpg');
+  background-image: var(--art-overlay), var(--art-image);
 }
 
 .app.contact-art {
-  background-image: linear-gradient(rgba(253, 250, 243, 0.52), rgba(253, 250, 243, 0.52)), url('/Ocean_Lov_Noticed - Ocean Lov.jpg');
+  --art-overlay: linear-gradient(rgba(253, 250, 243, 0.52), rgba(253, 250, 243, 0.52));
+  --art-image: url('/Ocean_Lov_Noticed - Ocean Lov.jpg');
+  background-image: var(--art-overlay), var(--art-image);
 }
 
 .app.join-art {
-  background-image: url('/Untitled Design (4).png');
+  --art-overlay: linear-gradient(rgba(253, 250, 243, 0), rgba(253, 250, 243, 0));
+  --art-image: url('/Untitled Design (4).png');
+  background-image: var(--art-overlay), var(--art-image);
 }
 
 .app.issues-art {
-  background-image: linear-gradient(rgba(253, 250, 243, 0.6), rgba(253, 250, 243, 0.6)), url('/Ocean_Lov_Noticed - Ocean Lov.jpg');
+  --art-overlay: linear-gradient(rgba(253, 250, 243, 0.6), rgba(253, 250, 243, 0.6));
+  --art-image: url('/Ocean_Lov_Noticed - Ocean Lov.jpg');
+  background-image: var(--art-overlay), var(--art-image);
 }
 
 .app.art-page .main-content {
@@ -1022,21 +1036,23 @@ textarea:focus-visible {
 
 .krillion-section {
   padding: 40px 30px 70px;
-  text-align: center;
+  text-align: left;
 }
 
 .krillion-section figure {
-  margin: 0 auto;
-  max-width: 420px;
+  margin: 0;
+  max-width: 680px;
 }
 
 .krillion-section img {
   display: block;
-  max-width: 100%;
-  max-height: 260px;
-  margin: 0 auto;
+  width: 100%;
+  max-width: 680px;
+  max-height: 420px;
+  margin: 0;
   border-radius: 12px;
   object-fit: contain;
+  object-position: left center;
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.16);
 }
 
@@ -1046,6 +1062,7 @@ textarea:focus-visible {
   font-size: 1.2rem;
   font-weight: 700;
   color: #000000;
+  text-align: left;
   text-shadow: 0 2px 12px rgba(255, 255, 255, 0.9), 0 0 5px rgba(255, 255, 255, 1);
 }
 
@@ -2590,7 +2607,7 @@ textarea:focus-visible {
   left: 0;
   right: 0;
   z-index: 200;
-  padding: 12px 32px 18px;
+  padding: 8px 32px 12px;
   background-color: rgba(17, 24, 39, 0.96);
   color: #FFFFFF;
   box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.25);
@@ -2599,27 +2616,28 @@ textarea:focus-visible {
 }
 
 .timeline-bar-collapsed {
-  padding: 10px 32px 12px;
+  padding: 4px 32px 6px;
 }
 
 .timeline-toggle {
   position: absolute;
-  top: 8px;
-  right: 16px;
-  width: 34px;
-  height: 26px;
+  top: -13px;
+  right: 28px;
+  width: 38px;
+  height: 24px;
   border: 1px solid rgba(255, 255, 255, 0.25);
-  border-radius: 999px;
-  background-color: rgba(255, 255, 255, 0.12);
+  border-bottom: none;
+  border-radius: 12px 12px 0 0;
+  background-color: rgba(17, 24, 39, 0.96);
   color: #FFFFFF;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   line-height: 1;
   cursor: pointer;
   transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 .timeline-toggle:hover {
-  background-color: rgba(255, 255, 255, 0.24);
+  background-color: rgba(55, 65, 81, 0.98);
   transform: translateY(-1px);
 }
 
@@ -2627,10 +2645,10 @@ textarea:focus-visible {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 14px;
-  margin-bottom: 12px;
+  gap: 12px;
+  margin-bottom: 6px;
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 0.76rem;
+  font-size: 0.74rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -2643,19 +2661,25 @@ textarea:focus-visible {
   color: #FCD34D;
 }
 
+.timeline-separator {
+  width: 1px;
+  height: 14px;
+  background-color: rgba(255, 255, 255, 0.32);
+}
+
 .timeline-bar-collapsed .timeline-bar-head {
   margin-bottom: 0;
 }
 
 .timeline-track {
   position: relative;
-  height: 96px;
-  margin: 0 40px 4px;
+  height: 62px;
+  margin: 0 72px 2px;
 }
 
 .timeline-line {
   position: absolute;
-  top: 48px;
+  top: 31px;
   left: 0;
   right: 0;
   height: 3px;
@@ -2673,7 +2697,7 @@ textarea:focus-visible {
 
 .timeline-event {
   position: absolute;
-  top: 48px;
+  top: 31px;
   width: 0;
   transform: translateX(-50%);
 }
@@ -2699,11 +2723,11 @@ textarea:focus-visible {
 .timeline-event-label {
   position: absolute;
   left: 50%;
-  width: 122px;
+  width: 148px;
   transform: translateX(-50%);
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 0.68rem;
-  line-height: 1.25;
+  font-size: 0.66rem;
+  line-height: 1.22;
   text-align: center;
   color: #E5E7EB;
 }
@@ -2719,11 +2743,11 @@ textarea:focus-visible {
 }
 
 .timeline-event-above .timeline-event-label {
-  bottom: 16px;
+  bottom: 12px;
 }
 
 .timeline-event-below .timeline-event-label {
-  top: 16px;
+  top: 12px;
 }
 
 .timeline-event-start .timeline-event-label {
@@ -2732,6 +2756,11 @@ textarea:focus-visible {
   text-align: left;
 }
 
+.timeline-event-late.timeline-event-above .timeline-event-label {
+  transform: translateX(-88%);
+}
+
+.timeline-event-late.timeline-event-below .timeline-event-label,
 .timeline-event-end .timeline-event-label {
   right: 0;
   left: auto;
@@ -2741,7 +2770,7 @@ textarea:focus-visible {
 
 .timeline-today-marker {
   position: absolute;
-  top: 48px;
+  top: 31px;
   width: 2px;
   height: 22px;
   background-color: #F59E0B;
@@ -2763,25 +2792,200 @@ textarea:focus-visible {
   white-space: nowrap;
 }
 
-@media (max-width: 700px) {
+@media (max-width: 880px) {
   .app {
-    padding-bottom: 190px;
+    padding-bottom: 96px;
+  }
+
+  .app.art-page {
+    background-image: none;
+    isolation: isolate;
+  }
+
+  .app.art-page::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image: var(--art-overlay), var(--art-image);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .home-top {
+    background-image: none;
+    isolation: isolate;
+  }
+
+  .home-top::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image: url('/Untitled Design (4).png');
+    background-size: 100% auto;
+    background-position: center top;
+    background-repeat: repeat-y;
+  }
+
+  .nav-bar {
+    padding: 10px 12px;
+    gap: 8px;
+  }
+
+  .nav-logo {
+    gap: 8px;
+    margin-right: 0;
+    min-width: 0;
+  }
+
+  .nav-logo img {
+    height: 46px;
+  }
+
+  .nav-brand-group {
+    min-width: 0;
+  }
+
+  .nav-brand {
+    display: block;
+    white-space: normal;
+    font-size: 0.82rem;
+    line-height: 1.1;
+  }
+
+  .nav-brand-subtitle {
+    display: block;
+    white-space: normal;
+    font-size: 0.6rem;
+    line-height: 1.2;
+  }
+
+  .nav-toggle {
+    flex-shrink: 0;
+  }
+
+  .nav-list {
+    max-height: calc(100vh - 74px);
+    padding-bottom: 92px;
+  }
+
+  .nav-item > .dropdown {
+    position: static;
+    display: none;
+    min-width: 0;
+    margin: 0 16px 6px;
+    border: none;
+    border-left: 3px solid rgba(21, 128, 61, 0.28);
+    border-radius: 0 10px 10px 0;
+    background-color: rgba(255, 255, 255, 0.72);
+    box-shadow: none;
+    padding: 4px 0 6px;
+  }
+
+  .nav-item.dropdown-open > .dropdown {
+    display: block;
+  }
+
+  .dropdown-link {
+    padding: 9px 16px 9px 20px;
+    font-size: 0.86rem;
+  }
+
+  .app.art-page .content-box {
+    padding: 28px 16px;
+    margin-bottom: 18px;
+  }
+
+  .guidelines-toggle {
+    padding: 14px 16px;
+    font-size: 1.02rem;
+  }
+
+  .guidelines-body {
+    padding: 6px 16px 16px;
+    font-size: 0.9rem;
+  }
+
+  .faq-question {
+    padding: 14px 16px;
+    font-size: 0.98rem;
+  }
+
+  .faq-answer {
+    padding: 2px 16px 16px;
+    font-size: 0.9rem;
+  }
+
+  .page-credit {
+    bottom: 86px;
+    font-size: 0.68rem;
   }
 
   .timeline-bar {
-    padding: 12px 16px 16px;
+    padding: 6px 12px 8px;
+    overflow-x: auto;
+  }
+
+  .timeline-bar-collapsed {
+    padding: 4px 12px 6px;
+  }
+
+  .timeline-toggle {
+    top: -11px;
+    right: 8px;
+  }
+
+  .timeline-bar-head {
+    justify-content: flex-start;
+    gap: 8px;
+    margin-bottom: 4px;
+    padding-right: 46px;
+    font-size: 0.64rem;
   }
 
   .timeline-track {
-    margin: 0 24px 4px;
+    width: 680px;
+    height: 62px;
+    margin: 0;
   }
 
   .timeline-event-label {
-    width: 92px;
+    width: 132px;
     font-size: 0.62rem;
   }
 
-  .timeline-event-label strong {
-    font-size: 0.68rem;
+  .timeline-event-above .timeline-event-label {
+    bottom: 12px;
+  }
+
+  .timeline-event-below .timeline-event-label {
+    top: 12px;
+  }
+
+  .timeline-today-marker::after {
+    top: 12px;
+  }
+}
+
+@media (max-width: 600px) {
+  .app {
+    padding-bottom: 88px;
+  }
+
+  .krillion-section {
+    padding: 30px 16px 60px;
+  }
+
+  .krillion-section figure,
+  .krillion-section img {
+    max-width: 100%;
+  }
+
+  .krillion-section img {
+    max-height: 300px;
   }
 }
