@@ -22,6 +22,14 @@ body {
   background-color: #FDFAF3; /* Warm near-white cream */
 }
 
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid rgba(21, 128, 61, 0.35);
+  outline-offset: 2px;
+}
+
 .app.art-page {
   min-height: 100vh;
   background-size: cover;
@@ -31,15 +39,19 @@ body {
 }
 
 .app.guidelines-art {
-  background-image: linear-gradient(rgba(253, 250, 243, 0.7), rgba(253, 250, 243, 0.7)), url('/ChatGPT Image Aug 7, 2026, 08_59_28 PM (3).png');
+  background-image: linear-gradient(rgba(253, 250, 243, 0.68), rgba(253, 250, 243, 0.68)), url('/Ocean_Lov_Searching - Ocean Lov (1).jpg');
 }
 
 .app.submission-art {
-  background-image: linear-gradient(rgba(253, 250, 243, 0.68), rgba(253, 250, 243, 0.68)), url('/ChatGPT Image Aug 7, 2026, 09_05_44 PM (4).png');
+  background-image: linear-gradient(rgba(253, 250, 243, 0.66), rgba(253, 250, 243, 0.66)), url('/Ocean_Lov_Strike a Pose - Ocean Lov (1).jpg');
 }
 
 .app.faq-art {
-  background-image: linear-gradient(rgba(253, 250, 243, 0.7), rgba(253, 250, 243, 0.7)), url('/Untitled Design (3).png');
+  background-image: linear-gradient(rgba(253, 250, 243, 0.68), rgba(253, 250, 243, 0.68)), url('/Ocean_Lov_Untitled - Ocean Lov (1).jpg');
+}
+
+.app.issues-art {
+  background-image: linear-gradient(rgba(253, 250, 243, 0.7), rgba(253, 250, 243, 0.7)), url('/Ocean_Lov_Noticed - Ocean Lov.jpg');
 }
 
 .page-credit {
@@ -224,11 +236,12 @@ body {
   border: none;
   cursor: pointer;
   font-family: Arial, Helvetica, sans-serif;
-  transition: color 0.2s;
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 
 .nav-link:hover, .nav-item:hover > .nav-link {
   color: #8A8A8A;
+  transform: translateY(-1px);
 }
 
 .nav-submit-button {
@@ -242,11 +255,13 @@ body {
   font-weight: 700;
   cursor: pointer;
   white-space: nowrap;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .nav-submit-button:hover {
   background-color: #166534;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(21, 128, 61, 0.28);
 }
 
 .nav-link.active {
@@ -418,10 +433,12 @@ body {
   background: none;
   border: none;
   cursor: pointer;
+  transition: background-color 0.2s ease, padding-left 0.2s ease;
 }
 
 .dropdown-link:hover {
   background-color: var(--bg-color);
+  padding-left: 20px;
 }
 
 /* Main Content Area */
@@ -556,7 +573,7 @@ body {
   border-radius: 8px;
   padding: 12px 20px;
   cursor: pointer;
-  transition: background-color 0.2s, color 0.2s;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .hero-cta-primary {
@@ -567,10 +584,17 @@ body {
 
 .hero-cta-primary:hover {
   background-color: #166534;
+  transform: translateY(-2px);
+  box-shadow: 0 7px 16px rgba(21, 128, 61, 0.24);
 }
 
 .hero-cta-primary span {
   margin-left: 8px;
+  transition: margin-left 0.2s ease;
+}
+
+.hero-cta-primary:hover span {
+  margin-left: 14px;
 }
 
 .hero-cta-secondary {
@@ -581,6 +605,8 @@ body {
 
 .hero-cta-secondary:hover {
   background-color: #F5ECDA;
+  transform: translateY(-2px);
+  box-shadow: 0 7px 16px rgba(75, 85, 99, 0.16);
 }
 
 .issue-card {
@@ -680,6 +706,10 @@ body {
   display: flex;
   width: max-content;
   animation: marquee-scroll 65s linear infinite;
+}
+
+.testimonial-marquee:hover .marquee-track {
+  animation-play-state: paused;
 }
 
 .marquee-item {
@@ -911,6 +941,11 @@ body {
   font-size: 0.85rem;
   font-weight: 700;
   color: #15803D;
+  transition: transform 0.2s ease;
+}
+
+.edition-card:hover .edition-card-reader {
+  transform: translateX(5px);
 }
 
 .edition-card-coming {
@@ -1266,6 +1301,11 @@ body {
   align-self: flex-end;
   font-size: 2rem;
   line-height: 1;
+  transition: transform 0.2s ease;
+}
+
+.submission-link-card:hover .submission-link-arrow {
+  transform: translateX(6px);
 }
 
 @media (max-width: 760px) {
@@ -1310,6 +1350,13 @@ body {
   box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
   margin-bottom: 14px;
   overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.guidelines-section:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 7px 16px rgba(0, 0, 0, 0.1);
+  border-color: #C7E3D2;
 }
 
 .guidelines-section.open {
@@ -1342,6 +1389,11 @@ body {
   font-size: 1.4rem;
   line-height: 1;
   color: #15803D;
+  transition: transform 0.2s ease;
+}
+
+.guidelines-toggle:hover .guidelines-toggle-icon {
+  transform: scale(1.15);
 }
 
 .guidelines-body {
@@ -1413,10 +1465,13 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   font-weight: 700;
   text-decoration: none;
+  transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .contact-social:hover {
   background-color: #F5ECDA;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(75, 85, 99, 0.16);
 }
 
 .contact-form {
@@ -1548,6 +1603,12 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   font-weight: 700;
   cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.faq-contact-card button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(21, 128, 61, 0.24);
 }
 
 .faq-item {
@@ -1556,6 +1617,13 @@ body {
   margin-bottom: 10px;
   background-color: var(--card-bg);
   overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.faq-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+  border-color: #C7E3D2;
 }
 
 .faq-item.open {
@@ -1590,6 +1658,12 @@ body {
   line-height: 1;
   color: var(--text-muted);
   flex-shrink: 0;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.faq-item.open .faq-toggle {
+  transform: scale(1.15);
+  color: #15803D;
 }
 
 .faq-answer {
@@ -1644,11 +1718,13 @@ body {
   font-size: 0.9rem;
   cursor: pointer;
   letter-spacing: 0.05em;
-  transition: opacity 0.2s;
+  transition: opacity 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .btn-primary:hover {
   opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.18);
 }
 
 /* Footer */
@@ -1698,6 +1774,7 @@ body {
   border: none;
   padding: 0;
   cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 
 .footer-col button {
@@ -1709,11 +1786,13 @@ body {
   border: none;
   padding: 0;
   cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 
 .footer-col button:hover,
 .footer-col .footer-tab:hover {
   color: #ffffff;
+  transform: translateX(3px);
 }
 
 .footer-bottom {
@@ -1738,6 +1817,7 @@ body {
   margin-left: auto;
   color: #ffffff;
   text-decoration: none;
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 
 .footer-instagram svg {
@@ -1748,6 +1828,7 @@ body {
 
 .footer-instagram:hover {
   color: #d6d3d1;
+  transform: scale(1.1);
 }
 
 /* --- New Staff Directory Styles --- */
@@ -1908,6 +1989,12 @@ body {
   margin-bottom: 30px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   text-align: left;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.announcement-banner:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
 }
 
 .announcement-heading {
