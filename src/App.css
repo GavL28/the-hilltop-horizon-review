@@ -22,6 +22,41 @@ body {
   background-color: #FDFAF3; /* Warm near-white cream */
 }
 
+.app.art-page {
+  min-height: 100vh;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+.app.guidelines-art {
+  background-image: linear-gradient(rgba(253, 250, 243, 0.7), rgba(253, 250, 243, 0.7)), url('/ChatGPT Image Aug 7, 2026, 08_59_28 PM (3).png');
+}
+
+.app.submission-art {
+  background-image: linear-gradient(rgba(253, 250, 243, 0.68), rgba(253, 250, 243, 0.68)), url('/ChatGPT Image Aug 7, 2026, 09_05_44 PM (4).png');
+}
+
+.app.faq-art {
+  background-image: linear-gradient(rgba(253, 250, 243, 0.7), rgba(253, 250, 243, 0.7)), url('/Untitled Design (3).png');
+}
+
+.page-credit {
+  position: fixed;
+  bottom: 14px;
+  left: 16px;
+  z-index: 120;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background-color: rgba(17, 24, 39, 0.55);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+}
+
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -126,12 +161,17 @@ body {
 }
 
 .welcome-bar {
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #FFFFFF;
-  border-bottom: 1px solid var(--accent-border);
+  background-color: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid rgba(231, 229, 228, 0.8);
   padding: 10px 50px;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 0.9rem;
@@ -404,7 +444,7 @@ body {
 /* Hero & Poem Styles */
 .home-top {
   position: relative;
-  padding: 24px 0 36px;
+  padding: 64px 0 36px;
   background-image: url('/Untitled Design (4).png');
   background-size: cover;
   background-position: center;
@@ -413,11 +453,17 @@ body {
 
 .home-credit {
   position: absolute;
-  bottom: 8px;
+  bottom: 10px;
   left: 20px;
+  z-index: 3;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background-color: rgba(17, 24, 39, 0.55);
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 0.7rem;
-  color: #4B5563;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
 }
 
 .home-main-empty {
@@ -1950,6 +1996,10 @@ body {
 
   .hero-banner {
     padding: 30px 20px;
+  }
+
+  .home-top {
+    padding-top: 84px;
   }
 
   .welcome-bar {
