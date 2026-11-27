@@ -285,6 +285,18 @@ const ABOUT_STATS = [
 
 const SUBMISSIONS_RECEIVED = 87;
 
+const countryNameFormatter = typeof Intl.DisplayNames === 'function'
+  ? new Intl.DisplayNames(['en'], { type: 'region' })
+  : null;
+
+const getCountryName = (code) => {
+  try {
+    return countryNameFormatter?.of(code) || code;
+  } catch {
+    return code;
+  }
+};
+
 function TestimonialCarousel({ items, variant }) {
   return (
     <div className={`testimonial-marquee ${variant === 'second' ? 'testimonial-marquee-second' : ''}`}>
@@ -301,25 +313,39 @@ function TestimonialCarousel({ items, variant }) {
 }
 
 function NationsMap({ reached, onToggle, canEdit }) {
+  const [tooltip, setTooltip] = useState(null);
+
+  const showTooltip = (event, id) => {
+    const map = event.currentTarget.closest('.nations-map');
+    const rect = map.getBoundingClientRect();
+    setTooltip({
+      name: getCountryName(id),
+      x: event.clientX - rect.left,
+      y: event.clientY - rect.top,
+    });
+  };
+
   return (
     <div className={canEdit ? 'nations-map editable' : 'nations-map'}>
-      <svg viewBox={VIEW_BOX} role="img" aria-label="World map of nations reached">
+      <svg viewBox={VIEW_BOX} role="img" aria-label="World map of nations reached" onMouseLeave={() => setTooltip(null)}>
         {countryShapes.map(({ id, shape }) => (
           <path
             key={id}
             d={shape}
             className={reached.has(id) ? 'country-shape filled' : 'country-shape'}
             onClick={canEdit ? () => onToggle(id) : undefined}
+            onMouseMove={(event) => showTooltip(event, id)}
+            onMouseLeave={() => setTooltip(null)}
           >
-            <title>{id}</title>
+            <title>{getCountryName(id)}</title>
           </path>
         ))}
       </svg>
-      <p className="nations-map-hint">
-        {canEdit
-          ? `Click any country to mark it as reached (${reached.size} marked).`
-          : `${reached.size} nations marked. Log in as admin to update the map.`}
-      </p>
+      {tooltip && (
+        <span className="nations-map-tooltip" style={{ left: tooltip.x, top: tooltip.y }}>
+          {tooltip.name}
+        </span>
+      )}
     </div>
   );
 }
@@ -643,28 +669,25 @@ export default function App() {
     }, 0);
   };
 
-  const pageArtClass = activeTab === 'about-litmag'
-    ? 'art-page about-art'
-    : activeTab === 'submit-guidelines'
-      ? 'art-page guidelines-art'
-      : activeTab === 'submit-links'
-        ? 'art-page submission-art'
-        : activeTab === 'submit-junior'
-          ? 'art-page junior-art'
-          : activeTab === 'faq'
-            ? 'art-page faq-art'
-            : activeTab === 'contact'
-              ? 'art-page contact-art'
-              : activeTab === 'join'
-                ? 'art-page join-art'
-                : ['digital-magazine', 'issues-archive', 'selected-works', 'selected-works-issue', 'selected-works-piece'].includes(activeTab)
-                  ? 'art-page issues-art'
-                  : '';
-  const pageCredit = activeTab === 'about-litmag' ? '' : pageArtClass ? 'Background image by Ocean Lov' : '';
+  const pageArtClass = activeTab === 'submit-guidelines'
+    ? 'art-page guidelines-art'
+    : activeTab === 'submit-links'
+      ? 'art-page submission-art'
+      : activeTab === 'submit-junior'
+        ? 'art-page junior-art'
+        : activeTab === 'faq'
+          ? 'art-page faq-art'
+          : activeTab === 'contact'
+            ? 'art-page contact-art'
+            : activeTab === 'join'
+              ? 'art-page join-art'
+              : ['digital-magazine', 'issues-archive', 'selected-works', 'selected-works-issue', 'selected-works-piece'].includes(activeTab)
+                ? 'art-page issues-art'
+                : '';
 
   return (
     <div className={pageArtClass ? `app ${pageArtClass}` : 'app'}>
-      {pageCredit && <span className="page-credit">{pageCredit}</span>}
+      {pageArtClass && <span className="page-credit">Background image by Ocean Lov</span>}
       {/* Navigation Bar (top banner) */}
       <nav className="nav-bar">
         <a href="#" className="nav-logo" onClick={() => { setActiveTab('home'); setMobileMenuOpen(false); }} title="The Hilltop Horizon Review">
@@ -745,7 +768,7 @@ export default function App() {
                 Where emerging voices meet the <em className="orange-word horizon-word">horizon</em>.
               </h1>
               <p className="hero-copy-text">
-                A youth-led literary review curating bimonthly collections of poetry, fiction,  nonfiction, photography, and art -- editorial feedback on <span className="orange-word">every</span> submission.
+                A youth-led literary review curating bimonthly collections of poetry, fiction,  nonfiction, photography, and art -- editorial feedback on <em className="orange-word horizon-word">every</em> submission.
               </p>
               <div className="hero-cta-group">
                 <button className="hero-cta-primary" onClick={() => setActiveTab('digital-magazine')}>
@@ -854,7 +877,9 @@ export default function App() {
                     .
                   </p>
                 </div>
-                <div className="about-image" role="img" aria-label="The Hilltop Horizon Review team"></div>
+                <div className="about-image">
+                  <img src="/IMG_5975.jpeg" alt="The Hilltop Horizon Review team" />
+                </div>
               </div>
               <div style={{ marginTop: '30px' }}>
                 <h2 className="section-title">Our Mission</h2>
@@ -877,9 +902,9 @@ export default function App() {
         {/* STAFF DIRECTORY GRID */}
         {activeTab === 'about-staff' && (
           <div>
-            <h2 className="section-title">Editorial Board</h2>
+            <h2 className="section-title">Our Team</h2>
             <p style={{ textAlign: 'center', marginBottom: '10px', color: 'var(--text-muted)' }}>
-              Our masthead consists of over a dozen dedicated high school editors worldwide. Click any profile to learn more.
+              Our team consists of dedicated high school editors worldwide. Click any profile to learn more.
             </p>
             
             <div className="staff-grid">
@@ -903,23 +928,22 @@ export default function App() {
 
         {/* INDIVIDUAL STAFF PROFILE VIEW */}
         {activeTab === 'staff-detail' && selectedStaff && (
-          <div className="content-box">
+          <div className="content-box staff-detail-page fade-in">
             <button className="btn-back" onClick={() => setActiveTab('about-staff')}>
-              ← Back to Staff Directory
+              ← Back to Team
             </button>
-            
+
             <div className="staff-detail-header">
               {selectedStaff.photo ? (
-                <img src={selectedStaff.photo} alt={selectedStaff.name} className="staff-photo-large" style={{ objectFit: 'cover', border: 'none' }} />
+                <img src={selectedStaff.photo} alt={selectedStaff.name} className="staff-photo-large" />
               ) : (
                 <div className="staff-photo-large"></div>
               )}
-              <div>
+              <div className="staff-detail-intro">
+                <span className="staff-detail-eyebrow">Team Profile</span>
                 <h2>{selectedStaff.name}</h2>
-                <p style={{ fontSize: '1.1rem', color: 'var(--text-muted)', fontStyle: 'italic', marginBottom: '15px' }}>
-                  {selectedStaff.pronouns} • {selectedStaff.grade}
-                </p>
-                <h4 style={{ whiteSpace: 'pre-line' }}>{selectedStaff.role}</h4>
+                <p className="staff-detail-meta">{selectedStaff.pronouns} • {selectedStaff.grade}</p>
+                <h4 className="staff-detail-role">{selectedStaff.role}</h4>
               </div>
             </div>
 
