@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 import { Editor } from '@tinymce/tinymce-react';
 import countryShapes, { VIEW_BOX } from 'world-map-country-shapes';
+import ContactUs from './ContactUs.jsx';
 
 // Centralized Staff Data Array
 const staffData = [
@@ -324,33 +325,12 @@ function NationsMap({ reached, onToggle, canEdit }) {
 
 function GuidelinesSection({ title, isOpen, onToggle, children }) {
   return (
-    <div style={{ border: '1px solid var(--accent-border)', borderRadius: '4px', marginBottom: '15px', overflow: 'hidden' }}>
-      <button
-        type="button"
-        onClick={onToggle}
-        style={{
-          width: '100%',
-          textAlign: 'left',
-          padding: '15px 20px',
-          backgroundColor: isOpen ? 'var(--accent-bg)' : 'transparent',
-          border: 'none',
-          cursor: 'pointer',
-          fontFamily: 'var(--font-heading)',
-          fontSize: '1.15rem',
-          color: 'var(--text-main)',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}
-      >
+    <div className={isOpen ? 'guidelines-section open' : 'guidelines-section'}>
+      <button type="button" className="guidelines-toggle" onClick={onToggle}>
         <span>{title}</span>
-        <span style={{ fontSize: '1.1rem', color: 'var(--text-muted)' }}>{isOpen ? '−' : '+'}</span>
+        <span className="guidelines-toggle-icon">{isOpen ? '−' : '+'}</span>
       </button>
-      {isOpen && (
-        <div style={{ padding: '0 20px 20px 20px', fontSize: '0.95rem' }}>
-          {children}
-        </div>
-      )}
+      {isOpen && <div className="guidelines-body">{children}</div>}
     </div>
   );
 }
@@ -485,6 +465,7 @@ export default function App() {
   const [announcements, setAnnouncements] = useState([]);
   const [isContentLoading, setIsContentLoading] = useState(true);
   const [openFaq, setOpenFaq] = useState(null);
+  const [faqSearch, setFaqSearch] = useState('');
 
   // Restore a selected-works sub-view (issue or piece) from its URL id
   const restoreRoute = (works) => {
@@ -691,7 +672,7 @@ export default function App() {
             </ul>
           </li>
           <li className={openMobileDropdown === 'submit' ? 'nav-item dropdown-open' : 'nav-item'}>
-            <button className={isNavActive('submit') ? 'nav-link active' : 'nav-link'} onClick={handleParentNavClick('submit', 'submit-guidelines')}>Submit ▾</button>
+            <button className={isNavActive('submit') ? 'nav-link active' : 'nav-link'} onClick={handleParentNavClick('submit', 'submit-guidelines')}>Guidelines ▾</button>
             <ul className="dropdown">
               <li><button className="dropdown-link" onClick={() => setActiveTab('submit-guidelines')}>Guidelines</button></li>
               <li><button className="dropdown-link" onClick={() => setActiveTab('submit-links')}>Submissions Links</button></li>
@@ -715,6 +696,7 @@ export default function App() {
 
       {activeTab === 'home' && (
         <div className="home-top">
+          <span className="home-credit">Credit to Ocean Lov</span>
           {welcomeVisible && (
             <div className="welcome-bar">
               <span>Welcome to the close-knit community of The Hilltop Horizon Review! -Gavin | Co-founder &amp; Editor in Chief</span>
@@ -728,7 +710,7 @@ export default function App() {
                 Ages 11-19 • Specific, detailed, and in-depth feedback for every single piece you submit.
               </div>
               <h1 className="hero-headline">
-                Where emerging voices meet the <em className="orange-word">horizon</em>.
+                Where emerging voices meet the <em className="orange-word horizon-word">horizon</em>.
               </h1>
               <p className="hero-copy-text">
                 A youth-led literary review curating bimonthly collections of poetry, fiction,  nonfiction, photography, and art -- editorial feedback on <span className="orange-word">every</span> submission.
@@ -780,7 +762,7 @@ export default function App() {
       )}
 
       {/* Main Content Area */}
-      <main className="main-content container">
+      <main className={activeTab === 'home' ? 'main-content container home-main-empty' : 'main-content container'}>
 
 
         {/* ABOUT TAB */}
@@ -1150,7 +1132,12 @@ export default function App() {
               Thank you for taking the time to submit to our literary magazine! Please review the information below before making your submission. Good luck!
             </p>
 
-            <GuidelinesSection title="General Guidelines" isOpen={openGuidelines === 'general'} onToggle={() => toggleGuidelines('general')}>
+            <div className="guidelines-actions">
+              <button onClick={() => setOpenGuidelines('all')}>Expand all</button>
+              <button onClick={() => setOpenGuidelines(null)}>Collapse all</button>
+            </div>
+
+            <GuidelinesSection title="General Guidelines" isOpen={openGuidelines === 'all' || openGuidelines === 'general'} onToggle={() => toggleGuidelines('general')}>
               <p style={{ fontStyle: 'italic', color: 'var(--text-muted)' }}>Applies to any/all submissions:</p>
               <h4 style={{ fontFamily: 'var(--font-heading)', marginTop: '15px', marginBottom: '8px' }}>Original & Unpublished Work Only</h4>
               <p>Submit original, previously unpublished work only. Posting on your own social media, blog, or website (or performing at an open mic) is fine, but work that has appeared in another literary magazine, journal, or zine is not eligible.</p>
@@ -1171,7 +1158,7 @@ export default function App() {
               <p style={{ marginTop: '15px' }}>Questions? Email <a href="mailto:team@hilltophorizonreview.com" style={{ color: 'var(--text-main)' }}>team@hilltophorizonreview.com</a></p>
             </GuidelinesSection>
 
-            <GuidelinesSection title="Poetry Guidelines" isOpen={openGuidelines === 'poetry'} onToggle={() => toggleGuidelines('poetry')}>
+            <GuidelinesSection title="Poetry Guidelines" isOpen={openGuidelines === 'all' || openGuidelines === 'poetry'} onToggle={() => toggleGuidelines('poetry')}>
               <h4 style={{ fontFamily: 'var(--font-heading)', marginTop: '0', marginBottom: '8px' }}>Font Size</h4>
               <p>12 Point Font, with exceptions for stylistic choice.</p>
               <h4 style={{ fontFamily: 'var(--font-heading)', marginBottom: '8px' }}>Acceptable Fonts</h4>
@@ -1186,7 +1173,7 @@ export default function App() {
               <p>While stylistic choices are accepted, it is preferred that poems are in the format suggested above.</p>
             </GuidelinesSection>
 
-            <GuidelinesSection title="Fiction Guidelines" isOpen={openGuidelines === 'fiction'} onToggle={() => toggleGuidelines('fiction')}>
+            <GuidelinesSection title="Fiction Guidelines" isOpen={openGuidelines === 'all' || openGuidelines === 'fiction'} onToggle={() => toggleGuidelines('fiction')}>
               <h4 style={{ fontFamily: 'var(--font-heading)', marginTop: '0', marginBottom: '8px' }}>Font Size</h4>
               <p>12 pt.</p>
               <h4 style={{ fontFamily: 'var(--font-heading)', marginBottom: '8px' }}>Acceptable Fonts</h4>
@@ -1203,7 +1190,7 @@ export default function App() {
               <p>Please have a clear title on the piece for publication.</p>
             </GuidelinesSection>
 
-            <GuidelinesSection title="Nonfiction Guidelines" isOpen={openGuidelines === 'nonfiction'} onToggle={() => toggleGuidelines('nonfiction')}>
+            <GuidelinesSection title="Nonfiction Guidelines" isOpen={openGuidelines === 'all' || openGuidelines === 'nonfiction'} onToggle={() => toggleGuidelines('nonfiction')}>
               <h4 style={{ fontFamily: 'var(--font-heading)', marginTop: '0', marginBottom: '8px' }}>Font Size</h4>
               <p>12 pt font.</p>
               <h4 style={{ fontFamily: 'var(--font-heading)', marginBottom: '8px' }}>Acceptable Fonts</h4>
@@ -1220,14 +1207,14 @@ export default function App() {
               <p>Must include titles for each submitted piece. Profanity/explicit themes allowed. We are looking for works that are personal and introspective. Dual submissions are allowed.</p>
             </GuidelinesSection>
 
-            <GuidelinesSection title="Art Guidelines" isOpen={openGuidelines === 'art'} onToggle={() => toggleGuidelines('art')}>
+            <GuidelinesSection title="Art Guidelines" isOpen={openGuidelines === 'all' || openGuidelines === 'art'} onToggle={() => toggleGuidelines('art')}>
               <h4 style={{ fontFamily: 'var(--font-heading)', marginTop: '0', marginBottom: '8px' }}>Number of Submissions Per Person</h4>
               <p>No minimum; maximum of 5.</p>
               <h4 style={{ fontFamily: 'var(--font-heading)', marginBottom: '8px' }}>File Type</h4>
               <p>JPEG, PNG.</p>
             </GuidelinesSection>
 
-            <GuidelinesSection title="Photography Guidelines" isOpen={openGuidelines === 'photography'} onToggle={() => toggleGuidelines('photography')}>
+            <GuidelinesSection title="Photography Guidelines" isOpen={openGuidelines === 'all' || openGuidelines === 'photography'} onToggle={() => toggleGuidelines('photography')}>
               <h4 style={{ fontFamily: 'var(--font-heading)', marginTop: '0', marginBottom: '8px' }}>Number of Submissions Per Person</h4>
               <p>No minimum; maximum of 5.</p>
               <h4 style={{ fontFamily: 'var(--font-heading)', marginBottom: '8px' }}>File Type</h4>
@@ -1243,29 +1230,32 @@ export default function App() {
         )}
 
         {activeTab === 'submit-links' && (
-          <div className="content-box" style={{ maxWidth: '650px', margin: '0 auto', textAlign: 'center' }}>
+          <div className="content-box">
             <h2 className="section-title">Submissions Links</h2>
-            <p style={{ marginBottom: '20px' }}>
-              Ready to submit? Fill out our submission form below. Make sure to review our <a href="#" style={{ color: 'var(--text-main)' }} onClick={(e) => { e.preventDefault(); setActiveTab('submit-guidelines'); }}>guidelines</a> first!
+            <p className="submission-links-intro">
+              Ready to submit? Choose the form for your age group. Make sure to review our{' '}
+              <a href="#" className="link-button" onClick={(e) => { e.preventDefault(); setActiveTab('submit-guidelines'); }}>guidelines</a> first!
             </p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', alignItems: 'center' }}>
+            <div className="submission-links-grid">
               <a
                 href="https://docs.google.com/forms/d/e/1FAIpQLScbD413Lmd9w3yOxHhz3M5eKifCMXhRj3OymJzWFtAMDEAJ_w/viewform?usp=dialog"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-primary"
-                style={{ textDecoration: 'none', display: 'inline-block' }}
+                className="submission-link-card general"
               >
-                Issue 3 General Submission (14-19) →
+                <span className="submission-link-title">General Submissions (ISSUE THREE)</span>
+                <span className="submission-link-age">Ages 14-19</span>
+                <span className="submission-link-arrow">→</span>
               </a>
               <a
                 href="https://docs.google.com/forms/d/e/1FAIpQLSeBDT0s8Bd1VuoL2ktm0CXz6pPeNoqsLaJT9jCIucZk43--Rg/viewform?usp=sharing&ouid=115181364077200728162"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-primary"
-                style={{ textDecoration: 'none', display: 'inline-block' }}
+                className="submission-link-card junior"
               >
-                Junior Submissions (ages 11-14) →
+                <span className="submission-link-title">Junior Submissions (ISSUE THREE)</span>
+                <span className="submission-link-age">Ages 11-14</span>
+                <span className="submission-link-arrow">→</span>
               </a>
             </div>
           </div>
@@ -1294,55 +1284,71 @@ export default function App() {
 
         {/* FAQ TAB */}
         {activeTab === 'faq' && (
-          <div className="content-box">
+          <div className="content-box faq-page">
             <h2 className="section-title">Frequently Asked Questions</h2>
-            {FAQ_ITEMS.map((item, i) => (
-              <div key={i} className="faq-item">
-                <button className="faq-question" onClick={() => setOpenFaq(openFaq === i ? null : i)}>
-                  <span>{item.q}</span>
-                  <span className="faq-toggle">{openFaq === i ? '−' : '+'}</span>
-                </button>
-                {openFaq === i && <div className="faq-answer">{item.a}</div>}
-              </div>
-            ))}
+            <p className="faq-intro">Everything you need to know before submitting — search or expand a question below.</p>
+            <div className="faq-search-wrap">
+              <input
+                className="faq-search"
+                type="search"
+                placeholder="Search questions..."
+                value={faqSearch}
+                onChange={(e) => setFaqSearch(e.target.value)}
+              />
+            </div>
+            {FAQ_ITEMS.map((item, i) => ({ item, i }))
+              .filter(({ item }) => (item.q + item.a).toLowerCase().includes(faqSearch.toLowerCase()))
+              .map(({ item, i }) => (
+                <div key={i} className={openFaq === i ? 'faq-item open' : 'faq-item'}>
+                  <button className="faq-question" onClick={() => setOpenFaq(openFaq === i ? null : i)}>
+                    <span>{item.q}</span>
+                    <span className="faq-toggle">{openFaq === i ? '−' : '+'}</span>
+                  </button>
+                  {openFaq === i && <div className="faq-answer">{item.a}</div>}
+                </div>
+              ))}
+            {FAQ_ITEMS.filter((item) => (item.q + item.a).toLowerCase().includes(faqSearch.toLowerCase())).length === 0 && (
+              <p className="faq-no-results">No questions matched your search.</p>
+            )}
 
-            <div style={{ marginTop: '45px', padding: '25px', backgroundColor: 'var(--accent-bg)', borderRadius: '4px', textAlign: 'center' }}>
-              <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.4rem', marginBottom: '10px' }}>Any other questions?</h4>
-              <p style={{ marginBottom: '12px' }}>
+            <div className="faq-contact-card">
+              <h4>Any other questions?</h4>
+              <p>
                 Feel free to reach out to us at{' '}
-                <a href="mailto:team@hilltophorizonreview.com" style={{ color: 'var(--text-main)', fontWeight: 'bold' }}>team@hilltophorizonreview.com</a>
+                <a href="mailto:team@hilltophorizonreview.com">team@hilltophorizonreview.com</a>
                 , or find more info on our contact page.
               </p>
-              <button className="btn-primary" onClick={() => setActiveTab('contact')}>Contact Page</button>
+              <button onClick={() => setActiveTab('contact')}>Contact Page →</button>
             </div>
           </div>
         )}
 
         {/* CONTACT TAB */}
         {activeTab === 'contact' && (
-          <div className="content-box" style={{ maxWidth: '650px', margin: '0 auto' }}>
+          <div className="content-box contact-page">
             <h2 className="section-title">Contact Us</h2>
-            
-            {/* Official Email & Social Media Placeholders */}
-            <div style={{ textAlign: 'center', marginBottom: '40px', paddingBottom: '30px', borderBottom: '1px solid var(--accent-border)' }}>
-              <p style={{ marginBottom: '12px', fontSize: '1.05rem' }}>
-                <strong>Official Email:</strong> <a href="team@hilltophorizonreview.com" style={{ color: 'var(--text-main)' }}>team@hilltophorizonreview.com</a>
-              </p>
-              <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '15px' }}>Connect with us on social media:</p>
-              <div style={{ display: 'flex', justifyContent: 'center', gap: '15px', flexWrap: 'wrap' }}>
+            <p className="contact-intro">Questions, ideas, or just want to say hello? We'd love to hear from you.</p>
+            <div className="contact-grid">
+              <div className="contact-card">
+                <h3>Get in touch</h3>
+                <p className="contact-card-label">Official Email</p>
+                <a className="contact-email" href="mailto:team@hilltophorizonreview.com">team@hilltophorizonreview.com</a>
+                <p className="contact-card-label social-label">Follow along</p>
                 <a
+                  className="contact-social"
                   href="https://www.instagram.com/hilltop_horizon_review/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn-primary"
-                  style={{ display: 'inline-block', textDecoration: 'none' }}
                 >
-                  Instagram
+                  Instagram →
                 </a>
               </div>
+              <div className="contact-card">
+                <h3>Send a message</h3>
+                <ContactUs />
+              </div>
             </div>
-
-            </div>
+          </div>
         )}
 
         {/* JOIN US TAB */}
