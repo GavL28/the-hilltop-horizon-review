@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 import { Editor } from '@tinymce/tinymce-react';
+import countryShapes, { VIEW_BOX } from 'world-map-country-shapes';
 
 // Centralized Staff Data Array
 const staffData = [
@@ -94,7 +95,7 @@ function getTabFromHash() {
 const PAGE_TITLES = {
   home: 'Home',
   'about-litmag': 'About',
-  'about-staff': 'Staff / Team',
+  'about-staff': 'Masthead',
   announcements: 'Announcements',
   'about-stats': 'Stats',
   'selected-works': 'Selected Works',
@@ -297,6 +298,26 @@ function TestimonialCarousel({ items, variant }) {
   );
 }
 
+function NationsMap({ reached, onToggle }) {
+  return (
+    <div className="nations-map">
+      <svg viewBox={VIEW_BOX} role="img" aria-label="World map of nations reached">
+        {countryShapes.map(({ id, shape }) => (
+          <path
+            key={id}
+            d={shape}
+            className={reached.has(id) ? 'country-shape filled' : 'country-shape'}
+            onClick={() => onToggle(id)}
+          >
+            <title>{id}</title>
+          </path>
+        ))}
+      </svg>
+      <p className="nations-map-hint">Click any country to mark it as reached ({reached.size} marked).</p>
+    </div>
+  );
+}
+
 function GuidelinesSection({ title, isOpen, onToggle, children }) {
   return (
     <div style={{ border: '1px solid var(--accent-border)', borderRadius: '4px', marginBottom: '15px', overflow: 'hidden' }}>
@@ -334,6 +355,27 @@ export default function App() {
   const [activeTab, setActiveTab] = useState(getTabFromHash);
   const [welcomeVisible, setWelcomeVisible] = useState(true);
   const closeWelcome = () => setWelcomeVisible(false);
+  const [reachedNations, setReachedNations] = useState(() => {
+    try {
+      return new Set(JSON.parse(localStorage.getItem('thhr-nations') || '[]'));
+    } catch {
+      return new Set();
+    }
+  });
+  const persistNations = (nations) => {
+    try {
+      localStorage.setItem('thhr-nations', JSON.stringify([...nations]));
+    } catch {
+      return;
+    }
+  };
+  const toggleNation = (id) => {
+    const next = new Set(reachedNations);
+    if (next.has(id)) next.delete(id);
+    else next.add(id);
+    setReachedNations(next);
+    persistNations(next);
+  };
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openMobileDropdown, setOpenMobileDropdown] = useState(null);
   const [selectedStaff, setSelectedStaff] = useState(null);
@@ -633,7 +675,7 @@ export default function App() {
             <button className={isNavActive('about') ? 'nav-link active' : 'nav-link'} onClick={handleParentNavClick('about', 'about-litmag')}>About ▾</button>
             <ul className="dropdown">
               <li><button className="dropdown-link" onClick={() => setActiveTab('about-litmag')}>About</button></li>
-              <li><button className="dropdown-link" onClick={() => setActiveTab('about-staff')}>Staff / Team</button></li>
+              <li><button className="dropdown-link" onClick={() => setActiveTab('about-staff')}>Masthead</button></li>
               <li><button className="dropdown-link" onClick={() => setActiveTab('announcements')}>Announcements</button></li>
               <li><button className="dropdown-link" onClick={() => setActiveTab('about-stats')}>Stats</button></li>
             </ul>
@@ -850,41 +892,25 @@ export default function App() {
         {/* ANNOUNCEMENTS TAB */}
         {activeTab === 'announcements' && (
           <div className="content-box fade-in">
-            <h2 className="section-title" style={{ fontSize: '2.6rem' }}>Announcements</h2>
+            <h2 className="section-title">Announcements</h2>
+            <p className="announcements-intro">Updates, deadlines, and news from the editorial team.</p>
 
-            {isContentLoading && <p style={{ textAlign: 'center', fontStyle: 'italic', color: 'var(--text-muted)' }}>Loading announcements...</p>}
+            {isContentLoading && <p className="announcements-empty">Loading announcements...</p>}
 
             {!isContentLoading && announcements.length === 0 && (
-              <p style={{ textAlign: 'center', fontStyle: 'italic', color: 'var(--text-muted)' }}>No announcements yet. Check back soon!</p>
+              <p className="announcements-empty">No announcements yet. Check back soon!</p>
             )}
 
             {!isContentLoading && announcements.length > 0 && (
-              <div>
+              <div className="announcements-list">
                 {announcements.map((a, i) => (
-                  <div
-                    key={a.id}
-                    style={{
-                      marginBottom: '20px',
-                      padding: i === 0 ? '28px' : '20px',
-                      backgroundColor: 'var(--accent-bg)',
-                      borderRadius: '4px',
-                      borderLeft: i === 0 ? '4px solid var(--accent)' : 'none',
-                    }}
-                  >
-                    <div
-                      className="issue-content"
-                      style={{
-                        lineHeight: '1.7',
-                        fontSize: i === 0 ? '1.5rem' : '1.25rem',
-                        fontWeight: i === 0 ? 700 : 600,
-                      }}
-                    >
-                      {a.message}
-                    </div>
-                    <span style={{ color: 'var(--text-muted)', fontSize: '0.95rem', display: 'block', marginTop: '12px' }}>
+                  <article className={i === 0 ? 'announcement-card featured' : 'announcement-card'} key={a.id}>
+                    <span className="announcement-date-pill">
+                      {i === 0 && <span className="announcement-new">Latest</span>}
                       {formatAnnouncementDate(a.created_at)}
                     </span>
-                  </div>
+                    <p className="announcement-body">{a.message}</p>
+                  </article>
                 ))}
               </div>
             )}
@@ -895,16 +921,17 @@ export default function App() {
         {activeTab === 'about-stats' && (
           <div className="content-box fade-in">
             <h2 className="section-title">Stats</h2>
-            <div style={{ display: 'flex', justifyContent: 'center', gap: '60px', flexWrap: 'wrap', marginTop: '30px' }}>
-              <div style={{ padding: '30px 45px', backgroundColor: 'var(--accent-bg)', borderRadius: '8px', textAlign: 'center', minWidth: '240px' }}>
-                <div style={{ fontSize: '3rem', fontFamily: 'var(--font-heading)', fontWeight: 700, color: 'var(--text-main)', lineHeight: 1 }}>82</div>
-                <div style={{ fontSize: '1.1rem', fontWeight: 600, marginTop: '20px', color: 'var(--text-main)' }}>Submissions Received</div>
+            <div className="stats-cards">
+              <div className="stats-card">
+                <div className="stats-number">82</div>
+                <div className="stats-label">Submissions Received</div>
               </div>
-              <div style={{ padding: '30px 45px', backgroundColor: 'var(--accent-bg)', borderRadius: '8px', textAlign: 'center', minWidth: '240px' }}>
-                <div style={{ fontSize: '3rem', fontFamily: 'var(--font-heading)', fontWeight: 700, color: 'var(--text-main)', lineHeight: 1 }}>7</div>
-                <div style={{ fontSize: '1.1rem', fontWeight: 600, marginTop: '20px', color: 'var(--text-main)' }}>Nations Reached</div>
+              <div className="stats-card">
+                <div className="stats-number">{reachedNations.size}</div>
+                <div className="stats-label">Nations Reached</div>
               </div>
             </div>
+            <NationsMap reached={reachedNations} onToggle={toggleNation} />
           </div>
         )}
 
@@ -2564,7 +2591,7 @@ export default function App() {
                   <div className="footer-col">
                     <span className="footer-tab">About</span>
                     <button onClick={() => setActiveTab('about-litmag')}>About</button>
-                    <button onClick={() => setActiveTab('about-staff')}>Staff / Team</button>
+                    <button onClick={() => setActiveTab('about-staff')}>Masthead</button>
                     <button onClick={() => setActiveTab('about-stats')}>Stats</button>
                   </div>
                   <div className="footer-col">
