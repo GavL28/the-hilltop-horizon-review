@@ -97,7 +97,7 @@ const PAGE_TITLES = {
   'about-litmag': 'About',
   'about-staff': 'Masthead',
   announcements: 'Announcements',
-  'about-stats': 'Stats',
+  'about-stats': 'Stats & Reach',
   'selected-works': 'Selected Works',
   'digital-magazine': 'Digital Magazine',
   'issues-archive': 'Issues Archive',
@@ -298,22 +298,26 @@ function TestimonialCarousel({ items, variant }) {
   );
 }
 
-function NationsMap({ reached, onToggle }) {
+function NationsMap({ reached, onToggle, canEdit }) {
   return (
-    <div className="nations-map">
+    <div className={canEdit ? 'nations-map editable' : 'nations-map'}>
       <svg viewBox={VIEW_BOX} role="img" aria-label="World map of nations reached">
         {countryShapes.map(({ id, shape }) => (
           <path
             key={id}
             d={shape}
             className={reached.has(id) ? 'country-shape filled' : 'country-shape'}
-            onClick={() => onToggle(id)}
+            onClick={canEdit ? () => onToggle(id) : undefined}
           >
             <title>{id}</title>
           </path>
         ))}
       </svg>
-      <p className="nations-map-hint">Click any country to mark it as reached ({reached.size} marked).</p>
+      <p className="nations-map-hint">
+        {canEdit
+          ? `Click any country to mark it as reached (${reached.size} marked).`
+          : `${reached.size} nations marked. Log in as admin to update the map.`}
+      </p>
     </div>
   );
 }
@@ -677,7 +681,7 @@ export default function App() {
               <li><button className="dropdown-link" onClick={() => setActiveTab('about-litmag')}>About</button></li>
               <li><button className="dropdown-link" onClick={() => setActiveTab('about-staff')}>Masthead</button></li>
               <li><button className="dropdown-link" onClick={() => setActiveTab('announcements')}>Announcements</button></li>
-              <li><button className="dropdown-link" onClick={() => setActiveTab('about-stats')}>Stats</button></li>
+              <li><button className="dropdown-link" onClick={() => setActiveTab('about-stats')}>Stats &amp; Reach</button></li>
             </ul>
           </li>
           <li className={openMobileDropdown === 'issues' ? 'nav-item dropdown-open' : 'nav-item'}>
@@ -709,16 +713,15 @@ export default function App() {
         </ul>
       </nav>
 
-      {activeTab === 'home' && welcomeVisible && (
-        <div className="welcome-bar">
-          <span>Welcome to the close-knit community of The Hilltop Horizon Review! -Gavin | Co-founder &amp; Editor in Chief</span>
-          <button className="welcome-close" onClick={closeWelcome} aria-label="Close welcome message">×</button>
-        </div>
-      )}
-
-      {/* Home: hero (above the main content) */}
       {activeTab === 'home' && (
-        <section className="container" style={{ paddingTop: '15px' }}>
+        <div className="home-top">
+          {welcomeVisible && (
+            <div className="welcome-bar">
+              <span>Welcome to the close-knit community of The Hilltop Horizon Review! -Gavin | Co-founder &amp; Editor in Chief</span>
+              <button className="welcome-close" onClick={closeWelcome} aria-label="Close welcome message">×</button>
+            </div>
+          )}
+          <section className="container" style={{ paddingTop: '15px' }}>
           <div className="hero-banner">
             <div className="hero-copy">
               <div className="hero-badge">
@@ -760,7 +763,8 @@ export default function App() {
               <p className="issue-card-reader">60 pages • Digital Reader</p>
             </div>
           </div>
-        </section>
+          </section>
+        </div>
       )}
 
       {/* Reader testimonials */}
@@ -920,18 +924,22 @@ export default function App() {
         {/* STATS TAB */}
         {activeTab === 'about-stats' && (
           <div className="content-box fade-in">
-            <h2 className="section-title">Stats</h2>
+            <h2 className="section-title">Stats &amp; Reach</h2>
             <div className="stats-cards">
               <div className="stats-card">
-                <div className="stats-number">82</div>
+                <div className="stats-number">87</div>
                 <div className="stats-label">Submissions Received</div>
+              </div>
+              <div className="stats-card">
+                <div className="stats-number">4</div>
+                <div className="stats-label">Continents Reached</div>
               </div>
               <div className="stats-card">
                 <div className="stats-number">{reachedNations.size}</div>
                 <div className="stats-label">Nations Reached</div>
               </div>
             </div>
-            <NationsMap reached={reachedNations} onToggle={toggleNation} />
+            <NationsMap reached={reachedNations} onToggle={toggleNation} canEdit={isAdminLoggedIn} />
           </div>
         )}
 
@@ -1100,32 +1108,34 @@ export default function App() {
 
         {/* 7. DIGITAL MAGAZINE (External edition links) */}
         {activeTab === 'digital-magazine' && (
-          <div className="content-box fade-in" style={{ textAlign: 'center' }}>
+          <div className="content-box fade-in">
             <h2 className="section-title">Digital Magazine</h2>
-            <p style={{ marginBottom: '15px', color: 'var(--text-muted)' }}>
-              Read each issue in our interactive digital magazine edition.
-            </p>
-            {digitalEditions.length === 0 ? (
-              <p style={{ fontStyle: 'italic', color: 'var(--text-muted)' }}>No digital editions available yet. Check back soon!</p>
-            ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '25px', alignItems: 'center' }}>
-                {digitalEditions.map((edition) => (
-                  <a
-                    key={edition.id}
-                    href={edition.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ display: 'inline-block' }}
-                  >
-                    <img
-                      src="/Issue One (2).png"
-                      alt={edition.title}
-                      style={{ width: '420px', height: 'auto', borderRadius: '4px', boxShadow: '0 4px 12px rgba(0,0,0,0.2)' }}
-                    />
-                  </a>
-                ))}
+            <p className="editions-intro">Read each issue in our interactive digital magazine edition.</p>
+            <div className="editions-grid">
+              {digitalEditions.map((edition, i) => (
+                <a
+                  key={edition.id}
+                  className="edition-card"
+                  href={edition.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <div className="edition-card-header">
+                    <span className="edition-card-label">{i === 0 ? 'Current Release' : 'Past Issue'}</span>
+                    <span className="edition-card-season">{edition.title}</span>
+                  </div>
+                  <img src="/Issue One (2).png" alt={edition.title} className="edition-card-image" />
+                  <span className="edition-card-reader">Digital Reader →</span>
+                </a>
+              ))}
+              <div className="edition-card edition-card-coming">
+                <div className="edition-card-header">
+                  <span className="edition-card-label">Next Release</span>
+                  <span className="edition-card-season">Issue Two</span>
+                </div>
+                <p className="edition-coming-text">Coming Soon...</p>
               </div>
-            )}
+            </div>
           </div>
         )}
 
@@ -2592,7 +2602,7 @@ export default function App() {
                     <span className="footer-tab">About</span>
                     <button onClick={() => setActiveTab('about-litmag')}>About</button>
                     <button onClick={() => setActiveTab('about-staff')}>Masthead</button>
-                    <button onClick={() => setActiveTab('about-stats')}>Stats</button>
+                    <button onClick={() => setActiveTab('about-stats')}>Stats &amp; Reach</button>
                   </div>
                   <div className="footer-col">
                     <span className="footer-tab">Issues</span>
