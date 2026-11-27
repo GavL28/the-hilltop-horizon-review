@@ -59,6 +59,7 @@ const VALID_TABS = new Set([
   'digital-magazine',
   'issues-archive',
   'issue-detail',
+  'blog',
   'submit-guidelines',
   'submit-links',
   'submit-junior',
@@ -101,6 +102,7 @@ const PAGE_TITLES = {
   'selected-works': 'Selected Works',
   'digital-magazine': 'Digital Magazine',
   'issues-archive': 'Issues Archive',
+  blog: 'Blog',
   'submit-guidelines': 'Submit: Guidelines',
   'submit-links': 'Submit: Submissions Links',
   'submit-junior': 'Submit: Junior',
@@ -309,6 +311,71 @@ function TestimonialCarousel({ items, variant }) {
         ))}
       </div>
     </div>
+  );
+}
+
+const TIMELINE_START = new Date(2026, 10, 1);
+const TIMELINE_END = new Date(2027, 0, 1);
+const TIMELINE_EVENTS = [
+  { short: 'Nov 1st', label: 'Issue Three Open Call', date: new Date(2026, 10, 1) },
+  { short: 'Dec 26', label: 'Issue 2 Publish', date: new Date(2026, 11, 26) },
+  { short: 'Dec 31', label: 'Issue Three Close Call', date: new Date(2026, 11, 31) },
+  { short: 'Jan 1st', label: 'Issue Four Open Call', date: new Date(2027, 0, 1) },
+];
+
+const getTimelinePosition = (date) => ((date - TIMELINE_START) / (TIMELINE_END - TIMELINE_START)) * 100;
+
+function TimelineBar() {
+  const [open, setOpen] = useState(true);
+  const [today, setToday] = useState(() => new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => setToday(new Date()), 60 * 60 * 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const progress = Math.min(100, Math.max(0, getTimelinePosition(today)));
+
+  return (
+    <aside className={open ? 'timeline-bar' : 'timeline-bar timeline-bar-collapsed'}>
+      <button
+        className="timeline-toggle"
+        onClick={() => setOpen(!open)}
+        aria-label={open ? 'Minimize timeline' : 'Open timeline'}
+        aria-expanded={open}
+      >
+        {open ? '▼' : '▲'}
+      </button>
+      <div className="timeline-bar-head">
+        <strong>Key Dates</strong>
+        <span>Today: {today.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+      </div>
+      {open && (
+        <div className="timeline-track">
+          <div className="timeline-line">
+            <div className="timeline-progress" style={{ width: `${progress}%` }}></div>
+          </div>
+          {TIMELINE_EVENTS.map((event, index) => {
+            const reached = event.date <= today;
+            const position = Math.min(100, Math.max(0, getTimelinePosition(event.date)));
+            return (
+              <div
+                key={event.label}
+                className={`timeline-event ${reached ? 'reached' : ''} ${index % 2 === 0 ? 'timeline-event-above' : 'timeline-event-below'} ${position <= 2 ? 'timeline-event-start' : position >= 98 ? 'timeline-event-end' : ''}`}
+                style={{ left: `${position}%` }}
+              >
+                <span className="timeline-dot"></span>
+                <span className="timeline-event-label">
+                  <strong>{event.short}</strong>
+                  <span>{event.label}</span>
+                </span>
+              </div>
+            );
+          })}
+          <span className="timeline-today-marker" style={{ left: `${progress}%` }}></span>
+        </div>
+      )}
+    </aside>
   );
 }
 
@@ -649,6 +716,7 @@ export default function App() {
       home: ['home'],
       about: ['about-litmag', 'about-staff', 'staff-detail', 'announcements', 'about-stats'],
       issues: ['selected-works', 'selected-works-issue', 'selected-works-piece', 'digital-magazine', 'issues-archive'],
+      blog: ['blog'],
       submit: ['submit-guidelines', 'submit-links', 'submit-junior'],
       faq: ['faq'],
       contact: ['contact'],
@@ -725,6 +793,9 @@ export default function App() {
           </li>
           <li className="nav-item">
             <button className={isNavActive('issues') ? 'nav-link active' : 'nav-link'} onClick={() => setActiveTab('digital-magazine')}>Issues</button>
+          </li>
+          <li className="nav-item">
+            <button className={isNavActive('blog') ? 'nav-link active' : 'nav-link'} onClick={() => setActiveTab('blog')}>Blog</button>
           </li>
           <li className={openMobileDropdown === 'submit' ? 'nav-item dropdown-open' : 'nav-item'}>
             <button className={isNavActive('submit') ? 'nav-link active' : 'nav-link'} onClick={handleParentNavClick('submit', 'submit-guidelines')}>Guidelines ▾</button>
@@ -804,7 +875,36 @@ export default function App() {
         </div>
       )}
 
-      {/* Reader testimonials */}
+      {activeTab === 'home' && (
+        <section className="home-stats-section">
+          <div className="container">
+            <h2 className="section-title">At a glance</h2>
+            <div className="home-stats-layout">
+              <div className="home-stats-boxes">
+                <div className="about-stats-row">
+                  {ABOUT_STATS.map((stat) => (
+                    <div className={stat.highlight ? 'stat-box stat-box-highlight' : 'stat-box'} key={stat.label}>
+                      <div className="stat-value">{stat.value}</div>
+                      <div className="stat-label">{stat.label}</div>
+                      <div className="stat-detail">{stat.detail}</div>
+                    </div>
+                  ))}
+                </div>
+                <div className="stats-cards home-submission-stat">
+                  <div className="stats-card">
+                    <div className="stats-number">{SUBMISSIONS_RECEIVED}</div>
+                    <div className="stats-label">Submissions Received</div>
+                  </div>
+                </div>
+              </div>
+              <div className="home-stats-map">
+                <NationsMap reached={reachedNations} onToggle={toggleNation} canEdit={isAdminLoggedIn} />
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
       {activeTab === 'home' && (
         <section className="editors-desk">
           <div className="testimonials-inner">
@@ -817,25 +917,21 @@ export default function App() {
       )}
 
       {activeTab === 'home' && (
-        <section className="home-stats-section">
+        <section className="sample-feedback-section">
           <div className="container">
-            <h2 className="section-title">At a glance</h2>
-            <div className="about-stats-row">
-              {ABOUT_STATS.map((stat) => (
-                <div className={stat.highlight ? 'stat-box stat-box-highlight' : 'stat-box'} key={stat.label}>
-                  <div className="stat-value">{stat.value}</div>
-                  <div className="stat-label">{stat.label}</div>
-                  <div className="stat-detail">{stat.detail}</div>
-                </div>
-              ))}
-            </div>
-            <div className="stats-cards home-submission-stat">
-              <div className="stats-card">
-                <div className="stats-number">{SUBMISSIONS_RECEIVED}</div>
-                <div className="stats-label">Submissions Received</div>
-              </div>
-            </div>
-            <NationsMap reached={reachedNations} onToggle={toggleNation} canEdit={isAdminLoggedIn} />
+            <h2 className="section-title">Sample feedback</h2>
+            <div className="sample-feedback-placeholder">Coming soon...</div>
+          </div>
+        </section>
+      )}
+
+      {activeTab === 'home' && (
+        <section className="krillion-section">
+          <div className="container">
+            <figure>
+              <img src="/krillion.png" alt="Krillion recognition" />
+              <figcaption>Recognized by Krillion!</figcaption>
+            </figure>
           </div>
         </section>
       )}
@@ -1196,6 +1292,13 @@ export default function App() {
                 <p className="edition-coming-text">Coming Soon...</p>
               </div>
             </div>
+          </div>
+        )}
+
+        {activeTab === 'blog' && (
+          <div className="content-box coming-soon-page fade-in">
+            <h2 className="section-title">Blog</h2>
+            <p className="coming-soon-text">Coming soon...</p>
           </div>
         )}
 
@@ -2756,6 +2859,7 @@ export default function App() {
                   </a>
                 </div>
               </footer>
+              <TimelineBar />
             </div>
           );
         }
