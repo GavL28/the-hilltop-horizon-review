@@ -1169,7 +1169,7 @@ export default function App() {
         {/* 7. DIGITAL MAGAZINE (External edition links) */}
         {activeTab === 'digital-magazine' && (
           <div className="content-box fade-in">
-            <h2 className="section-title">Digital Magazine</h2>
+            <h2 className="section-title">Issues</h2>
             <p className="editions-intro">Read each issue in our interactive digital magazine edition.</p>
             <div className="editions-grid">
               {digitalEditions.map((edition, i) => (
@@ -1333,6 +1333,7 @@ export default function App() {
               >
                 <span className="submission-link-title">General Submissions (ISSUE THREE)</span>
                 <span className="submission-link-age">Ages 14-19</span>
+                <span className="submission-link-time">5 minute form</span>
                 <span className="submission-link-arrow">→</span>
               </a>
               <a
@@ -1343,6 +1344,7 @@ export default function App() {
               >
                 <span className="submission-link-title">Junior Submissions (ISSUE THREE)</span>
                 <span className="submission-link-age">Ages 11-14</span>
+                <span className="submission-link-time">5 minute form</span>
                 <span className="submission-link-arrow">→</span>
               </a>
             </div>
