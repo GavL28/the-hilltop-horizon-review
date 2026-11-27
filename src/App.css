@@ -40,7 +40,7 @@ textarea:focus-visible {
 }
 
 .app.guidelines-art {
-  background-image: linear-gradient(rgba(253, 250, 243, 0.42), rgba(253, 250, 243, 0.42)), url('/Ocean_Lov_Searching - Ocean Lov (1).jpg');
+  background-image: linear-gradient(rgba(253, 250, 243, 0.58), rgba(253, 250, 243, 0.58)), url('/Ocean_Lov_Searching - Ocean Lov (1).jpg');
 }
 
 .app.submission-art {
@@ -282,6 +282,7 @@ textarea:focus-visible {
   cursor: pointer;
   white-space: nowrap;
   box-shadow: 0 5px 16px rgba(21, 128, 61, 0.32);
+  animation: gentleGlow 3.6s ease-in-out infinite;
   transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
 }
 
@@ -306,6 +307,22 @@ textarea:focus-visible {
 
 .nav-submit-button:hover::after {
   left: 130%;
+}
+
+@keyframes gentleGlow {
+  0%, 100% {
+    box-shadow: 0 5px 16px rgba(21, 128, 61, 0.32);
+  }
+  50% {
+    box-shadow: 0 8px 24px rgba(21, 128, 61, 0.48);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-submit-button,
+  .hero-cta-primary {
+    animation: none;
+  }
 }
 
 .nav-link.active {
@@ -621,15 +638,18 @@ textarea:focus-visible {
 }
 
 .hero-cta-primary {
-  background-color: #15803D;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+  background: linear-gradient(135deg, #16A34A, #15803D, #065F46);
   color: #FFFFFF;
-  border: 2px solid #15803D;
+  animation: gentleGlow 4.2s ease-in-out infinite;
 }
 
 .hero-cta-primary:hover {
-  background-color: #166534;
-  transform: translateY(-2px);
-  box-shadow: 0 7px 16px rgba(21, 128, 61, 0.24);
+  transform: translateY(-3px) scale(1.03);
+  filter: saturate(1.12);
 }
 
 .hero-cta-primary span {
@@ -648,9 +668,10 @@ textarea:focus-visible {
 }
 
 .hero-cta-secondary:hover {
-  background-color: #F5ECDA;
-  transform: translateY(-2px);
-  box-shadow: 0 7px 16px rgba(75, 85, 99, 0.16);
+  background-color: #FFFFFF;
+  color: #111827;
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 10px 20px rgba(75, 85, 99, 0.2);
 }
 
 .issue-card {
@@ -667,8 +688,8 @@ textarea:focus-visible {
 }
 
 .issue-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 18px 34px rgba(0, 0, 0, 0.22);
 }
 
 .issue-card-header {
@@ -956,8 +977,10 @@ textarea:focus-visible {
 
 .editions-intro {
   text-align: center;
-  color: #4B5563;
+  color: #111827;
+  font-weight: 600;
   margin-bottom: 30px;
+  text-shadow: 0 1px 8px rgba(255, 255, 255, 0.9);
 }
 
 .editions-grid {
@@ -1257,9 +1280,11 @@ textarea:focus-visible {
 .join-intro {
   text-align: center;
   margin-bottom: 30px;
-  color: #4B5563;
+  color: #000000;
   font-size: 1rem;
+  font-weight: 600;
   line-height: 1.7;
+  text-shadow: 0 2px 12px rgba(255, 255, 255, 0.9), 0 0 5px rgba(255, 255, 255, 1);
 }
 
 .join-roles-list {
@@ -1272,6 +1297,11 @@ textarea:focus-visible {
 .join-role-section {
   border-radius: 14px;
   border-color: #D8E7DE;
+}
+
+.join-role-section:hover {
+  border-color: #86C9A4;
+  box-shadow: 0 10px 22px rgba(21, 128, 61, 0.14);
 }
 
 .join-role-section .guidelines-toggle {
@@ -1427,6 +1457,20 @@ textarea:focus-visible {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 1.1rem;
   opacity: 0.9;
+}
+
+.submission-link-time {
+  align-self: flex-start;
+  margin-top: 18px;
+  padding: 6px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 999px;
+  background-color: rgba(255, 255, 255, 0.2);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .submission-link-arrow {
@@ -1881,18 +1925,20 @@ textarea:focus-visible {
   background-color: var(--accent-ink);
   color: #FFF;
   border: none;
+  border-radius: 8px;
   padding: 12px 28px;
   font-family: var(--font-body);
   font-size: 0.9rem;
   cursor: pointer;
   letter-spacing: 0.05em;
-  transition: opacity 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  transition: opacity 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
 }
 
 .btn-primary:hover {
-  opacity: 0.9;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.18);
+  background-color: #15803D;
+  opacity: 1;
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 10px 20px rgba(21, 128, 61, 0.24);
 }
 
 /* Footer */
