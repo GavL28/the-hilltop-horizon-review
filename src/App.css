@@ -735,12 +735,11 @@ body {
 .stat-value {
   font-size: 1.6rem;
   font-weight: 700;
-  color: var(--text-main);
+  color: #EA580C;
 }
 
 .stat-box-highlight .stat-value {
   font-size: 2rem;
-  color: #EA580C;
 }
 
 .stat-label {
@@ -754,6 +753,146 @@ body {
   margin-top: 6px;
   font-size: 0.75rem;
   color: #9CA3AF;
+}
+
+.announcements-intro {
+  text-align: center;
+  color: #4B5563;
+  font-size: 1rem;
+  margin-bottom: 30px;
+}
+
+.announcements-empty {
+  text-align: center;
+  font-style: italic;
+  color: var(--text-muted);
+}
+
+.announcements-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.announcement-card {
+  background-color: #FFFFFF;
+  border: 1px solid var(--accent-border);
+  border-left: 4px solid #15803D;
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  padding: 24px 28px;
+}
+
+.announcement-card.featured {
+  background-color: #FDFAF3;
+  border-left-color: #EA580C;
+  padding: 32px;
+}
+
+.announcement-date-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #F5ECDA;
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #4B5563;
+}
+
+.announcement-new {
+  background-color: #EA580C;
+  color: #FFFFFF;
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 0.7rem;
+}
+
+.announcement-body {
+  margin-top: 16px;
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: var(--text-main);
+}
+
+.announcement-card.featured .announcement-body {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.stats-cards {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  flex-wrap: wrap;
+  margin: 30px 0;
+}
+
+.stats-card {
+  padding: 30px 45px;
+  background-color: #FFFFFF;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  min-width: 240px;
+}
+
+.stats-number {
+  font-size: 3rem;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: #EA580C;
+  line-height: 1;
+}
+
+.stats-label {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-top: 20px;
+  color: var(--text-main);
+}
+
+.nations-map {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.nations-map svg {
+  width: 100%;
+  height: auto;
+  background-color: #FFFFFF;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+}
+
+.country-shape {
+  fill: #E7E5E4;
+  stroke: #FFFFFF;
+  stroke-width: 1.5;
+  cursor: pointer;
+  transition: fill 0.2s;
+}
+
+.country-shape:hover {
+  fill: #F5C99A;
+}
+
+.country-shape.filled {
+  fill: #EA580C;
+}
+
+.nations-map-hint {
+  margin-top: 14px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.85rem;
+  color: #6B7280;
 }
 
 /* Forms & Guidelines */
