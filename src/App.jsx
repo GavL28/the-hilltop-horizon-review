@@ -283,6 +283,8 @@ const ABOUT_STATS = [
   { value: '87', label: 'pages', detail: 'of feedback given' },
 ];
 
+const SUBMISSIONS_RECEIVED = 87;
+
 function TestimonialCarousel({ items, variant }) {
   return (
     <div className={`testimonial-marquee ${variant === 'second' ? 'testimonial-marquee-second' : ''}`}>
@@ -641,19 +643,28 @@ export default function App() {
     }, 0);
   };
 
-  const pageArtClass = activeTab === 'submit-guidelines'
-    ? 'art-page guidelines-art'
-    : activeTab === 'submit-links'
-      ? 'art-page submission-art'
-      : activeTab === 'faq'
-        ? 'art-page faq-art'
-        : ['digital-magazine', 'issues-archive', 'selected-works', 'selected-works-issue', 'selected-works-piece'].includes(activeTab)
-          ? 'art-page issues-art'
-          : '';
+  const pageArtClass = activeTab === 'about-litmag'
+    ? 'art-page about-art'
+    : activeTab === 'submit-guidelines'
+      ? 'art-page guidelines-art'
+      : activeTab === 'submit-links'
+        ? 'art-page submission-art'
+        : activeTab === 'submit-junior'
+          ? 'art-page junior-art'
+          : activeTab === 'faq'
+            ? 'art-page faq-art'
+            : activeTab === 'contact'
+              ? 'art-page contact-art'
+              : activeTab === 'join'
+                ? 'art-page join-art'
+                : ['digital-magazine', 'issues-archive', 'selected-works', 'selected-works-issue', 'selected-works-piece'].includes(activeTab)
+                  ? 'art-page issues-art'
+                  : '';
+  const pageCredit = activeTab === 'about-litmag' ? '' : pageArtClass ? 'Background image by Ocean Lov' : '';
 
   return (
     <div className={pageArtClass ? `app ${pageArtClass}` : 'app'}>
-      {pageArtClass && <span className="page-credit">Background image by Ocean Lov</span>}
+      {pageCredit && <span className="page-credit">{pageCredit}</span>}
       {/* Navigation Bar (top banner) */}
       <nav className="nav-bar">
         <a href="#" className="nav-logo" onClick={() => { setActiveTab('home'); setMobileMenuOpen(false); }} title="The Hilltop Horizon Review">
@@ -689,11 +700,8 @@ export default function App() {
               <li><button className="dropdown-link" onClick={() => setActiveTab('about-stats')}>Stats &amp; Reach</button></li>
             </ul>
           </li>
-          <li className={openMobileDropdown === 'issues' ? 'nav-item dropdown-open' : 'nav-item'}>
-            <button className={isNavActive('issues') ? 'nav-link active' : 'nav-link'} onClick={handleParentNavClick('issues', 'digital-magazine')}>Issues ▾</button>
-            <ul className="dropdown">
-              <li><button className="dropdown-link" onClick={() => setActiveTab('digital-magazine')}>Digital Magazine</button></li>
-            </ul>
+          <li className="nav-item">
+            <button className={isNavActive('issues') ? 'nav-link active' : 'nav-link'} onClick={() => setActiveTab('digital-magazine')}>Issues</button>
           </li>
           <li className={openMobileDropdown === 'submit' ? 'nav-item dropdown-open' : 'nav-item'}>
             <button className={isNavActive('submit') ? 'nav-link active' : 'nav-link'} onClick={handleParentNavClick('submit', 'submit-guidelines')}>Guidelines ▾</button>
@@ -785,6 +793,30 @@ export default function App() {
         </section>
       )}
 
+      {activeTab === 'home' && (
+        <section className="home-stats-section">
+          <div className="container">
+            <h2 className="section-title">At a glance</h2>
+            <div className="about-stats-row">
+              {ABOUT_STATS.map((stat) => (
+                <div className={stat.highlight ? 'stat-box stat-box-highlight' : 'stat-box'} key={stat.label}>
+                  <div className="stat-value">{stat.value}</div>
+                  <div className="stat-label">{stat.label}</div>
+                  <div className="stat-detail">{stat.detail}</div>
+                </div>
+              ))}
+            </div>
+            <div className="stats-cards home-submission-stat">
+              <div className="stats-card">
+                <div className="stats-number">{SUBMISSIONS_RECEIVED}</div>
+                <div className="stats-label">Submissions Received</div>
+              </div>
+            </div>
+            <NationsMap reached={reachedNations} onToggle={toggleNation} canEdit={isAdminLoggedIn} />
+          </div>
+        </section>
+      )}
+
       {/* Main Content Area */}
       <main className={activeTab === 'home' ? 'main-content container home-main-empty' : 'main-content container'}>
 
@@ -822,9 +854,7 @@ export default function App() {
                     .
                   </p>
                 </div>
-                <div className="about-image">
-                  <img src="/IMG_5975.jpeg" alt="The Hilltop Horizon Review team" />
-                </div>
+                <div className="about-image" role="img" aria-label="The Hilltop Horizon Review team"></div>
               </div>
               <div style={{ marginTop: '30px' }}>
                 <h2 className="section-title">Our Mission</h2>
@@ -856,7 +886,7 @@ export default function App() {
               {staffData.map((staff) => (
                 <div key={staff.id} className="staff-card" onClick={() => handleStaffClick(staff)}>
                   {staff.photo ? (
-                    <img src={staff.photo} alt={staff.name} className="staff-photo-placeholder" style={{ objectFit: 'cover', border: 'none' }} />
+                    <img src={staff.photo} alt={staff.name} className="staff-photo-placeholder" />
                   ) : (
                     <div className="staff-photo-placeholder"></div>
                   )}
@@ -933,7 +963,7 @@ export default function App() {
             <h2 className="section-title">Stats &amp; Reach</h2>
             <div className="stats-cards">
               <div className="stats-card">
-                <div className="stats-number">87</div>
+                <div className="stats-number">{SUBMISSIONS_RECEIVED}</div>
                 <div className="stats-label">Submissions Received</div>
               </div>
               <div className="stats-card">
@@ -1296,7 +1326,7 @@ export default function App() {
         )}
 
         {activeTab === 'submit-junior' && (
-          <div className="content-box" style={{ maxWidth: '650px', margin: '0 auto', textAlign: 'center' }}>
+          <div className="content-box junior-page">
             <h2 className="section-title">Junior Submissions</h2>
             <p style={{ marginBottom: '20px' }}>
               Welcome to the junior submission category! This category is for middle schoolers (or students who would be at that age), meaning ages 11-14. Welcome!
@@ -1308,8 +1338,7 @@ export default function App() {
               href="https://docs.google.com/forms/d/e/1FAIpQLSeBDT0s8Bd1VuoL2ktm0CXz6pPeNoqsLaJT9jCIucZk43--Rg/viewform?usp=sharing&ouid=115181364077200728162"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-primary"
-              style={{ textDecoration: 'none', display: 'inline-block' }}
+              className="junior-submit-button"
             >
               Junior Submissions (ages 11-14) →
             </a>
