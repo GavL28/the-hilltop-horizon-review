@@ -1159,8 +1159,21 @@ export default function App() {
       {activeTab === 'home' && (
         <section className="sample-feedback-section">
           <div className="container">
-            <h2 className="section-title">Sample feedback</h2>
-            <div className="sample-feedback-placeholder">Coming soon...</div>
+            <h2 className="section-title">Sample Feedback</h2>
+            <p className="sample-feedback-intro">
+              Sample poetry feedback from one of our editors. Feedback looks different depending on both editor and genre. Feedback is guaranteed for every piece you submit!
+            </p>
+            <div className="sample-feedback-layout">
+              <figure className="sample-feedback-piece">
+                <img src="/piece.png" alt="Poetry piece by Ellie Keyser" />
+                <figcaption>by issue two contributor Ellie Keyser</figcaption>
+              </figure>
+              <div className="sample-feedback-images">
+                <img src="/feedback1.png" alt="Editor feedback example 1" />
+                <img src="/feedback2.png" alt="Editor feedback example 2" />
+                <img src="/feedback3.png" alt="Editor feedback example 3" />
+              </div>
+            </div>
           </div>
         </section>
       )}

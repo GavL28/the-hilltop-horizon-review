@@ -1013,23 +1013,67 @@ textarea:focus-visible {
 
 .sample-feedback-section .section-title {
   font-size: 1.8rem;
-  margin-bottom: 16px;
+  margin-bottom: 8px;
 }
 
-.sample-feedback-placeholder {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 120px;
-  max-width: 520px;
+.sample-feedback-intro {
+  max-width: 900px;
+  margin: 0 auto 28px;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.sample-feedback-layout {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 40px;
+  align-items: start;
+  max-width: 1100px;
   margin: 0 auto;
-  border: 2px dashed rgba(21, 128, 61, 0.35);
+}
+
+.sample-feedback-piece {
+  margin: 0;
+  padding: 18px;
   border-radius: 14px;
-  background-color: rgba(255, 255, 255, 0.6);
-  color: #4B5563;
+  background-color: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 10px 24px rgba(17, 24, 39, 0.12);
+}
+
+.sample-feedback-piece img {
+  display: block;
+  width: 100%;
+  max-height: 620px;
+  object-fit: contain;
+  border-radius: 8px;
+  background-color: #FFFFFF;
+}
+
+.sample-feedback-piece figcaption {
+  margin-top: 12px;
+  color: var(--text-muted);
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 0.9rem;
-  font-weight: 700;
+  font-size: 0.82rem;
+  font-style: italic;
+  text-align: center;
+}
+
+.sample-feedback-images {
+  display: grid;
+  gap: 20px;
+}
+
+.sample-feedback-images img {
+  display: block;
+  width: 100%;
+  max-height: 220px;
+  padding: 10px;
+  object-fit: contain;
+  border-radius: 12px;
+  background-color: #FFFFFF;
+  box-shadow: 0 8px 20px rgba(17, 24, 39, 0.1);
 }
 
 .home-blog-section {
@@ -2971,6 +3015,15 @@ textarea:focus-visible {
 @media (max-width: 880px) {
   .app {
     padding-bottom: 96px;
+  }
+
+  .sample-feedback-layout {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .sample-feedback-piece img {
+    max-height: 480px;
   }
 
   .app.art-page {
