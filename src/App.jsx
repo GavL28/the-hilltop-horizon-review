@@ -23,7 +23,8 @@ const staffData = [
 const FAQ_ITEMS = [
   { q: 'Does it cost money to submit?', a: 'No, submissions are completely free.' },
   { q: 'Can I submit multiple pieces?', a: 'Yes, but each genre has its specific limits. Check the specific guidelines for more details.' },
-  { q: 'Am I eligible to submit?', a: 'Any writer ages 11-19 can submit.' },
+  { q: 'Am I eligible to submit?', a: 'Any writer ages 11-19 can submit. General submissions are for ages 14-19, and junior submissions are for ages 11-14.' },
+  { q: 'If I am 14, can I submit to both general submissions and junior submissions?', a: 'No, only submit to one. We suggest the junior category if you are 14, because you will not be competing against high school seniors, but if you want a challenge, you can submit to the general submissions.' },
   { q: 'How do I submit?', a: 'Read through the guidelines tab, then go to the submissions tab and fill the form.' },
   { q: 'Do you accept international submissions?', a: "Yes, from any nation. We're an international youth literary magazine, we seek to grow worldwide. (Check out the International Representative Position in the Join Us tab.)" },
   { q: 'Do you accept non-English submissions?', a: 'As of now, we do not accept fully non-English submissions, but this may change in the future. Having non-English characters or phrases to a limited extent in a majority English submission is fine, as long as you explain and provide a translation on the submission form.' },
@@ -59,6 +60,7 @@ const VALID_TABS = new Set([
   'issues-archive',
   'issue-detail',
   'blog',
+  'blog-post',
   'submit-guidelines',
   'submit-links',
   'faq',
@@ -73,6 +75,7 @@ const TAB_PARENT = {
   'selected-works-issue': 'selected-works',
   'selected-works-piece': 'selected-works',
   'issue-detail': 'issues-archive',
+  'blog-post': 'blog',
 };
 
 // Parse `#/tab` or `#/tab/id` from the URL
@@ -87,7 +90,7 @@ function getTabFromHash() {
   if (!VALID_TABS.has(tab)) return 'home';
   // Selected-works sub-views carry their object id in the URL and are restored
   // by an effect once the content loads, so keep the tab when an id is present.
-  if (id && (tab === 'selected-works-issue' || tab === 'selected-works-piece')) return tab;
+  if (id && (tab === 'selected-works-issue' || tab === 'selected-works-piece' || tab === 'blog-post')) return tab;
   return TAB_PARENT[tab] || tab;
 }
 
@@ -101,6 +104,7 @@ const PAGE_TITLES = {
   'digital-magazine': 'Digital Magazine',
   'issues-archive': 'Issues Archive',
   blog: 'Blog',
+  'blog-post': 'Blog',
   'submit-guidelines': 'Submit: Guidelines',
   'submit-links': 'Submit: Submissions Links',
   faq: 'FAQ',
@@ -119,6 +123,46 @@ function formatAnnouncementDate(dateStr) {
     : day % 10 === 3 && day % 100 !== 13 ? 'rd' : 'th';
   const month = d.toLocaleDateString('en-US', { month: 'long', timeZone: 'UTC' });
   return `${month} ${day}${suffix}`;
+}
+
+function formatBlogDate(dateStr) {
+  const d = new Date(dateStr);
+  if (Number.isNaN(d.getTime())) return '';
+  return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+}
+
+function readBlogImage(file) {
+  return new Promise((resolve, reject) => {
+    if (!file) {
+      resolve('');
+      return;
+    }
+    if (!file.type.startsWith('image/')) {
+      reject(new Error('Please choose an image file.'));
+      return;
+    }
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error('Could not read that image.'));
+    reader.onload = () => {
+      const image = new Image();
+      image.onerror = () => reject(new Error('Could not open that image.'));
+      image.onload = () => {
+        const scale = Math.min(1, 1600 / Math.max(image.width, image.height));
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.round(image.width * scale);
+        canvas.height = Math.round(image.height * scale);
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+          resolve(String(reader.result));
+          return;
+        }
+        ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+        resolve(canvas.toDataURL(file.type === 'image/png' ? 'image/png' : 'image/jpeg', 0.82));
+      };
+      image.src = String(reader.result);
+    };
+    reader.readAsDataURL(file);
+  });
 }
 
 const TINYMCE_INIT = {
@@ -311,8 +355,6 @@ function TestimonialCarousel({ items, variant }) {
   );
 }
 
-const TIMELINE_START = new Date(2026, 10, 1);
-const TIMELINE_END = new Date(2027, 0, 1);
 const TIMELINE_EVENTS = [
   { short: 'Nov 1st', label: 'Issue Three Open Call', date: new Date(2026, 10, 1) },
   { short: 'Dec 26', label: 'Issue 2 Publish', date: new Date(2026, 11, 26) },
@@ -320,10 +362,20 @@ const TIMELINE_EVENTS = [
   { short: 'Jan 1st', label: 'Issue Four Open Call', date: new Date(2027, 0, 1) },
 ];
 
-const getTimelinePosition = (date) => ((date - TIMELINE_START) / (TIMELINE_END - TIMELINE_START)) * 100;
+const getTimelinePosition = (date) => {
+  if (date <= TIMELINE_EVENTS[0].date) return 0;
+  for (let i = 0; i < TIMELINE_EVENTS.length - 1; i += 1) {
+    const start = TIMELINE_EVENTS[i].date;
+    const end = TIMELINE_EVENTS[i + 1].date;
+    if (date <= end) {
+      const within = end === start ? 0 : (date - start) / (end - start);
+      return ((i + within) / (TIMELINE_EVENTS.length - 1)) * 100;
+    }
+  }
+  return 100;
+};
 
-function TimelineBar() {
-  const [open, setOpen] = useState(() => typeof window === 'undefined' || window.innerWidth > 880);
+function TimelineBar({ open, setOpen }) {
   const [today, setToday] = useState(() => new Date());
 
   useEffect(() => {
@@ -349,29 +401,43 @@ function TimelineBar() {
         <span>Today: {today.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
       </div>
       {open && (
-        <div className="timeline-track">
-          <div className="timeline-line">
-            <div className="timeline-progress" style={{ width: `${progress}%` }}></div>
+        <>
+          <div className="timeline-track">
+            <div className="timeline-line">
+              <div className="timeline-progress" style={{ width: `${progress}%` }}></div>
+            </div>
+            {TIMELINE_EVENTS.map((event, index) => {
+              const reached = event.date <= today;
+              const position = Math.min(100, Math.max(0, getTimelinePosition(event.date)));
+              return (
+                <div
+                  key={event.label}
+                  className={`timeline-event ${reached ? 'reached' : ''} ${index % 2 === 0 ? 'timeline-event-above' : 'timeline-event-below'} ${position <= 2 ? 'timeline-event-start' : ''} ${position >= 98 ? 'timeline-event-end' : ''} ${position >= 80 ? 'timeline-event-late' : ''}`}
+                  style={{ left: `${position}%` }}
+                >
+                  <span className="timeline-dot"></span>
+                  <span className="timeline-event-label">
+                    <strong>{event.short}</strong>
+                    <span>{event.label}</span>
+                  </span>
+                </div>
+              );
+            })}
+            <span className="timeline-today-marker" style={{ left: `${progress}%` }}></span>
           </div>
-          {TIMELINE_EVENTS.map((event, index) => {
-            const reached = event.date <= today;
-            const position = Math.min(100, Math.max(0, getTimelinePosition(event.date)));
-            return (
-              <div
-                key={event.label}
-                className={`timeline-event ${reached ? 'reached' : ''} ${index % 2 === 0 ? 'timeline-event-above' : 'timeline-event-below'} ${position <= 2 ? 'timeline-event-start' : ''} ${position >= 98 ? 'timeline-event-end' : ''} ${position >= 80 ? 'timeline-event-late' : ''}`}
-                style={{ left: `${position}%` }}
-              >
-                <span className="timeline-dot"></span>
-                <span className="timeline-event-label">
-                  <strong>{event.short}</strong>
-                  <span>{event.label}</span>
-                </span>
-              </div>
-            );
-          })}
-          <span className="timeline-today-marker" style={{ left: `${progress}%` }}></span>
-        </div>
+          <div className="timeline-mobile-list">
+            {TIMELINE_EVENTS.map((event) => {
+              const reached = event.date <= today;
+              return (
+                <div key={event.label} className={reached ? 'timeline-mobile-event reached' : 'timeline-mobile-event'}>
+                  <span className="timeline-mobile-dot"></span>
+                  <strong className="timeline-mobile-date">{event.short}</strong>
+                  <span className="timeline-mobile-label">{event.label}</span>
+                </div>
+              );
+            })}
+          </div>
+        </>
       )}
     </aside>
   );
@@ -486,12 +552,26 @@ export default function App() {
   };
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openMobileDropdown, setOpenMobileDropdown] = useState(null);
+  const [timelineOpen, setTimelineOpen] = useState(() => typeof window === 'undefined' || window.innerWidth > 880);
   const [selectedStaff, setSelectedStaff] = useState(null);
   const [openGuidelines, setOpenGuidelines] = useState('general');
   const [guidelinesSearch, setGuidelinesSearch] = useState('');
   const [openRole, setOpenRole] = useState('poetry');
   const [selectedWorksIssue, setSelectedWorksIssue] = useState(null);
   const [selectedWorksPiece, setSelectedWorksPiece] = useState(null);
+
+  const [blogPosts, setBlogPosts] = useState([]);
+  const [selectedBlogPost, setSelectedBlogPost] = useState(null);
+  const [adminBlogMode, setAdminBlogMode] = useState('add');
+  const [blogFormId, setBlogFormId] = useState('');
+  const [blogTitle, setBlogTitle] = useState('');
+  const [blogSubtitle, setBlogSubtitle] = useState('');
+  const [blogAuthor, setBlogAuthor] = useState('');
+  const [blogReadingTime, setBlogReadingTime] = useState('');
+  const [blogCategory, setBlogCategory] = useState('');
+  const [blogPublishedDate, setBlogPublishedDate] = useState('');
+  const [blogContentHtml, setBlogContentHtml] = useState('');
+  const [blogCoverImage, setBlogCoverImage] = useState('');
 
   const toggleGuidelines = (section) => {
     setOpenGuidelines((prev) => (prev === section ? null : section));
@@ -593,7 +673,7 @@ export default function App() {
   const [faqSearch, setFaqSearch] = useState('');
 
   // Restore a selected-works sub-view (issue or piece) from its URL id
-  const restoreRoute = (works) => {
+  const restoreRoute = useCallback((works) => {
     const { tab, id } = getHashRoute();
     if (tab === 'selected-works-issue' && id) {
       const issue = works.find((i) => String(i.id) === id);
@@ -618,9 +698,22 @@ export default function App() {
       return true;
     }
     return false;
-  };
+  }, [setSelectedWorksIssue, setSelectedWorksPiece, setActiveTab]);
 
-  async function refreshSiteContent() {
+  const restoreBlogRoute = useCallback((posts) => {
+    const { tab, id } = getHashRoute();
+    if (tab !== 'blog-post') return false;
+    const post = id ? posts.find((p) => String(p.id) === id) : null;
+    if (post) {
+      setSelectedBlogPost(post);
+      setActiveTab('blog-post');
+    } else {
+      setActiveTab('blog');
+    }
+    return true;
+  }, [setSelectedBlogPost, setActiveTab]);
+
+  const refreshSiteContent = useCallback(async () => {
     try {
       const res = await fetch('/api/content');
       const data = await res.json();
@@ -632,12 +725,32 @@ export default function App() {
           setAnnouncements(data.announcements || []);
           restoreRoute(data.selectedWorks || []);
         }
+      try {
+        const blogRes = await fetch('/api/blog');
+        const blogData = await blogRes.json();
+        if (blogData.success) {
+          const posts = blogData.posts || [];
+          setBlogPosts(posts);
+          restoreBlogRoute(posts);
+        }
+      } catch (blogErr) {
+        console.error('Failed to fetch blog posts:', blogErr);
+      }
       return data;
     } catch (err) {
       console.error('Failed to fetch site content:', err);
       return null;
     }
-  }
+  }, [
+    restoreRoute,
+    restoreBlogRoute,
+    setCurrentIssue,
+    setPastIssues,
+    setDigitalEditions,
+    setSelectedWorks,
+    setAnnouncements,
+    setBlogPosts,
+  ]);
 
   // Fetch content on page load
   useEffect(() => {
@@ -646,7 +759,7 @@ export default function App() {
       setIsContentLoading(false);
     }
     loadContent();
-  }, []);
+  }, [refreshSiteContent]);
 
   useEffect(() => {
     const load = () => { Promise.resolve().then(refreshNations); };
@@ -675,13 +788,16 @@ export default function App() {
         (activeTab === 'selected-works-piece' ? selectedWorksPiece?.id : selectedWorksIssue?.id) ||
         getHashRoute().id;
       target = `#/${activeTab}${currentId ? `/${currentId}` : ''}`;
+    } else if (activeTab === 'blog-post') {
+      const currentId = selectedBlogPost?.id || getHashRoute().id;
+      target = `#/blog-post${currentId ? `/${currentId}` : ''}`;
     } else {
       target = `#/${activeTab}`;
     }
     // Already on this route (initial restore / back-forward): don't add a duplicate entry.
     if (getHashRoute().tab === activeTab) return;
     window.history.pushState(null, '', target);
-  }, [activeTab, selectedWorksIssue, selectedWorksPiece]);
+  }, [activeTab, selectedWorksIssue, selectedWorksPiece, selectedBlogPost]);
 
   // Keep the browser tab title in sync with the active page
   useEffect(() => {
@@ -692,11 +808,13 @@ export default function App() {
       page = selectedWorksIssue || selectedWorksPiece ? (selectedWorksPiece || selectedWorksIssue).title : PAGE_TITLES['selected-works'];
     } else if (activeTab === 'issue-detail') {
       page = selectedIssue ? selectedIssue.title : PAGE_TITLES['issues-archive'];
+    } else if (activeTab === 'blog-post') {
+      page = selectedBlogPost ? selectedBlogPost.title : PAGE_TITLES.blog;
     } else {
       page = PAGE_TITLES[activeTab] || PAGE_TITLES.home;
     }
     document.title = `The Hilltop Horizon Review | ${page}`;
-  }, [activeTab, selectedStaff, selectedWorksIssue, selectedWorksPiece, selectedIssue]);
+  }, [activeTab, selectedStaff, selectedWorksIssue, selectedWorksPiece, selectedIssue, selectedBlogPost]);
 
   // Scroll back to the top whenever the tab changes, so you don't land mid-page
   useEffect(() => {
@@ -706,11 +824,16 @@ export default function App() {
   // React to manual hash edits / back-forward navigation
   useEffect(() => {
     const onHashChange = () => {
+      const route = getHashRoute();
+      if (route.tab === 'blog-post') {
+        restoreBlogRoute(blogPosts);
+        return;
+      }
       if (!restoreRoute(selectedWorks)) setActiveTab(getTabFromHash());
     };
     window.addEventListener('hashchange', onHashChange);
     return () => window.removeEventListener('hashchange', onHashChange);
-  }, [selectedWorks]);
+  }, [selectedWorks, blogPosts, restoreRoute, restoreBlogRoute]);
 
   // Collapse the nav into the hamburger menu only on mobile widths
   const handleParentNavClick = (group, fallbackTab) => (e) => {
@@ -740,12 +863,101 @@ export default function App() {
     setActiveTab('staff-detail');
   };
 
+  const openBlogPost = (post) => {
+    setSelectedBlogPost(post);
+    setActiveTab('blog-post');
+  };
+
+  const resetBlogForm = () => {
+    setBlogFormId('');
+    setBlogTitle('');
+    setBlogSubtitle('');
+    setBlogAuthor('');
+    setBlogReadingTime('');
+    setBlogCategory('');
+    setBlogPublishedDate('');
+    setBlogContentHtml('');
+    setBlogCoverImage('');
+  };
+
+  const handleSelectBlogPostToEdit = (id) => {
+    const post = blogPosts.find((p) => String(p.id) === id);
+    if (!post) return;
+    const published = new Date(post.published_at);
+    setBlogFormId(post.id);
+    setBlogTitle(post.title || '');
+    setBlogSubtitle(post.subtitle || '');
+    setBlogAuthor(post.author || '');
+    setBlogReadingTime(post.reading_time || '');
+    setBlogCategory(post.category || '');
+    setBlogPublishedDate(Number.isNaN(published.getTime()) ? '' : published.toISOString().slice(0, 10));
+    setBlogContentHtml(post.content_html || '');
+    setBlogCoverImage(post.cover_image || '');
+  };
+
+  const renderBlogFields = () => (
+    <>
+      <div className="form-group">
+        <label>Title</label>
+        <input type="text" className="form-control" value={blogTitle} onChange={(e) => setBlogTitle(e.target.value)} required />
+      </div>
+      <div className="form-group">
+        <label>Subtitle (optional)</label>
+        <input type="text" className="form-control" value={blogSubtitle} onChange={(e) => setBlogSubtitle(e.target.value)} />
+      </div>
+      <div className="form-group">
+        <label>Author</label>
+        <input type="text" className="form-control" value={blogAuthor} onChange={(e) => setBlogAuthor(e.target.value)} required />
+      </div>
+      <div className="form-group">
+        <label>Estimated Read Time</label>
+        <input type="text" className="form-control" value={blogReadingTime} onChange={(e) => setBlogReadingTime(e.target.value)} placeholder="e.g., 5 min read" />
+      </div>
+      <div className="form-group">
+        <label>Kind of Content / Category</label>
+        <input type="text" className="form-control" value={blogCategory} onChange={(e) => setBlogCategory(e.target.value)} placeholder="e.g., Writing Advice" />
+      </div>
+      <div className="form-group">
+        <label>Date Published</label>
+        <input type="date" className="form-control" value={blogPublishedDate} onChange={(e) => setBlogPublishedDate(e.target.value)} />
+      </div>
+      <div className="form-group">
+        <label>Cover Image</label>
+        <input
+          type="file"
+          accept="image/*"
+          className="form-control"
+          onChange={async (e) => {
+            try {
+              const image = await readBlogImage(e.target.files?.[0]);
+              setBlogCoverImage(image);
+            } catch (err) {
+              alert(err.message);
+              e.target.value = '';
+            }
+          }}
+        />
+        {blogCoverImage && <img className="blog-admin-preview" src={blogCoverImage} alt="Cover preview" />}
+      </div>
+      <div className="form-group">
+        <label>Content (WYSIWYG Editor)</label>
+        <Editor
+          key={`blog-editor-${blogFormId || 'new'}`}
+          apiKey='vi6do892krmboei0izctd0jz9q98379bnrr3h3g7fcejsi5h'
+          value={blogContentHtml}
+          onEditorChange={(content) => setBlogContentHtml(content)}
+          init={TINYMCE_INIT}
+        />
+      </div>
+    </>
+  );
+
   const isNavActive = (group) => {
     const groups = {
       home: ['home'],
       about: ['about-litmag', 'about-staff', 'staff-detail', 'announcements', 'about-stats'],
       issues: ['selected-works', 'selected-works-issue', 'selected-works-piece', 'digital-magazine', 'issues-archive'],
-      blog: ['blog'],
+      blog: ['blog', 'blog-post'],
       submit: ['submit-guidelines', 'submit-links'],
       faq: ['faq'],
       contact: ['contact'],
@@ -780,8 +992,10 @@ export default function App() {
               ? 'art-page issues-art'
               : '';
 
+  const appClass = ['app', pageArtClass, timelineOpen ? '' : 'timeline-collapsed'].filter(Boolean).join(' ');
+
   return (
-    <div className={pageArtClass ? `app ${pageArtClass}` : 'app'}>
+    <div className={appClass}>
       {pageArtClass && <span className="page-credit">Background image by Ocean Lov</span>}
       {/* Navigation Bar (top banner) */}
       <nav className="nav-bar">
@@ -1322,9 +1536,66 @@ export default function App() {
         )}
 
         {activeTab === 'blog' && (
-          <div className="content-box coming-soon-page fade-in">
+          <div className="content-box blog-page fade-in">
             <h2 className="section-title">Blog</h2>
-            <p className="coming-soon-text">Coming soon...</p>
+            <p className="blog-intro">Essays, interviews, announcements, and writing advice from our editors.</p>
+            {blogPosts.length === 0 ? (
+              <p className="blog-empty">No posts have been published yet. Check back soon!</p>
+            ) : (
+              <div className="blog-posts-grid">
+                {blogPosts.map((post) => (
+                  <button key={post.id} type="button" className="blog-post-card" onClick={() => openBlogPost(post)}>
+                    {post.cover_image ? (
+                      <img className="blog-card-image" src={post.cover_image} alt={`Cover for ${post.title}`} />
+                    ) : (
+                      <div className="blog-card-image blog-card-placeholder">The Hilltop Horizon Review</div>
+                    )}
+                    <div className="blog-card-body">
+                      <span className="blog-kind">{post.category || 'Blog'}</span>
+                      <h3 className="blog-card-title">{post.title}</h3>
+                      {post.subtitle && <p className="blog-card-subtitle">{post.subtitle}</p>}
+                      <div className="blog-card-meta">
+                        {post.author && <span>By {post.author}</span>}
+                        {post.published_at && <span>{formatBlogDate(post.published_at)}</span>}
+                        {post.reading_time && <span>{post.reading_time}</span>}
+                      </div>
+                      <span className="blog-card-read">Read post →</span>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {activeTab === 'blog-post' && selectedBlogPost && (
+          <section className="content-box blog-article-page fade-in">
+            <button type="button" className="blog-back-button" onClick={() => setActiveTab('blog')}>← Back to all posts</button>
+            <article className="blog-article">
+              <header className="blog-article-header">
+                {selectedBlogPost.category && <span className="blog-kind">{selectedBlogPost.category}</span>}
+                <h1 className="blog-article-title">{selectedBlogPost.title}</h1>
+                {selectedBlogPost.subtitle && <p className="blog-article-subtitle">{selectedBlogPost.subtitle}</p>}
+                <div className="blog-article-meta">
+                  {selectedBlogPost.author && <span>By {selectedBlogPost.author}</span>}
+                  {selectedBlogPost.published_at && <span>{formatBlogDate(selectedBlogPost.published_at)}</span>}
+                  {selectedBlogPost.reading_time && <span>{selectedBlogPost.reading_time}</span>}
+                </div>
+              </header>
+              {selectedBlogPost.cover_image && (
+                <figure className="blog-article-image-wrap">
+                  <img className="blog-article-image" src={selectedBlogPost.cover_image} alt={`Cover for ${selectedBlogPost.title}`} />
+                </figure>
+              )}
+              <div className="blog-article-content" dangerouslySetInnerHTML={{ __html: selectedBlogPost.content_html || '' }} />
+            </article>
+          </section>
+        )}
+
+        {activeTab === 'blog-post' && !selectedBlogPost && (
+          <div className="content-box blog-page fade-in">
+            <button type="button" className="blog-back-button" onClick={() => setActiveTab('blog')}>← Back to all posts</button>
+            <p className="blog-empty">Loading post...</p>
           </div>
         )}
 
@@ -1450,7 +1721,7 @@ export default function App() {
           <div className="content-box">
             <h2 className="section-title">Submissions Links</h2>
             <p className="submission-links-intro">
-              Ready to submit? Use the form below. Make sure to review our{' '}
+              Ready to submit? Choose the form for your age group. Make sure to review our{' '}
               <a href="#" className="link-button" onClick={(e) => { e.preventDefault(); setActiveTab('submit-guidelines'); }}>guidelines</a> first!
             </p>
             <div className="submission-links-grid">
@@ -1462,6 +1733,17 @@ export default function App() {
               >
                 <span className="submission-link-title">General Submissions (ISSUE THREE)</span>
                 <span className="submission-link-age">Ages 14-19</span>
+                <span className="submission-link-time">5 minute form</span>
+                <span className="submission-link-arrow">→</span>
+              </a>
+              <a
+                href="https://docs.google.com/forms/d/e/1FAIpQLSeBDT0s8Bd1VuoL2ktm0CXz6pPeNoqsLaJT9jCIucZk43--Rg/viewform?usp=sharing&ouid=115181364077200728162"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="submission-link-card junior"
+              >
+                <span className="submission-link-title">Junior Submissions (ISSUE THREE)</span>
+                <span className="submission-link-age">Ages 11-14</span>
                 <span className="submission-link-time">5 minute form</span>
                 <span className="submission-link-arrow">→</span>
               </a>
@@ -1811,6 +2093,172 @@ export default function App() {
                           </form>
                         )}
                         </>
+                        )}
+
+                        <hr style={{ margin: '30px 0', border: 'none', borderTop: '1px solid var(--accent-border)' }} />
+                        <h3 style={{ fontFamily: 'var(--font-heading)', marginBottom: '15px' }}>Blog Posts</h3>
+
+                        <div style={{ display: 'flex', gap: '10px', marginBottom: '25px', flexWrap: 'wrap' }}>
+                          {[
+                            { mode: 'add', label: 'Add Blog Post' },
+                            { mode: 'edit', label: 'Edit Blog Post' },
+                            { mode: 'delete', label: 'Delete Blog Post' },
+                          ].map(({ mode, label }) => (
+                            <button
+                              key={mode}
+                              type="button"
+                              className="btn-primary"
+                              onClick={() => setAdminBlogMode(mode)}
+                              style={{
+                                backgroundColor: adminBlogMode === mode ? '#337ab7' : '#fff',
+                                color: adminBlogMode === mode ? '#fff' : '#337ab7',
+                                border: '1px solid #337ab7',
+                                padding: '5px 10px',
+                                borderRadius: '4px'
+                              }}
+                            >
+                              {label}
+                            </button>
+                          ))}
+                        </div>
+
+                        {adminBlogMode === 'add' && (
+                          <form id="blog-add-form" onSubmit={async (e) => {
+                            e.preventDefault();
+                            const { ok, data } = await apiPost('/api/admin/blog', {
+                              action: 'add',
+                              title: blogTitle,
+                              subtitle: blogSubtitle,
+                              author: blogAuthor,
+                              readingTime: blogReadingTime,
+                              category: blogCategory,
+                              publishedAt: blogPublishedDate,
+                              contentHtml: blogContentHtml,
+                              coverImage: blogCoverImage,
+                            });
+                            if (ok) {
+                              alert('Blog post published.');
+                              resetBlogForm();
+                              await refreshSiteContent();
+                            } else {
+                              alert(`Failed to publish: ${data.error || 'Unknown error'}`);
+                            }
+                          }}>
+                            {renderBlogFields()}
+                            <button type="submit" className="btn-primary" style={{ marginTop: '10px' }}>Publish Post</button>
+                          </form>
+                        )}
+
+                        {adminBlogMode === 'edit' && (
+                          <form id="blog-edit-form" onSubmit={async (e) => {
+                            e.preventDefault();
+                            if (!blogFormId) {
+                              alert('Please select a post to edit.');
+                              return;
+                            }
+                            const { ok, data } = await apiPost('/api/admin/blog', {
+                              action: 'edit',
+                              id: blogFormId,
+                              title: blogTitle,
+                              subtitle: blogSubtitle,
+                              author: blogAuthor,
+                              readingTime: blogReadingTime,
+                              category: blogCategory,
+                              publishedAt: blogPublishedDate,
+                              contentHtml: blogContentHtml,
+                              coverImage: blogCoverImage,
+                            });
+                            if (ok) {
+                              alert('Blog post updated.');
+                              await refreshSiteContent();
+                            } else {
+                              alert(`Failed to update: ${data.error || 'Unknown error'}`);
+                            }
+                          }}>
+                            <div className="form-group">
+                              <label>Select Post to Edit</label>
+                              {blogPosts.length === 0 ? (
+                                <p style={{ fontStyle: 'italic', color: 'var(--text-muted)' }}>No blog posts yet.</p>
+                              ) : (
+                                <select
+                                  className="form-control"
+                                  value={blogFormId}
+                                  onChange={(e) => handleSelectBlogPostToEdit(e.target.value)}
+                                  required
+                                >
+                                  <option value="">— Choose a post —</option>
+                                  {blogPosts.map((post) => (
+                                    <option key={post.id} value={post.id}>{post.title}</option>
+                                  ))}
+                                </select>
+                              )}
+                            </div>
+                            {blogFormId && (
+                              <>
+                                {renderBlogFields()}
+                                <button type="submit" className="btn-primary" style={{ marginTop: '10px' }}>Save Changes</button>
+                              </>
+                            )}
+                          </form>
+                        )}
+
+                        {adminBlogMode === 'delete' && (
+                          <div id="blog-delete-form">
+                            {blogPosts.length === 0 ? (
+                              <p style={{ fontStyle: 'italic', color: 'var(--text-muted)' }}>No blog posts to delete.</p>
+                            ) : (
+                              <ul style={{ listStyleType: 'none', padding: 0 }}>
+                                {blogPosts.map((post) => (
+                                  <li
+                                    key={post.id}
+                                    style={{
+                                      display: 'flex',
+                                      justifyContent: 'space-between',
+                                      alignItems: 'center',
+                                      padding: '12px 15px',
+                                      backgroundColor: 'var(--accent-bg)',
+                                      borderRadius: '4px',
+                                      marginBottom: '10px'
+                                    }}
+                                  >
+                                    <div style={{ minWidth: 0 }}>
+                                      <strong>{post.title}</strong>
+                                      <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+                                        {post.category || 'Blog'} · {formatBlogDate(post.published_at)}
+                                      </div>
+                                    </div>
+                                    <button
+                                      type="button"
+                                      className="btn-primary"
+                                      style={{
+                                        backgroundColor: '#d9534f',
+                                        borderColor: '#d9534f',
+                                        color: '#fff',
+                                        padding: '5px 12px',
+                                        borderRadius: '4px',
+                                        marginLeft: '15px',
+                                        flexShrink: 0
+                                      }}
+                                      onClick={async () => {
+                                        if (!confirm(`Delete "${post.title}"?`)) return;
+                                        const { ok, data } = await apiPost('/api/admin/blog', { action: 'delete', id: post.id });
+                                        if (ok) {
+                                          alert('Blog post deleted.');
+                                          if (blogFormId === post.id) resetBlogForm();
+                                          if (selectedBlogPost?.id === post.id) setActiveTab('blog');
+                                          await refreshSiteContent();
+                                        } else {
+                                          alert(`Failed to delete: ${data.error || 'Unknown error'}`);
+                                        }
+                                      }}
+                                    >
+                                      Delete
+                                    </button>
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
+                          </div>
                         )}
 
                         <hr style={{ margin: '30px 0', border: 'none', borderTop: '1px solid var(--accent-border)' }} />
@@ -2853,7 +3301,7 @@ export default function App() {
                   </a>
                 </div>
               </footer>
-              <TimelineBar />
+              <TimelineBar open={timelineOpen} setOpen={setTimelineOpen} />
             </div>
           );
         }
