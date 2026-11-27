@@ -55,12 +55,6 @@ textarea:focus-visible {
   background-image: var(--art-overlay), var(--art-image);
 }
 
-.app.junior-art {
-  --art-overlay: linear-gradient(rgba(253, 250, 243, 0.4), rgba(253, 250, 243, 0.4));
-  --art-image: url('/Ocean_Lov_Strike a Pose - Ocean Lov (1).jpg');
-  background-image: var(--art-overlay), var(--art-image);
-}
-
 .app.faq-art {
   --art-overlay: linear-gradient(rgba(253, 250, 243, 0.38), rgba(253, 250, 243, 0.38));
   --art-image: url('/Ocean_Lov_Untitled - Ocean Lov (1).jpg');
@@ -1541,7 +1535,8 @@ textarea:focus-visible {
 
 .submission-links-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 720px);
+  justify-content: center;
   gap: 28px;
 }
 
@@ -1570,10 +1565,6 @@ textarea:focus-visible {
 
 .submission-link-card.general {
   background-image: linear-gradient(rgba(21, 128, 61, 0.66), rgba(21, 128, 61, 0.66)), url('/Ocean_Lov_Untitled - Ocean Lov (1).jpg');
-}
-
-.submission-link-card.junior {
-  background-image: linear-gradient(rgba(22, 101, 52, 0.66), rgba(22, 101, 52, 0.66)), url('/Ocean_Lov_Searching - Ocean Lov (1).jpg');
 }
 
 .submission-link-title {
@@ -1625,41 +1616,6 @@ textarea:focus-visible {
     min-height: 240px;
     padding: 28px;
   }
-}
-
-.app.art-page .junior-page {
-  max-width: 760px;
-  margin: 0 auto;
-  padding: 56px 44px;
-  background-color: rgba(255, 255, 255, 0.74);
-  border-radius: 18px;
-  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.14);
-  backdrop-filter: blur(6px);
-  text-align: center;
-}
-
-.junior-submit-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 12px;
-  padding: 15px 34px;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  border-radius: 999px;
-  background: linear-gradient(135deg, #16A34A, #15803D, #065F46);
-  color: #FFFFFF;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 1.05rem;
-  font-weight: 800;
-  text-decoration: none;
-  box-shadow: 0 8px 20px rgba(21, 128, 61, 0.32);
-  transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
-}
-
-.junior-submit-button:hover {
-  transform: translateY(-4px) scale(1.03);
-  box-shadow: 0 16px 30px rgba(21, 128, 61, 0.42);
-  filter: saturate(1.12);
 }
 
 .guidelines-actions {
