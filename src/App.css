@@ -38,20 +38,46 @@ textarea:focus-visible {
   background-attachment: fixed;
 }
 
+.app.about-art {
+  background-image: linear-gradient(rgba(253, 250, 243, 0.62), rgba(253, 250, 243, 0.62)), url('/IMG_5975.jpeg');
+}
+
 .app.guidelines-art {
-  background-image: linear-gradient(rgba(253, 250, 243, 0.68), rgba(253, 250, 243, 0.68)), url('/Ocean_Lov_Searching - Ocean Lov (1).jpg');
+  background-image: linear-gradient(rgba(253, 250, 243, 0.58), rgba(253, 250, 243, 0.58)), url('/Ocean_Lov_Searching - Ocean Lov (1).jpg');
 }
 
 .app.submission-art {
-  background-image: linear-gradient(rgba(253, 250, 243, 0.66), rgba(253, 250, 243, 0.66)), url('/Ocean_Lov_Strike a Pose - Ocean Lov (1).jpg');
+  background-image: linear-gradient(rgba(253, 250, 243, 0.56), rgba(253, 250, 243, 0.56)), url('/Ocean_Lov_Strike a Pose - Ocean Lov (1).jpg');
+}
+
+.app.junior-art {
+  background-image: linear-gradient(rgba(253, 250, 243, 0.56), rgba(253, 250, 243, 0.56)), url('/Ocean_Lov_Strike a Pose - Ocean Lov (1).jpg');
 }
 
 .app.faq-art {
-  background-image: linear-gradient(rgba(253, 250, 243, 0.68), rgba(253, 250, 243, 0.68)), url('/Ocean_Lov_Untitled - Ocean Lov (1).jpg');
+  background-image: linear-gradient(rgba(253, 250, 243, 0.55), rgba(253, 250, 243, 0.55)), url('/Ocean_Lov_Untitled - Ocean Lov (1).jpg');
+}
+
+.app.contact-art {
+  background-image: linear-gradient(rgba(253, 250, 243, 0.52), rgba(253, 250, 243, 0.52)), url('/Ocean_Lov_Noticed - Ocean Lov.jpg');
+}
+
+.app.join-art {
+  background-image: linear-gradient(rgba(253, 250, 243, 0.6), rgba(253, 250, 243, 0.6)), url('/Untitled Design (4).png');
 }
 
 .app.issues-art {
-  background-image: linear-gradient(rgba(253, 250, 243, 0.7), rgba(253, 250, 243, 0.7)), url('/Ocean_Lov_Noticed - Ocean Lov.jpg');
+  background-image: linear-gradient(rgba(253, 250, 243, 0.6), rgba(253, 250, 243, 0.6)), url('/Ocean_Lov_Noticed - Ocean Lov.jpg');
+}
+
+.app.art-page .main-content {
+  padding-top: 28px;
+  padding-bottom: 80px;
+}
+
+.app.art-page .content-box {
+  padding: 56px 40px;
+  margin-bottom: 50px;
 }
 
 .page-credit {
@@ -245,23 +271,44 @@ textarea:focus-visible {
 }
 
 .nav-submit-button {
-  background-color: #15803D;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #16A34A, #15803D, #065F46);
   color: #FFFFFF;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 24px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+  padding: 10px 28px;
   font-family: var(--font-body);
   font-size: 1.05rem;
-  font-weight: 700;
+  font-weight: 800;
+  letter-spacing: 0.02em;
   cursor: pointer;
   white-space: nowrap;
-  transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 5px 16px rgba(21, 128, 61, 0.32);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.nav-submit-button::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -80%;
+  width: 55%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+  transform: skewX(-20deg);
+  pointer-events: none;
+  transition: left 0.5s ease;
 }
 
 .nav-submit-button:hover {
-  background-color: #166534;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 14px rgba(21, 128, 61, 0.28);
+  transform: translateY(-3px) scale(1.04);
+  box-shadow: 0 12px 26px rgba(21, 128, 61, 0.42);
+  filter: saturate(1.15);
+}
+
+.nav-submit-button:hover::after {
+  left: 130%;
 }
 
 .nav-link.active {
@@ -786,12 +833,12 @@ textarea:focus-visible {
 
 .about-image {
   flex: 1 1 45%;
-}
-
-.about-image img {
-  width: 100%;
-  height: auto;
-  border-radius: 4px;
+  min-height: 420px;
+  border-radius: 18px;
+  background-image: linear-gradient(rgba(253, 250, 243, 0.12), rgba(253, 250, 243, 0.12)), url('/IMG_5975.jpeg');
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.18);
 }
 
 @media (max-width: 768px) {
@@ -823,8 +870,13 @@ textarea:focus-visible {
 }
 
 .staff-role {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background-color: #DFF6EA;
   font-size: 0.85rem;
-  color: var(--text-muted);
+  color: #166534;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   white-space: pre-line;
@@ -836,6 +888,33 @@ textarea:focus-visible {
   justify-content: center;
   gap: 16px;
   margin-bottom: 40px;
+}
+
+.home-stats-section {
+  padding: 60px 30px;
+  background-color: rgba(255, 255, 255, 0.82);
+  border-top: 1px solid rgba(231, 229, 228, 0.8);
+  border-bottom: 1px solid rgba(231, 229, 228, 0.8);
+  backdrop-filter: blur(6px);
+}
+
+.home-stats-section .section-title {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.home-stats-section .stats-cards {
+  gap: 24px;
+  margin: 20px 0 10px;
+}
+
+.home-stats-section .stats-card {
+  min-width: 220px;
+  padding: 24px 32px;
+}
+
+.home-stats-section .nations-map {
+  margin-top: 36px;
 }
 
 .stat-box {
@@ -886,23 +965,28 @@ textarea:focus-visible {
 }
 
 .edition-card {
+  position: relative;
   display: block;
   width: 420px;
   max-width: 100%;
   min-height: 300px;
+  overflow: hidden;
   background-color: #FFFFFF;
+  border: 1px solid rgba(21, 128, 61, 0.12);
   border-radius: 12px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
   padding: 16px;
   text-align: center;
   text-decoration: none;
   color: var(--text-main);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
-.edition-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+.edition-card:hover,
+.edition-card:focus-visible {
+  transform: translateY(-10px) scale(1.025);
+  border-color: rgba(21, 128, 61, 0.45);
+  box-shadow: 0 22px 42px rgba(0, 0, 0, 0.24);
 }
 
 .edition-card-header {
@@ -932,26 +1016,41 @@ textarea:focus-visible {
   width: 100%;
   height: auto;
   border-radius: 6px;
+  transition: transform 0.35s ease;
+}
+
+.edition-card:hover .edition-card-image {
+  transform: scale(1.05);
 }
 
 .edition-card-reader {
-  display: block;
+  display: inline-block;
   margin-top: 18px;
+  padding: 8px 18px;
+  border-radius: 999px;
+  background-color: #DFF6EA;
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 0.85rem;
-  font-weight: 700;
+  font-size: 0.9rem;
+  font-weight: 800;
   color: #15803D;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease, color 0.2s ease, background-color 0.2s ease;
 }
 
 .edition-card:hover .edition-card-reader {
-  transform: translateX(5px);
+  transform: translateX(8px);
+  background-color: #15803D;
+  color: #FFFFFF;
 }
 
 .edition-card-coming {
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+.edition-card-coming:hover {
+  transform: translateY(-8px) scale(1.02);
+  border-color: rgba(234, 88, 12, 0.4);
 }
 
 .edition-coming-text {
@@ -1045,6 +1144,12 @@ textarea:focus-visible {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   text-align: center;
   min-width: 240px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.stats-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.16);
 }
 
 .stats-number {
@@ -1219,21 +1324,26 @@ textarea:focus-visible {
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  padding: 14px 30px;
+  padding: 14px 32px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
   border-radius: 999px;
-  background-color: #FFFFFF;
-  color: #15803D;
+  background-image: linear-gradient(rgba(21, 128, 61, 0.82), rgba(21, 128, 61, 0.82)), url('/Untitled Design (4).png');
+  background-size: cover;
+  background-position: center;
+  color: #FFFFFF;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 1rem;
   font-weight: 800;
   text-decoration: none;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.55);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.22);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
 }
 
 .join-apply-button:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 9px 18px rgba(0, 0, 0, 0.2);
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 14px 26px rgba(0, 0, 0, 0.28);
+  filter: saturate(1.15);
 }
 
 @media (max-width: 600px) {
@@ -1262,24 +1372,29 @@ textarea:focus-visible {
   justify-content: center;
   min-height: 320px;
   padding: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
   border-radius: 16px;
+  background-size: cover;
+  background-position: center;
   color: #FFFFFF;
   text-decoration: none;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.55);
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
 }
 
 .submission-link-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.2);
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 18px 34px rgba(0, 0, 0, 0.26);
+  filter: saturate(1.1);
 }
 
 .submission-link-card.general {
-  background-color: #15803D;
+  background-image: linear-gradient(rgba(21, 128, 61, 0.84), rgba(21, 128, 61, 0.84)), url('/Ocean_Lov_Untitled - Ocean Lov (1).jpg');
 }
 
 .submission-link-card.junior {
-  background-color: #166534;
+  background-image: linear-gradient(rgba(22, 101, 52, 0.84), rgba(22, 101, 52, 0.84)), url('/Ocean_Lov_Strike a Pose - Ocean Lov (1).jpg');
 }
 
 .submission-link-title {
@@ -1317,6 +1432,41 @@ textarea:focus-visible {
     min-height: 240px;
     padding: 28px;
   }
+}
+
+.app.art-page .junior-page {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 56px 44px;
+  background-color: rgba(255, 255, 255, 0.74);
+  border-radius: 18px;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.14);
+  backdrop-filter: blur(6px);
+  text-align: center;
+}
+
+.junior-submit-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+  padding: 15px 34px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 999px;
+  background: linear-gradient(135deg, #16A34A, #15803D, #065F46);
+  color: #FFFFFF;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.05rem;
+  font-weight: 800;
+  text-decoration: none;
+  box-shadow: 0 8px 20px rgba(21, 128, 61, 0.32);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+}
+
+.junior-submit-button:hover {
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 16px 30px rgba(21, 128, 61, 0.42);
+  filter: saturate(1.12);
 }
 
 .guidelines-actions {
@@ -1841,10 +1991,11 @@ textarea:focus-visible {
 }
 
 .staff-card {
-  background-color: transparent;
-  padding: 30px 20px;
-  border: 1px solid var(--accent-border);
-  border-radius: 4px;
+  background-color: rgba(255, 255, 255, 0.82);
+  padding: 30px 22px;
+  border: 1px solid rgba(21, 128, 61, 0.18);
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
   text-align: center;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -1854,18 +2005,21 @@ textarea:focus-visible {
 }
 
 .staff-card:hover {
-  border-color: var(--accent-ink);
-  background-color: rgba(255, 255, 255, 0.3); /* Slight highlight on hover */
-  transform: translateY(-3px);
+  border-color: #15803D;
+  background-color: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.16);
+  transform: translateY(-5px);
 }
 
 .staff-photo-placeholder {
-  width: 90px;
-  height: 90px;
+  width: 110px;
+  height: 110px;
   border-radius: 50%;
   background-color: rgba(0, 0, 0, 0.04);
-  border: 1px dashed var(--accent-border);
-  margin-bottom: 15px;
+  border: 3px solid #15803D;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.16);
+  object-fit: cover;
+  margin-bottom: 18px;
 }
 
 .staff-meta {
