@@ -647,7 +647,9 @@ export default function App() {
       ? 'art-page submission-art'
       : activeTab === 'faq'
         ? 'art-page faq-art'
-        : '';
+        : ['digital-magazine', 'issues-archive', 'selected-works', 'selected-works-issue', 'selected-works-piece'].includes(activeTab)
+          ? 'art-page issues-art'
+          : '';
 
   return (
     <div className={pageArtClass ? `app ${pageArtClass}` : 'app'}>
