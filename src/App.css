@@ -392,6 +392,13 @@ body {
 }
 
 /* Hero & Poem Styles */
+.home-top {
+  background-image: url('/Untitled Design (4).png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 .hero-banner {
   display: flex;
   align-items: center;
@@ -399,12 +406,10 @@ body {
   gap: 32px;
   text-align: left;
   margin-bottom: 20px;
-  padding: 15px 20px 10px; 
+  padding: 26px 28px;
+  border-radius: 16px;
   border-bottom: 1px solid var(--accent-border);
-  background-image: url('/Untitled Design (3).png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background-color: rgba(253, 250, 243, 0.82);
 }
 
 .hero-copy {
@@ -755,6 +760,89 @@ body {
   color: #9CA3AF;
 }
 
+.editions-intro {
+  text-align: center;
+  color: #4B5563;
+  margin-bottom: 30px;
+}
+
+.editions-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 32px;
+}
+
+.edition-card {
+  display: block;
+  width: 420px;
+  max-width: 100%;
+  min-height: 300px;
+  background-color: #FFFFFF;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  padding: 16px;
+  text-align: center;
+  text-decoration: none;
+  color: var(--text-main);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.edition-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+}
+
+.edition-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+  text-align: left;
+}
+
+.edition-card-label {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  font-weight: 900;
+  color: #15803D;
+}
+
+.edition-card-season {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.95rem;
+  color: var(--text-main);
+}
+
+.edition-card-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
+
+.edition-card-reader {
+  display: block;
+  margin-top: 18px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #15803D;
+}
+
+.edition-card-coming {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.edition-coming-text {
+  font-family: var(--font-heading);
+  font-size: 1.8rem;
+  color: #6B7280;
+}
+
 .announcements-intro {
   text-align: center;
   color: #4B5563;
@@ -876,11 +964,15 @@ body {
   fill: #E7E5E4;
   stroke: #FFFFFF;
   stroke-width: 1.5;
-  cursor: pointer;
+  cursor: default;
   transition: fill 0.2s;
 }
 
-.country-shape:hover {
+.nations-map.editable .country-shape {
+  cursor: pointer;
+}
+
+.nations-map.editable .country-shape:hover {
   fill: #F5C99A;
 }
 
