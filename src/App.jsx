@@ -641,8 +641,17 @@ export default function App() {
     }, 0);
   };
 
+  const pageArtClass = activeTab === 'submit-guidelines'
+    ? 'art-page guidelines-art'
+    : activeTab === 'submit-links'
+      ? 'art-page submission-art'
+      : activeTab === 'faq'
+        ? 'art-page faq-art'
+        : '';
+
   return (
-    <div className="app">
+    <div className={pageArtClass ? `app ${pageArtClass}` : 'app'}>
+      {pageArtClass && <span className="page-credit">Background image by Ocean Lov</span>}
       {/* Navigation Bar (top banner) */}
       <nav className="nav-bar">
         <a href="#" className="nav-logo" onClick={() => { setActiveTab('home'); setMobileMenuOpen(false); }} title="The Hilltop Horizon Review">
