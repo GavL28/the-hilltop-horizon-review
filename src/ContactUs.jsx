@@ -28,21 +28,20 @@ export const ContactUs = () => {
   };
 
   return (
-    <form ref={form} onSubmit={sendEmail} style={{ display: 'flex', flexDirection: 'column', maxWidth: '300px' }}>
-      <label>Name</label>
-      {/* The 'name' attribute must match the {{variable}} in your EmailJS template */}
-      <input type="text" name="user_name" required />
+    <form ref={form} onSubmit={sendEmail} className="contact-form">
+      <label htmlFor="contact-name">Name</label>
+      <input id="contact-name" type="text" name="user_name" required />
       
-      <label>Email</label>
-      <input type="email" name="user_email" required />
+      <label htmlFor="contact-email">Email</label>
+      <input id="contact-email" type="email" name="user_email" required />
       
-      <label>Title</label>
-      <input type="text" name="title" required />
+      <label htmlFor="contact-title">Title</label>
+      <input id="contact-title" type="text" name="title" required />
 
-      <label>Content</label>
-      <textarea name="content" required />
+      <label htmlFor="contact-content">Message</label>
+      <textarea id="contact-content" name="content" rows="5" required />
       
-      <input type="submit" value="Send" style={{ marginTop: '10px' }} />
+      <input type="submit" value="Send Message" />
     </form>
   );
 };
