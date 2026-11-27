@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 import { Editor } from '@tinymce/tinymce-react';
 import countryShapes, { VIEW_BOX } from 'world-map-country-shapes';
-import ContactUs from './ContactUs.jsx';
 
 // Centralized Staff Data Array
 const staffData = [
@@ -323,9 +322,9 @@ function NationsMap({ reached, onToggle, canEdit }) {
   );
 }
 
-function GuidelinesSection({ title, isOpen, onToggle, children }) {
+function GuidelinesSection({ title, isOpen, onToggle, children, className = '' }) {
   return (
-    <div className={isOpen ? 'guidelines-section open' : 'guidelines-section'}>
+    <div className={`guidelines-section${isOpen ? ' open' : ''}${className ? ` ${className}` : ''}`}>
       <button type="button" className="guidelines-toggle" onClick={onToggle}>
         <span>{title}</span>
         <span className="guidelines-toggle-icon">{isOpen ? '−' : '+'}</span>
@@ -333,6 +332,19 @@ function GuidelinesSection({ title, isOpen, onToggle, children }) {
       {isOpen && <div className="guidelines-body">{children}</div>}
     </div>
   );
+}
+
+function getTextFromChildren(children) {
+  if (typeof children === 'string' || typeof children === 'number') return String(children);
+  if (Array.isArray(children)) return children.map(getTextFromChildren).join(' ');
+  if (children && children.props && children.props.children !== undefined) return getTextFromChildren(children.props.children);
+  return '';
+}
+
+function SearchableGuidelinesSection({ search, title, children, ...props }) {
+  const haystack = `${title} ${getTextFromChildren(children)}`.toLowerCase();
+  if (search.trim() && !haystack.includes(search.trim().toLowerCase())) return null;
+  return <GuidelinesSection title={title} {...props} isOpen={search.trim() ? true : props.isOpen}>{children}</GuidelinesSection>;
 }
 
 export default function App() {
@@ -364,6 +376,7 @@ export default function App() {
   const [openMobileDropdown, setOpenMobileDropdown] = useState(null);
   const [selectedStaff, setSelectedStaff] = useState(null);
   const [openGuidelines, setOpenGuidelines] = useState('general');
+  const [guidelinesSearch, setGuidelinesSearch] = useState('');
   const [openRole, setOpenRole] = useState('poetry');
   const [selectedWorksIssue, setSelectedWorksIssue] = useState(null);
   const [selectedWorksPiece, setSelectedWorksPiece] = useState(null);
@@ -696,7 +709,7 @@ export default function App() {
 
       {activeTab === 'home' && (
         <div className="home-top">
-          <span className="home-credit">Credit to Ocean Lov</span>
+          <span className="home-credit">Background images by Ocean Lov</span>
           {welcomeVisible && (
             <div className="welcome-bar">
               <span>Welcome to the close-knit community of The Hilltop Horizon Review! -Gavin | Co-founder &amp; Editor in Chief</span>
@@ -1132,12 +1145,22 @@ export default function App() {
               Thank you for taking the time to submit to our literary magazine! Please review the information below before making your submission. Good luck!
             </p>
 
+            <div className="faq-search-wrap">
+              <input
+                className="site-search guidelines-search"
+                type="search"
+                placeholder="Search guidelines..."
+                value={guidelinesSearch}
+                onChange={(e) => setGuidelinesSearch(e.target.value)}
+              />
+            </div>
+
             <div className="guidelines-actions">
               <button onClick={() => setOpenGuidelines('all')}>Expand all</button>
               <button onClick={() => setOpenGuidelines(null)}>Collapse all</button>
             </div>
 
-            <GuidelinesSection title="General Guidelines" isOpen={openGuidelines === 'all' || openGuidelines === 'general'} onToggle={() => toggleGuidelines('general')}>
+            <SearchableGuidelinesSection search={guidelinesSearch} title="General Guidelines" isOpen={openGuidelines === 'all' || openGuidelines === 'general'} onToggle={() => toggleGuidelines('general')}>
               <p style={{ fontStyle: 'italic', color: 'var(--text-muted)' }}>Applies to any/all submissions:</p>
               <h4 style={{ fontFamily: 'var(--font-heading)', marginTop: '15px', marginBottom: '8px' }}>Original & Unpublished Work Only</h4>
               <p>Submit original, previously unpublished work only. Posting on your own social media, blog, or website (or performing at an open mic) is fine, but work that has appeared in another literary magazine, journal, or zine is not eligible.</p>
@@ -1156,9 +1179,9 @@ export default function App() {
               <h4 style={{ fontFamily: 'var(--font-heading)', marginBottom: '8px' }}>Read Everything Carefully</h4>
               <p>Read your section's specific guidelines carefully as well!</p>
               <p style={{ marginTop: '15px' }}>Questions? Email <a href="mailto:team@hilltophorizonreview.com" style={{ color: 'var(--text-main)' }}>team@hilltophorizonreview.com</a></p>
-            </GuidelinesSection>
+            </SearchableGuidelinesSection>
 
-            <GuidelinesSection title="Poetry Guidelines" isOpen={openGuidelines === 'all' || openGuidelines === 'poetry'} onToggle={() => toggleGuidelines('poetry')}>
+            <SearchableGuidelinesSection search={guidelinesSearch} title="Poetry Guidelines" isOpen={openGuidelines === 'all' || openGuidelines === 'poetry'} onToggle={() => toggleGuidelines('poetry')}>
               <h4 style={{ fontFamily: 'var(--font-heading)', marginTop: '0', marginBottom: '8px' }}>Font Size</h4>
               <p>12 Point Font, with exceptions for stylistic choice.</p>
               <h4 style={{ fontFamily: 'var(--font-heading)', marginBottom: '8px' }}>Acceptable Fonts</h4>
@@ -1171,9 +1194,9 @@ export default function App() {
               <p>Word Document.</p>
               <h4 style={{ fontFamily: 'var(--font-heading)', marginBottom: '8px' }}>Other</h4>
               <p>While stylistic choices are accepted, it is preferred that poems are in the format suggested above.</p>
-            </GuidelinesSection>
+            </SearchableGuidelinesSection>
 
-            <GuidelinesSection title="Fiction Guidelines" isOpen={openGuidelines === 'all' || openGuidelines === 'fiction'} onToggle={() => toggleGuidelines('fiction')}>
+            <SearchableGuidelinesSection search={guidelinesSearch} title="Fiction Guidelines" isOpen={openGuidelines === 'all' || openGuidelines === 'fiction'} onToggle={() => toggleGuidelines('fiction')}>
               <h4 style={{ fontFamily: 'var(--font-heading)', marginTop: '0', marginBottom: '8px' }}>Font Size</h4>
               <p>12 pt.</p>
               <h4 style={{ fontFamily: 'var(--font-heading)', marginBottom: '8px' }}>Acceptable Fonts</h4>
@@ -1188,9 +1211,9 @@ export default function App() {
               <p>N/A.</p>
               <h4 style={{ fontFamily: 'var(--font-heading)', marginBottom: '8px' }}>Other</h4>
               <p>Please have a clear title on the piece for publication.</p>
-            </GuidelinesSection>
+            </SearchableGuidelinesSection>
 
-            <GuidelinesSection title="Nonfiction Guidelines" isOpen={openGuidelines === 'all' || openGuidelines === 'nonfiction'} onToggle={() => toggleGuidelines('nonfiction')}>
+            <SearchableGuidelinesSection search={guidelinesSearch} title="Nonfiction Guidelines" isOpen={openGuidelines === 'all' || openGuidelines === 'nonfiction'} onToggle={() => toggleGuidelines('nonfiction')}>
               <h4 style={{ fontFamily: 'var(--font-heading)', marginTop: '0', marginBottom: '8px' }}>Font Size</h4>
               <p>12 pt font.</p>
               <h4 style={{ fontFamily: 'var(--font-heading)', marginBottom: '8px' }}>Acceptable Fonts</h4>
@@ -1205,21 +1228,21 @@ export default function App() {
               <p>Google Docs (preferred), or PDF.</p>
               <h4 style={{ fontFamily: 'var(--font-heading)', marginBottom: '8px' }}>Other</h4>
               <p>Must include titles for each submitted piece. Profanity/explicit themes allowed. We are looking for works that are personal and introspective. Dual submissions are allowed.</p>
-            </GuidelinesSection>
+            </SearchableGuidelinesSection>
 
-            <GuidelinesSection title="Art Guidelines" isOpen={openGuidelines === 'all' || openGuidelines === 'art'} onToggle={() => toggleGuidelines('art')}>
+            <SearchableGuidelinesSection search={guidelinesSearch} title="Art Guidelines" isOpen={openGuidelines === 'all' || openGuidelines === 'art'} onToggle={() => toggleGuidelines('art')}>
               <h4 style={{ fontFamily: 'var(--font-heading)', marginTop: '0', marginBottom: '8px' }}>Number of Submissions Per Person</h4>
               <p>No minimum; maximum of 5.</p>
               <h4 style={{ fontFamily: 'var(--font-heading)', marginBottom: '8px' }}>File Type</h4>
               <p>JPEG, PNG.</p>
-            </GuidelinesSection>
+            </SearchableGuidelinesSection>
 
-            <GuidelinesSection title="Photography Guidelines" isOpen={openGuidelines === 'all' || openGuidelines === 'photography'} onToggle={() => toggleGuidelines('photography')}>
+            <SearchableGuidelinesSection search={guidelinesSearch} title="Photography Guidelines" isOpen={openGuidelines === 'all' || openGuidelines === 'photography'} onToggle={() => toggleGuidelines('photography')}>
               <h4 style={{ fontFamily: 'var(--font-heading)', marginTop: '0', marginBottom: '8px' }}>Number of Submissions Per Person</h4>
               <p>No minimum; maximum of 5.</p>
               <h4 style={{ fontFamily: 'var(--font-heading)', marginBottom: '8px' }}>File Type</h4>
               <p>JPEG, PNG, or RAW.</p>
-            </GuidelinesSection>
+            </SearchableGuidelinesSection>
 
             <div style={{ marginTop: '30px', textAlign: 'center' }}>
               <a href="#" className="btn-primary" style={{ textDecoration: 'none', display: 'inline-block' }} onClick={(e) => { e.preventDefault(); setActiveTab('submit-links'); }}>
@@ -1289,7 +1312,7 @@ export default function App() {
             <p className="faq-intro">Everything you need to know before submitting — search or expand a question below.</p>
             <div className="faq-search-wrap">
               <input
-                className="faq-search"
+                className="site-search faq-search"
                 type="search"
                 placeholder="Search questions..."
                 value={faqSearch}
@@ -1328,69 +1351,88 @@ export default function App() {
           <div className="content-box contact-page">
             <h2 className="section-title">Contact Us</h2>
             <p className="contact-intro">Questions, ideas, or just want to say hello? We'd love to hear from you.</p>
-            <div className="contact-grid">
-              <div className="contact-card">
-                <h3>Get in touch</h3>
-                <p className="contact-card-label">Official Email</p>
-                <a className="contact-email" href="mailto:team@hilltophorizonreview.com">team@hilltophorizonreview.com</a>
-                <p className="contact-card-label social-label">Follow along</p>
-                <a
-                  className="contact-social"
-                  href="https://www.instagram.com/hilltop_horizon_review/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Instagram →
-                </a>
-              </div>
-              <div className="contact-card">
-                <h3>Send a message</h3>
-                <ContactUs />
-              </div>
+            <div className="contact-card contact-main-card">
+              <h3>Get in touch</h3>
+              <p className="contact-card-label">Official Email</p>
+              <a className="contact-email" href="mailto:team@hilltophorizonreview.com">team@hilltophorizonreview.com</a>
+              <p className="contact-card-label social-label">Follow along</p>
+              <a
+                className="contact-social"
+                href="https://www.instagram.com/hilltop_horizon_review/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Instagram →
+              </a>
             </div>
           </div>
         )}
 
         {/* JOIN US TAB */}
         {activeTab === 'join' && (
-          <div className="content-box" style={{ maxWidth: '1000px', margin: '0 auto' }}>
+          <div className="content-box join-page">
             <h2 className="section-title">Join Our Team</h2>
-            <p style={{ textAlign: 'center', marginBottom: '30px', color: 'var(--text-muted)' }}>
+            <p className="join-intro">
               The Hilltop Horizon Review is entirely run by high schoolers. We look for passionate, dedicated individuals who want to help shape our global literary community. Open to teens ages 14–19. Link to apply coming soon...
             </p>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', marginBottom: '40px' }}>
-              <GuidelinesSection title="Poetry Editor" isOpen={openRole === 'poetry'} onToggle={() => toggleRole('poetry')}>
-                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Number of this position available: Two. Edits poetry submissions and provides detailed, specific, and in-depth constructive feedback for every piece assigned. Communicates and works together with fellow poetry editors to select a collection of poems to be published each issue.</p>
-                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Recommended qualifications: Experience in poetry is a required minimum. Experience editing poetry is a definete plus. Willingsness to work and communicate with fellow editors. Come consistently to meetings. & more.</p>
+            <div className="join-roles-list">
+              <GuidelinesSection
+                className="join-role-section"
+                title={<span className="join-role-title"><span>Poetry Editor</span><span className="join-role-status open">2 Available</span></span>}
+                isOpen={openRole === 'poetry'}
+                onToggle={() => toggleRole('poetry')}
+              >
+                <p className="join-role-text">Number of this position available: Two. Edits poetry submissions and provides detailed, specific, and in-depth constructive feedback for every piece assigned. Communicates and works together with fellow poetry editors to select a collection of poems to be published each issue.</p>
+                <p className="join-role-text">Recommended qualifications: Experience in poetry is a required minimum. Experience editing poetry is a definete plus. Willingsness to work and communicate with fellow editors. Come consistently to meetings. & more.</p>
               </GuidelinesSection>
-              <GuidelinesSection title="Fiction Editor" isOpen={openRole === 'fiction'} onToggle={() => toggleRole('fiction')}>
-                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Number of this position available: One. Edits fiction submissions and provides detailed, specific, and in-depth constructive feedback for every piece assigned. Communicates and works together with fellow fiction editors to select a collection of fiction pieces to be published each issue.</p>
-                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Recommended qualifications: Experience in fiction is a required minimum. Experience editing fiction is a definete plus. Willingsness to work and communicate with fellow editors. Come consistently to meetings. & more.</p>
+              <GuidelinesSection
+                className="join-role-section"
+                title={<span className="join-role-title"><span>Fiction Editor</span><span className="join-role-status open">1 Available</span></span>}
+                isOpen={openRole === 'fiction'}
+                onToggle={() => toggleRole('fiction')}
+              >
+                <p className="join-role-text">Number of this position available: One. Edits fiction submissions and provides detailed, specific, and in-depth constructive feedback for every piece assigned. Communicates and works together with fellow fiction editors to select a collection of fiction pieces to be published each issue.</p>
+                <p className="join-role-text">Recommended qualifications: Experience in fiction is a required minimum. Experience editing fiction is a definete plus. Willingsness to work and communicate with fellow editors. Come consistently to meetings. & more.</p>
               </GuidelinesSection>
-              <GuidelinesSection title="Nonfiction Editor" isOpen={openRole === 'nonfiction'} onToggle={() => toggleRole('nonfiction')}>
-                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Number of this position available: Closed. We are currently not accepting applications for this position.</p>
+              <GuidelinesSection
+                className="join-role-section"
+                title={<span className="join-role-title"><span>Nonfiction Editor</span><span className="join-role-status closed">Not Currently Looking For</span></span>}
+                isOpen={openRole === 'nonfiction'}
+                onToggle={() => toggleRole('nonfiction')}
+              >
+                <p className="join-role-text">Number of this position available: Closed. We are currently not accepting applications for this position.</p>
               </GuidelinesSection>
-              <GuidelinesSection title="Art Editor" isOpen={openRole === 'art'} onToggle={() => toggleRole('art')}>
-                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Number of this position available: One. Reviews artwork submissions and provides detailed, specific, and in-depth constructive feedback for every piece assigned. Works to select pieces to be published in each issue.</p>
-                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Recommended qualifications: Experience in art is a required minimum. Experience reviewing, judging, and providing feedback on artwork is a definete plus, as well as experience in a variety of mediums. Willingsness to work and communicate with fellow editors. Come consistently to meetings. & more.</p>
+              <GuidelinesSection
+                className="join-role-section"
+                title={<span className="join-role-title"><span>Art Editor</span><span className="join-role-status open">Available</span></span>}
+                isOpen={openRole === 'art'}
+                onToggle={() => toggleRole('art')}
+              >
+                <p className="join-role-text">Number of this position available: One. Reviews artwork submissions and provides detailed, specific, and in-depth constructive feedback for every piece assigned. Works to select pieces to be published in each issue.</p>
+                <p className="join-role-text">Recommended qualifications: Experience in art is a required minimum. Experience reviewing, judging, and providing feedback on artwork is a definete plus, as well as experience in a variety of mediums. Willingsness to work and communicate with fellow editors. Come consistently to meetings. & more.</p>
               </GuidelinesSection>
-              <GuidelinesSection title="International Representatives" isOpen={openRole === 'intl'} onToggle={() => toggleRole('intl')}>
-                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Number of this position available: As many as possible (NOT U.S.A., China, Japan, or South Korea). Builds regional networks, handles promotion in region, and coordinates translation or regional features abroad.</p>
-                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Recommended Qualifications: MUST be living in a nation that The Hilltop Horizon Review does NOT have an international representative in. Fluency in the nation's language. Experience with creating promotional materials. Does not necessarily require coming to meetings because of time zone differences.</p>
+              <GuidelinesSection
+                className="join-role-section"
+                title={<span className="join-role-title"><span>International Representatives</span><span className="join-role-status open">Available Worldwide</span></span>}
+                isOpen={openRole === 'intl'}
+                onToggle={() => toggleRole('intl')}
+              >
+                <p className="join-role-text">Number of this position available: As many as possible (NOT U.S.A., China, Japan, or South Korea). Builds regional networks, handles promotion in region, and coordinates translation or regional features abroad.</p>
+                <p className="join-role-text">Recommended Qualifications: MUST be living in a nation that The Hilltop Horizon Review does NOT have an international representative in. Fluency in the nation's language. Experience with creating promotional materials. Does not necessarily require coming to meetings because of time zone differences.</p>
               </GuidelinesSection>
             </div>
 
-            <div style={{ textAlign: 'center', marginBottom: '25px' }}>
-              <p style={{ fontStyle: 'italic', color: 'var(--text-muted)' }}>
+            <div className="join-note">
+              <p>
                 Anyone who applies to be an editor and is accepted will go through a one full issue cycle (2 months) as an editorial intern to learn and prove their commitment.
               </p>
             </div>
 
-            <div style={{ textAlign: 'center' }}>
-              <p style={{ marginBottom: '15px', fontStyle: 'italic' }}>Ready to apply?</p>
-              <a href="https://docs.google.com/forms/d/e/1FAIpQLSf7t94PioPBZ6vYIsTg8KTuazKuFvMfB0N8BkygoGE2HI-wow/viewform?usp=sharing&ouid=115181364077200728162" className="btn-primary" style={{ textDecoration: 'none', display: 'inline-block' }} target="_blank" rel="noopener noreferrer">
-                Application form →
+            <div className="join-apply-card">
+              <p className="join-apply-prompt">Ready to apply?</p>
+              <a href="https://docs.google.com/forms/d/e/1FAIpQLSf7t94PioPBZ6vYIsTg8KTuazKuFvMfB0N8BkygoGE2HI-wow/viewform?usp=sharing&ouid=115181364077200728162" className="join-apply-button" target="_blank" rel="noopener noreferrer">
+                Apply to Join Our Team <span aria-hidden="true">→</span>
               </a>
             </div>
           </div>
@@ -2597,7 +2639,7 @@ export default function App() {
               {/* Footer */}
               <footer className="site-footer">
                 <div className="footer-logo">
-                  <img src="https://raw.githubusercontent.com/GavL28/the-hilltop-horizon-review/main/public/THHR.logo (1).png" alt="Logo" />
+                  <img src="/THHR.logo (1).png" alt="Logo" />
                 </div>
 
                 <div className="footer-nav">
@@ -2608,6 +2650,7 @@ export default function App() {
                     <span className="footer-tab">About</span>
                     <button onClick={() => setActiveTab('about-litmag')}>About</button>
                     <button onClick={() => setActiveTab('about-staff')}>Masthead</button>
+                    <button onClick={() => setActiveTab('announcements')}>Announcements</button>
                     <button onClick={() => setActiveTab('about-stats')}>Stats &amp; Reach</button>
                   </div>
                   <div className="footer-col">
@@ -2615,14 +2658,10 @@ export default function App() {
                     <button onClick={() => setActiveTab('digital-magazine')}>Digital Magazine</button>
                   </div>
                   <div className="footer-col">
-                    <span className="footer-tab">Submit</span>
+                    <span className="footer-tab">Guidelines</span>
                     <button onClick={() => setActiveTab('submit-guidelines')}>Guidelines</button>
                     <button onClick={() => setActiveTab('submit-links')}>Submissions Links</button>
                     <button onClick={() => setActiveTab('submit-junior')}>Junior</button>
-                  </div>
-                  <div className="footer-col">
-                    <span className="footer-tab">Announcements</span>
-                    <button onClick={() => setActiveTab('announcements')}>Announcements</button>
                   </div>
                   <div className="footer-col">
                     <button className="footer-tab" onClick={() => setActiveTab('faq')}>FAQ</button>
