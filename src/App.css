@@ -797,8 +797,8 @@ textarea:focus-visible {
   isolation: isolate;
   overflow: hidden;
   background-color: #F5ECDA;
-  background-image: radial-gradient(rgba(124, 92, 58, 0.035) 1px, transparent 1px);
-  background-size: 18px 18px;
+  background-image: radial-gradient(rgba(124, 92, 58, 0.075) 1.5px, transparent 1.5px);
+  background-size: 20px 20px;
   padding: 70px 30px;
   text-align: center;
   border-top: 1px solid var(--accent-border);
@@ -810,9 +810,9 @@ textarea:focus-visible {
   position: absolute;
   z-index: 0;
   font-family: var(--font-heading);
-  font-size: 20rem;
+  font-size: 22rem;
   line-height: 1;
-  color: rgba(21, 128, 61, 0.045);
+  color: rgba(21, 128, 61, 0.11);
   pointer-events: none;
 }
 
@@ -993,8 +993,10 @@ textarea:focus-visible {
   position: relative;
   padding: 60px 30px;
   background-color: rgba(255, 255, 255, 0.82);
-  background-image: radial-gradient(rgba(21, 128, 61, 0.05) 1px, transparent 1px);
-  background-size: 22px 22px;
+  background-image:
+    radial-gradient(rgba(21, 128, 61, 0.12) 1.5px, transparent 1.5px),
+    linear-gradient(135deg, rgba(245, 236, 218, 0.24), transparent 45%);
+  background-size: 22px 22px, auto;
   border-top: 1px solid rgba(231, 229, 228, 0.8);
   border-bottom: 1px solid rgba(231, 229, 228, 0.8);
   backdrop-filter: blur(6px);
@@ -1221,10 +1223,10 @@ textarea:focus-visible {
   position: relative;
   isolation: isolate;
   padding: 40px 30px 70px;
-  background-color: rgba(253, 250, 243, 0.35);
+  background-color: rgba(253, 250, 243, 0.6);
   background-image:
-    repeating-linear-gradient(135deg, rgba(21, 128, 61, 0.025) 0 1px, transparent 1px 18px),
-    radial-gradient(circle at 12% 20%, rgba(245, 236, 218, 0.45), transparent 35%);
+    repeating-linear-gradient(135deg, rgba(21, 128, 61, 0.07) 0 1.5px, transparent 1.5px 18px),
+    radial-gradient(circle at 12% 20%, rgba(245, 236, 218, 0.7), transparent 35%);
   text-align: center;
 }
 
@@ -2067,8 +2069,9 @@ textarea:focus-visible {
 }
 
 .contact-card-label.social-label {
+  display: block;
   margin-top: 0;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
 }
 
 .postcard-address {
@@ -3100,10 +3103,11 @@ textarea:focus-visible {
   right: 0;
   z-index: 200;
   padding: 6px 32px 8px;
-  background-color: rgba(17, 24, 39, 0.96);
-  color: #FFFFFF;
-  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.25);
-  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  background-color: rgba(248, 238, 220, 0.96);
+  color: #4B5563;
+  box-shadow: 0 -8px 24px rgba(76, 52, 28, 0.14);
+  border-top: 1px solid rgba(124, 92, 58, 0.22);
+  backdrop-filter: blur(10px);
   transition: padding 0.25s ease;
 }
 
@@ -3121,19 +3125,20 @@ textarea:focus-visible {
   right: 28px;
   width: 38px;
   height: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(124, 92, 58, 0.22);
   border-bottom: none;
   border-radius: 12px 12px 0 0;
-  background-color: rgba(17, 24, 39, 0.96);
-  color: #FFFFFF;
+  background-color: rgba(248, 238, 220, 0.96);
+  color: #4B5563;
   font-size: 0.75rem;
   line-height: 1;
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.2s ease;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
 }
 
 .timeline-toggle:hover {
-  background-color: rgba(55, 65, 81, 0.98);
+  background-color: #F1E4CE;
+  color: #166534;
   transform: translateY(-1px);
 }
 
@@ -3143,24 +3148,24 @@ textarea:focus-visible {
   justify-content: center;
   gap: 12px;
   margin-bottom: 4px;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 0.74rem;
-  letter-spacing: 0.08em;
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
 }
 
 .timeline-bar-head strong {
-  color: #D1FAE5;
+  color: #166534;
 }
 
 .timeline-bar-head span {
-  color: #FCD34D;
+  color: #8A633B;
 }
 
 .timeline-separator {
   width: 1px;
   height: 14px;
-  background-color: rgba(255, 255, 255, 0.32);
+  background-color: rgba(124, 92, 58, 0.28);
 }
 
 .timeline-bar-collapsed .timeline-bar-head {
@@ -3180,14 +3185,14 @@ textarea:focus-visible {
   right: 0;
   height: 4px;
   border-radius: 999px;
-  background-color: rgba(255, 255, 255, 0.24);
+  background-color: rgba(124, 92, 58, 0.2);
 }
 
 .timeline-progress {
   height: 100%;
   border-radius: 999px;
-  background: linear-gradient(90deg, #15803D, #86EFAC);
-  box-shadow: 0 0 12px rgba(134, 239, 172, 0.75);
+  background: linear-gradient(90deg, #166534, #86C9A4);
+  box-shadow: 0 0 8px rgba(22, 101, 52, 0.22);
   transition: width 0.6s ease;
 }
 
@@ -3202,18 +3207,18 @@ textarea:focus-visible {
   display: block;
   width: 12px;
   height: 12px;
-  border: 2px solid #111827;
+  border: 2px solid #F8EEDC;
   border-radius: 50%;
-  background-color: #9CA3AF;
-  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.22);
+  background-color: #B7AFA5;
+  box-shadow: 0 0 0 1px rgba(124, 92, 58, 0.25);
   transform: translateY(-50%);
   transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
 }
 
 .timeline-event.reached .timeline-dot {
-  background-color: #22C55E;
-  border-color: #DCFCE7;
-  box-shadow: 0 0 12px 4px rgba(34, 197, 94, 0.65);
+  background-color: #166534;
+  border-color: #F8EEDC;
+  box-shadow: 0 0 8px 3px rgba(22, 101, 52, 0.28);
   transform: translateY(-50%) scale(1.15);
 }
 
@@ -3227,7 +3232,7 @@ textarea:focus-visible {
   font-size: 0.58rem;
   line-height: 1.1;
   text-align: center;
-  color: #E5E7EB;
+  color: #6B7280;
 }
 
 .timeline-event-label::before {
@@ -3237,21 +3242,21 @@ textarea:focus-visible {
   left: 50%;
   width: 1px;
   height: 9px;
-  background-color: rgba(255, 255, 255, 0.35);
+  background-color: rgba(124, 92, 58, 0.3);
 }
 
 .timeline-event.reached .timeline-event-label::before {
-  background-color: rgba(134, 239, 172, 0.8);
+  background-color: rgba(22, 101, 52, 0.45);
 }
 
 .timeline-event-label strong {
   display: block;
-  color: #FFFFFF;
+  color: #374151;
   font-size: 0.68rem;
 }
 
 .timeline-event.reached .timeline-event-label strong {
-  color: #86EFAC;
+  color: #166534;
 }
 
 .timeline-event-start .timeline-event-label {
@@ -3281,8 +3286,8 @@ textarea:focus-visible {
   top: 14px;
   width: 2px;
   height: 24px;
-  background-color: #F59E0B;
-  box-shadow: 0 0 8px rgba(245, 158, 11, 0.85);
+  background-color: #B7791F;
+  box-shadow: 0 0 6px rgba(183, 121, 31, 0.4);
   transform: translate(-50%, -50%);
   transition: left 0.6s ease;
 }
@@ -3487,28 +3492,28 @@ textarea:focus-visible {
     justify-self: center;
     width: 10px;
     height: 10px;
-    border: 2px solid #111827;
+    border: 2px solid #F8EEDC;
     border-radius: 50%;
-    background-color: #9CA3AF;
-    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.22);
+    background-color: #B7AFA5;
+    box-shadow: 0 0 0 1px rgba(124, 92, 58, 0.25);
   }
 
   .timeline-mobile-event.reached .timeline-mobile-dot {
-    background-color: #22C55E;
-    box-shadow: 0 0 8px 2px rgba(34, 197, 94, 0.6);
+    background-color: #166534;
+    box-shadow: 0 0 8px 2px rgba(22, 101, 52, 0.28);
   }
 
   .timeline-mobile-date {
-    color: #FFFFFF;
+    color: #374151;
     font-size: 0.72rem;
   }
 
   .timeline-mobile-event.reached .timeline-mobile-date {
-    color: #86EFAC;
+    color: #166534;
   }
 
   .timeline-mobile-label {
-    color: #E5E7EB;
+    color: #6B7280;
   }
 }
 
