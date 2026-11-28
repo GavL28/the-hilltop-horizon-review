@@ -1901,7 +1901,7 @@ export default function App() {
           <div className="content-box contact-page postcard-page">
             <div className="postcard">
               <div className="postcard-left">
-                <div className="postcard-stamp">THHR</div>
+                <img className="postcard-logo" src="/THHR.logo (1).png" alt="The Hilltop Horizon Review logo" />
                 <h2 className="section-title">Contact Us</h2>
                 <div className="postcard-postmark">Hilltop Horizon Review · Postmarked for you</div>
                 <div className="postcard-address">
