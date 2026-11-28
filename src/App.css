@@ -3855,3 +3855,84 @@ textarea:focus-visible {
   transform: translateX(6px) scale(1.08);
   background-color: #D1FAE5;
 }
+
+.submission-link-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  padding: 0;
+  border-radius: 50%;
+  background-color: #FFFFFF;
+  color: #166534;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.22);
+  font-size: 0;
+  line-height: 1;
+  transition: transform 0.25s ease, background-color 0.25s ease;
+}
+
+.submission-link-arrow svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.about-page .about-image img {
+  border-radius: 0;
+}
+
+.about-page-stats .stat-box,
+.staff-page .staff-card,
+.stats-page .stats-card,
+.staff-detail-page {
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.about-page-stats .stat-box,
+.staff-page .staff-card,
+.stats-page .stats-card {
+  padding: 20px 14px;
+  border-top: 2px solid rgba(79, 124, 58, 0.35);
+  text-align: left;
+  transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.staff-page .staff-card {
+  align-items: flex-start;
+}
+
+.about-page-stats .stat-box:hover,
+.staff-page .staff-card:hover,
+.stats-page .stats-card:hover {
+  background-color: transparent;
+  border-top-color: var(--warm-green);
+  box-shadow: none;
+  transform: translateY(-3px);
+}
+
+.staff-detail-page {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+.staff-detail-header {
+  border-bottom: 1px solid rgba(124, 92, 58, 0.2);
+  padding-bottom: 28px;
+}
+
+.staff-bio-full {
+  padding: 20px 0 0 18px;
+  background-color: transparent;
+  border: none;
+  border-left: 3px solid var(--warm-green);
+  border-radius: 0;
+}
