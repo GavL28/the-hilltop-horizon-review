@@ -1278,7 +1278,7 @@ export default function App() {
         {/* ABOUT TAB */}
         {activeTab === 'about-litmag' && (
           <>
-            <div className="content-box">
+            <div className="content-box about-page">
               <h2 className="section-title">About The Hilltop Horizon Review</h2>
               <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.5rem', marginBottom: '8px' }}>The Hilltop Horizon Review</h3>
               <p style={{ fontStyle: 'italic', color: 'var(--text-muted)' }}>An international youth literary magazine, founded by high schoolers, for high schoolers.</p>
@@ -1312,13 +1312,13 @@ export default function App() {
                   <img src="/IMG_5975.jpeg" alt="The Hilltop Horizon Review team" />
                 </div>
               </div>
-              <div style={{ marginTop: '30px' }}>
+              <div className="about-mission">
                 <h2 className="section-title">Our Mission</h2>
                 <p>We seek to provide a welcoming and interactive community for young writers to join, as it can be difficult to find such a community locally.</p>
                 <p>Though we are mainly a literary magazine, we also accept art and photography. Submissions are reviewed blindly. We believe that feedback to every single submission no matter published or not is essential to supporting young writers and artists. If you don't get selected for an issue, come back and submit to the next issue!</p>
               </div>
             </div>
-            <div className="about-stats-row">
+            <div className="about-stats-row about-page-stats">
               {ABOUT_STATS.map((stat) => (
                 <div className={stat.highlight ? 'stat-box stat-box-highlight' : 'stat-box'} key={stat.label}>
                   <div className="stat-value">{stat.value}</div>
@@ -1332,7 +1332,7 @@ export default function App() {
 
         {/* STAFF DIRECTORY GRID */}
         {activeTab === 'about-staff' && (
-          <div>
+          <div className="staff-page">
             <h2 className="section-title">Our Team</h2>
             <p style={{ textAlign: 'center', marginBottom: '10px', color: 'var(--text-muted)' }}>
               Our team consists of dedicated high school editors worldwide. Click any profile to learn more.
@@ -1386,7 +1386,7 @@ export default function App() {
 
         {/* ANNOUNCEMENTS TAB */}
         {activeTab === 'announcements' && (
-          <div className="content-box fade-in">
+          <div className="content-box announcements-page fade-in">
             <h2 className="section-title">Announcements</h2>
             <p className="announcements-intro">Updates, deadlines, and news from the editorial team.</p>
 
@@ -1414,7 +1414,7 @@ export default function App() {
 
         {/* STATS TAB */}
         {activeTab === 'about-stats' && (
-          <div className="content-box fade-in">
+          <div className="content-box stats-page fade-in">
             <h2 className="section-title">Stats &amp; Reach</h2>
             <div className="stats-cards">
               <div className="stats-card">
