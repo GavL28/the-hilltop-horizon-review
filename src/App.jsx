@@ -1829,7 +1829,12 @@ export default function App() {
                 <span className="submission-link-title">General Submissions (ISSUE THREE)</span>
                 <span className="submission-link-age">Ages 14-19</span>
                 <span className="submission-link-time">5 minute form</span>
-                <span className="submission-link-arrow">→</span>
+                <span className="submission-link-arrow">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M4 12h15" />
+                    <path d="m13 6 6 6-6 6" />
+                  </svg>
+                </span>
               </a>
               <a
                 href="https://docs.google.com/forms/d/e/1FAIpQLSeBDT0s8Bd1VuoL2ktm0CXz6pPeNoqsLaJT9jCIucZk43--Rg/viewform?usp=sharing&ouid=115181364077200728162"
@@ -1840,7 +1845,12 @@ export default function App() {
                 <span className="submission-link-title">Junior Submissions (ISSUE THREE)</span>
                 <span className="submission-link-age">Ages 11-14</span>
                 <span className="submission-link-time">5 minute form</span>
-                <span className="submission-link-arrow">→</span>
+                <span className="submission-link-arrow">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M4 12h15" />
+                    <path d="m13 6 6 6-6 6" />
+                  </svg>
+                </span>
               </a>
             </div>
             <div className="submission-listings-section">
