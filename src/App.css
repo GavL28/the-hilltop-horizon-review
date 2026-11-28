@@ -72,7 +72,7 @@ textarea:focus-visible {
 }
 
 .app.join-art {
-  --art-overlay: linear-gradient(rgba(253, 250, 243, 0), rgba(253, 250, 243, 0));
+  --art-overlay: linear-gradient(rgba(253, 250, 243, 0.62), rgba(253, 250, 243, 0.62));
   --art-image: url('/Untitled Design (4).png');
   background-image: var(--art-overlay), var(--art-image);
 }
@@ -793,14 +793,44 @@ textarea:focus-visible {
 
 /* Reader testimonials: full-width beige section on the home page */
 .editors-desk {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   background-color: #F5ECDA;
+  background-image: radial-gradient(rgba(124, 92, 58, 0.035) 1px, transparent 1px);
+  background-size: 18px 18px;
   padding: 70px 30px;
   text-align: center;
   border-top: 1px solid var(--accent-border);
   border-bottom: 1px solid var(--accent-border);
 }
 
+.editors-desk::before,
+.editors-desk::after {
+  position: absolute;
+  z-index: 0;
+  font-family: var(--font-heading);
+  font-size: 20rem;
+  line-height: 1;
+  color: rgba(21, 128, 61, 0.045);
+  pointer-events: none;
+}
+
+.editors-desk::before {
+  content: '“';
+  top: -96px;
+  left: 2%;
+}
+
+.editors-desk::after {
+  content: '”';
+  right: 2%;
+  bottom: -150px;
+}
+
 .testimonials-inner {
+  position: relative;
+  z-index: 1;
   max-width: 1200px;
   margin: 0 auto;
 }
@@ -960,11 +990,19 @@ textarea:focus-visible {
 }
 
 .home-stats-section {
+  position: relative;
   padding: 60px 30px;
   background-color: rgba(255, 255, 255, 0.82);
+  background-image: radial-gradient(rgba(21, 128, 61, 0.05) 1px, transparent 1px);
+  background-size: 22px 22px;
   border-top: 1px solid rgba(231, 229, 228, 0.8);
   border-bottom: 1px solid rgba(231, 229, 228, 0.8);
   backdrop-filter: blur(6px);
+}
+
+.home-stats-section > .container {
+  position: relative;
+  z-index: 1;
 }
 
 .home-stats-section .section-title {
@@ -1180,8 +1218,19 @@ textarea:focus-visible {
 }
 
 .home-blog-section {
+  position: relative;
+  isolation: isolate;
   padding: 40px 30px 70px;
+  background-color: rgba(253, 250, 243, 0.35);
+  background-image:
+    repeating-linear-gradient(135deg, rgba(21, 128, 61, 0.025) 0 1px, transparent 1px 18px),
+    radial-gradient(circle at 12% 20%, rgba(245, 236, 218, 0.45), transparent 35%);
   text-align: center;
+}
+
+.home-blog-section > .container {
+  position: relative;
+  z-index: 1;
 }
 
 .home-blog-grid {
@@ -1947,24 +1996,13 @@ textarea:focus-visible {
   color: #8A633B;
 }
 
-.postcard-stamp {
+.postcard-logo {
   position: absolute;
-  top: 24px;
+  top: 22px;
   right: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 76px;
-  height: 88px;
-  border: 8px solid #FFFDF7;
-  background: linear-gradient(145deg, #CFE8D5, #8BC8A2);
-  box-shadow: 0 3px 10px rgba(76, 52, 28, 0.18);
-  color: #14532D;
-  font-family: var(--font-heading);
-  font-size: 1.05rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  transform: rotate(4deg);
+  width: 88px;
+  height: auto;
+  object-fit: contain;
 }
 
 .postcard-divider {
@@ -2107,13 +2145,10 @@ textarea:focus-visible {
     padding: 20px;
   }
 
-  .postcard-stamp {
-    top: 18px;
-    right: 18px;
-    width: 64px;
-    height: 74px;
-    border-width: 6px;
-    font-size: 0.85rem;
+  .postcard-logo {
+    top: 16px;
+    right: 16px;
+    width: 68px;
   }
 
   .postcard-postmark {
