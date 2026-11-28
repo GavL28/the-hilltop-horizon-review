@@ -3569,10 +3569,7 @@ textarea:focus-visible {
   margin: 0 auto;
   padding: 34px 22px;
   background-color: transparent;
-  background-image:
-    radial-gradient(rgba(79, 124, 58, 0.1) 1.5px, transparent 1.5px),
-    linear-gradient(135deg, rgba(223, 246, 234, 0.38), transparent 55%);
-  background-size: 20px 20px, auto;
+  background-image: none;
   border: none;
   border-radius: 0;
   box-shadow: none;
@@ -3642,8 +3639,7 @@ textarea:focus-visible {
   margin: 28px auto 50px;
   padding: 20px 12px;
   background-color: transparent;
-  background-image: radial-gradient(rgba(79, 124, 58, 0.1) 1.5px, transparent 1.5px);
-  background-size: 18px 18px;
+  background-image: none;
   border: none;
   border-radius: 0;
 }
@@ -3653,10 +3649,7 @@ textarea:focus-visible {
   isolation: isolate;
   padding: 26px 14px 40px;
   background-color: transparent;
-  background-image:
-    radial-gradient(rgba(79, 124, 58, 0.12) 1.5px, transparent 1.5px),
-    linear-gradient(135deg, rgba(223, 246, 234, 0.36), transparent 55%);
-  background-size: 20px 20px, auto;
+  background-image: none;
   border: none;
   border-radius: 0;
   box-shadow: none;
@@ -3670,10 +3663,7 @@ textarea:focus-visible {
 .staff-detail-page {
   padding: 30px 24px;
   background-color: transparent;
-  background-image:
-    radial-gradient(rgba(79, 124, 58, 0.1) 1.5px, transparent 1.5px),
-    linear-gradient(135deg, rgba(223, 246, 234, 0.32), transparent 60%);
-  background-size: 20px 20px, auto;
+  background-image: none;
   border: none;
   border-radius: 0;
   box-shadow: none;
@@ -3692,10 +3682,7 @@ textarea:focus-visible {
 .stats-page {
   padding: 32px 20px;
   background-color: transparent;
-  background-image:
-    radial-gradient(rgba(79, 124, 58, 0.12) 1.5px, transparent 1.5px),
-    linear-gradient(135deg, rgba(223, 246, 234, 0.34), transparent 55%);
-  background-size: 20px 20px, auto;
+  background-image: none;
 }
 
 .announcements-page {
