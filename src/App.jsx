@@ -1096,6 +1096,22 @@ export default function App() {
           <li className="nav-item">
             <button className={isNavActive('join') ? 'nav-link active' : 'nav-link'} onClick={() => setActiveTab('join')}>Join Us</button>
           </li>
+          <li className="nav-item nav-instagram-item">
+            <a
+              className="nav-instagram-link"
+              href="https://www.instagram.com/hilltop_horizon_review/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="The Hilltop Horizon Review on Instagram"
+              title="Follow us on Instagram"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="3" y="3" width="18" height="18" rx="5" />
+                <circle cx="12" cy="12" r="4" />
+                <circle cx="17.5" cy="6.5" r="1" />
+              </svg>
+            </a>
+          </li>
           <li className="nav-item nav-submit-item">
             <button className="nav-submit-button" onClick={() => setActiveTab('submit-links')}>Submit</button>
           </li>
@@ -1882,22 +1898,38 @@ export default function App() {
 
         {/* CONTACT TAB */}
         {activeTab === 'contact' && (
-          <div className="content-box contact-page">
-            <h2 className="section-title">Contact Us</h2>
-            <p className="contact-intro">Questions, ideas, or just want to say hello? We'd love to hear from you.</p>
-            <div className="contact-card contact-main-card">
-              <h3>Get in touch</h3>
-              <p className="contact-card-label">Official Email</p>
-              <a className="contact-email" href="mailto:team@hilltophorizonreview.com">team@hilltophorizonreview.com</a>
-              <p className="contact-card-label social-label">Follow along</p>
-              <a
-                className="contact-social"
-                href="https://www.instagram.com/hilltop_horizon_review/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Instagram →
-              </a>
+          <div className="content-box contact-page postcard-page">
+            <div className="postcard">
+              <div className="postcard-left">
+                <div className="postcard-stamp">THHR</div>
+                <h2 className="section-title">Contact Us</h2>
+                <div className="postcard-postmark">Hilltop Horizon Review · Postmarked for you</div>
+                <div className="postcard-address">
+                  <span>To:</span>
+                  <strong>The Hilltop Horizon Review</strong>
+                  <span>Editorial Team</span>
+                  <a className="contact-email" href="mailto:team@hilltophorizonreview.com">team@hilltophorizonreview.com</a>
+                </div>
+              </div>
+              <div className="postcard-divider" aria-hidden="true"></div>
+              <div className="postcard-right">
+                <div className="postcard-message">
+                  <p className="postcard-greeting">Dear writer,</p>
+                  <p className="contact-intro">Questions, ideas, or just want to say hello? We'd love to hear from you.</p>
+                  <p className="postcard-signature">— The Editors</p>
+                  <div className="postcard-social">
+                    <span className="contact-card-label social-label">Follow along</span>
+                    <a
+                      className="contact-social"
+                      href="https://www.instagram.com/hilltop_horizon_review/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Instagram →
+                    </a>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         )}
