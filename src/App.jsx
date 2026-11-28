@@ -355,6 +355,48 @@ function TestimonialCarousel({ items, variant }) {
   );
 }
 
+const FEEDBACK_IMAGES = [
+  { src: '/feedback1.png', alt: 'Editor feedback example 1' },
+  { src: '/feedback2.png', alt: 'Editor feedback example 2' },
+  { src: '/feedback3.png', alt: 'Editor feedback example 3' },
+];
+
+function FeedbackCarousel() {
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => setIndex((current) => (current + 1) % FEEDBACK_IMAGES.length), 5000);
+    return () => clearInterval(timer);
+  }, [index]);
+
+  const move = (direction) => {
+    setIndex((current) => (current + direction + FEEDBACK_IMAGES.length) % FEEDBACK_IMAGES.length);
+  };
+
+  return (
+    <div className="feedback-carousel">
+      <div className="feedback-carousel-image-wrap">
+        <img key={FEEDBACK_IMAGES[index].src} className="feedback-carousel-image" src={FEEDBACK_IMAGES[index].src} alt={FEEDBACK_IMAGES[index].alt} />
+      </div>
+      <div className="feedback-carousel-controls">
+        <button type="button" className="feedback-carousel-arrow" onClick={() => move(-1)} aria-label="Previous feedback image">←</button>
+        <div className="feedback-carousel-dots">
+          {FEEDBACK_IMAGES.map((image, i) => (
+            <button
+              key={image.src}
+              type="button"
+              className={i === index ? 'feedback-carousel-dot active' : 'feedback-carousel-dot'}
+              onClick={() => setIndex(i)}
+              aria-label={`Show feedback image ${i + 1}`}
+            />
+          ))}
+        </div>
+        <button type="button" className="feedback-carousel-arrow" onClick={() => move(1)} aria-label="Next feedback image">→</button>
+      </div>
+    </div>
+  );
+}
+
 const TIMELINE_EVENTS = [
   { short: 'Nov 1st', label: 'Issue Three Open Call', date: new Date(2026, 10, 1) },
   { short: 'Dec 26', label: 'Issue 2 Publish', date: new Date(2026, 11, 26) },
@@ -1168,11 +1210,7 @@ export default function App() {
                 <img src="/piece.png" alt="Poetry piece by Ellie Keyser" />
                 <figcaption>by issue two contributor Ellie Keyser</figcaption>
               </figure>
-              <div className="sample-feedback-images">
-                <img src="/feedback1.png" alt="Editor feedback example 1" />
-                <img src="/feedback2.png" alt="Editor feedback example 2" />
-                <img src="/feedback3.png" alt="Editor feedback example 3" />
-              </div>
+              <FeedbackCarousel />
             </div>
           </div>
         </section>
@@ -1788,6 +1826,15 @@ export default function App() {
                 <span className="submission-link-time">5 minute form</span>
                 <span className="submission-link-arrow">→</span>
               </a>
+            </div>
+            <div className="submission-listings-section">
+              <h3 className="submission-listings-title">Where We're Listed</h3>
+              <p className="submission-listings-intro">Find The Hilltop Horizon Review in these directories:</p>
+              <div className="submission-listings-grid">
+                <span className="submission-listing-card">Chillsubs</span>
+                <span className="submission-listing-card">Newpages</span>
+                <span className="submission-listing-card">PoetryMarketplace</span>
+              </div>
             </div>
           </div>
         )}
