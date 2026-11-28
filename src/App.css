@@ -992,11 +992,11 @@ textarea:focus-visible {
 .home-stats-section {
   position: relative;
   padding: 60px 30px;
-  background-color: rgba(255, 255, 255, 0.82);
+  background-color: rgba(255, 255, 255, 0.7);
   background-image:
-    radial-gradient(rgba(21, 128, 61, 0.12) 1.5px, transparent 1.5px),
-    linear-gradient(135deg, rgba(245, 236, 218, 0.24), transparent 45%);
-  background-size: 22px 22px, auto;
+    radial-gradient(rgba(21, 128, 61, 0.2) 2px, transparent 2px),
+    linear-gradient(135deg, rgba(223, 246, 234, 0.42), transparent 55%);
+  background-size: 20px 20px, auto;
   border-top: 1px solid rgba(231, 229, 228, 0.8);
   border-bottom: 1px solid rgba(231, 229, 228, 0.8);
   backdrop-filter: blur(6px);
@@ -1081,9 +1081,20 @@ textarea:focus-visible {
 }
 
 .sample-feedback-section {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   padding: 36px 30px;
-  background-color: rgba(255, 255, 255, 0.7);
+  background-color: rgba(245, 236, 218, 0.55);
+  background-image:
+    repeating-linear-gradient(to bottom, rgba(124, 92, 58, 0.07) 0 1px, transparent 1px 28px),
+    radial-gradient(circle at 8% 12%, rgba(223, 246, 234, 0.6), transparent 35%);
   border-bottom: 1px solid rgba(231, 229, 228, 0.8);
+}
+
+.sample-feedback-section > .container {
+  position: relative;
+  z-index: 1;
 }
 
 .sample-feedback-section .section-title {
@@ -3554,18 +3565,17 @@ textarea:focus-visible {
 .about-page {
   position: relative;
   isolation: isolate;
-  overflow: hidden;
   max-width: 1080px;
   margin: 0 auto;
-  padding: 48px 56px;
-  background-color: rgba(253, 250, 243, 0.9);
+  padding: 34px 22px;
+  background-color: transparent;
   background-image:
-    radial-gradient(rgba(79, 124, 58, 0.09) 1.5px, transparent 1.5px),
-    linear-gradient(135deg, rgba(223, 246, 234, 0.42), transparent 55%);
+    radial-gradient(rgba(79, 124, 58, 0.1) 1.5px, transparent 1.5px),
+    linear-gradient(135deg, rgba(223, 246, 234, 0.38), transparent 55%);
   background-size: 20px 20px, auto;
-  border: 1px solid rgba(124, 92, 58, 0.18);
-  border-radius: 20px;
-  box-shadow: 0 18px 36px rgba(76, 52, 28, 0.1);
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
 }
 
 .about-page > * {
@@ -3592,11 +3602,12 @@ textarea:focus-visible {
 }
 
 .about-text {
-  padding: 28px 30px;
-  background-color: rgba(255, 255, 255, 0.72);
-  border: 1px solid rgba(79, 124, 58, 0.18);
-  border-radius: 14px;
-  box-shadow: 0 8px 20px rgba(76, 52, 28, 0.08);
+  padding: 0 0 0 18px;
+  background-color: transparent;
+  border: none;
+  border-left: 3px solid rgba(79, 124, 58, 0.35);
+  border-radius: 0;
+  box-shadow: none;
 }
 
 .about-text p {
@@ -3606,15 +3617,6 @@ textarea:focus-visible {
 
 .about-image {
   position: relative;
-}
-
-.about-image::before {
-  content: '';
-  position: absolute;
-  inset: -9px;
-  border: 1px solid rgba(79, 124, 58, 0.3);
-  border-radius: 16px;
-  transform: rotate(2deg);
 }
 
 .about-image img {
@@ -3628,35 +3630,36 @@ textarea:focus-visible {
 
 .about-mission {
   margin-top: 34px;
-  padding: 28px 30px;
-  background-color: rgba(255, 255, 255, 0.68);
+  padding: 0 0 0 20px;
+  background-color: transparent;
+  border: none;
   border-left: 4px solid var(--warm-green);
-  border-radius: 14px;
+  border-radius: 0;
 }
 
 .about-page-stats {
   max-width: 1080px;
   margin: 28px auto 50px;
-  padding: 26px 30px;
-  background-color: rgba(253, 250, 243, 0.74);
-  background-image: radial-gradient(rgba(79, 124, 58, 0.08) 1.5px, transparent 1.5px);
+  padding: 20px 12px;
+  background-color: transparent;
+  background-image: radial-gradient(rgba(79, 124, 58, 0.1) 1.5px, transparent 1.5px);
   background-size: 18px 18px;
-  border: 1px solid rgba(124, 92, 58, 0.16);
-  border-radius: 16px;
+  border: none;
+  border-radius: 0;
 }
 
 .staff-page {
   position: relative;
   isolation: isolate;
-  padding: 34px 36px 44px;
-  background-color: rgba(253, 250, 243, 0.62);
+  padding: 26px 14px 40px;
+  background-color: transparent;
   background-image:
-    radial-gradient(rgba(79, 124, 58, 0.1) 1.5px, transparent 1.5px),
-    linear-gradient(135deg, rgba(223, 246, 234, 0.4), transparent 55%);
+    radial-gradient(rgba(79, 124, 58, 0.12) 1.5px, transparent 1.5px),
+    linear-gradient(135deg, rgba(223, 246, 234, 0.36), transparent 55%);
   background-size: 20px 20px, auto;
-  border: 1px solid rgba(124, 92, 58, 0.16);
-  border-radius: 20px;
-  box-shadow: 0 16px 34px rgba(76, 52, 28, 0.1);
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
 }
 
 .staff-page > * {
@@ -3665,10 +3668,15 @@ textarea:focus-visible {
 }
 
 .staff-detail-page {
+  padding: 30px 24px;
+  background-color: transparent;
   background-image:
-    radial-gradient(rgba(79, 124, 58, 0.08) 1.5px, transparent 1.5px),
-    linear-gradient(135deg, rgba(223, 246, 234, 0.35), transparent 60%);
+    radial-gradient(rgba(79, 124, 58, 0.1) 1.5px, transparent 1.5px),
+    linear-gradient(135deg, rgba(223, 246, 234, 0.32), transparent 60%);
   background-size: 20px 20px, auto;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
 }
 
 .stats-page,
@@ -3676,42 +3684,44 @@ textarea:focus-visible {
 .blog-page {
   position: relative;
   isolation: isolate;
-  border: 1px solid rgba(124, 92, 58, 0.16);
-  border-radius: 20px;
-  box-shadow: 0 16px 34px rgba(76, 52, 28, 0.1);
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
 }
 
 .stats-page {
-  background-color: rgba(255, 255, 255, 0.7);
+  padding: 32px 20px;
+  background-color: transparent;
   background-image:
-    radial-gradient(rgba(79, 124, 58, 0.1) 1.5px, transparent 1.5px),
-    linear-gradient(135deg, rgba(223, 246, 234, 0.32), transparent 55%);
+    radial-gradient(rgba(79, 124, 58, 0.12) 1.5px, transparent 1.5px),
+    linear-gradient(135deg, rgba(223, 246, 234, 0.34), transparent 55%);
   background-size: 20px 20px, auto;
 }
 
 .announcements-page {
-  background-color: rgba(253, 250, 243, 0.76);
+  padding: 32px 20px;
+  background-color: transparent;
   background-image:
-    repeating-linear-gradient(135deg, rgba(124, 92, 58, 0.035) 0 1px, transparent 1px 20px),
-    radial-gradient(circle at 90% 10%, rgba(245, 236, 218, 0.7), transparent 35%);
+    repeating-linear-gradient(135deg, rgba(124, 92, 58, 0.05) 0 1px, transparent 1px 20px),
+    radial-gradient(circle at 90% 10%, rgba(245, 236, 218, 0.55), transparent 35%);
 }
 
 .blog-page {
-  padding: 56px 48px;
-  background-color: rgba(253, 250, 243, 0.72);
+  padding: 34px 20px;
+  background-color: transparent;
   background-image:
-    radial-gradient(rgba(79, 124, 58, 0.1) 1.5px, transparent 1.5px),
-    repeating-linear-gradient(135deg, transparent 0 18px, rgba(124, 92, 58, 0.035) 18px 19px);
+    radial-gradient(rgba(79, 124, 58, 0.12) 1.5px, transparent 1.5px),
+    repeating-linear-gradient(135deg, transparent 0 18px, rgba(124, 92, 58, 0.045) 18px 19px);
   background-size: 20px 20px, auto;
 }
 
 .blog-intro {
   max-width: 720px;
   margin: 0 auto 32px;
-  padding: 12px 22px;
-  background-color: rgba(255, 255, 255, 0.66);
-  border: 1px solid rgba(79, 124, 58, 0.16);
-  border-radius: 999px;
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
 }
 
 .announcement-card {
@@ -3744,7 +3754,7 @@ textarea:focus-visible {
   .stats-page,
   .announcements-page,
   .blog-page {
-    padding: 34px 24px;
+    padding: 26px 14px;
   }
 
   .about-split {
@@ -3753,7 +3763,7 @@ textarea:focus-visible {
 
   .about-text,
   .about-mission {
-    padding: 22px;
+    padding: 0 0 0 14px;
   }
 }
 
@@ -3763,11 +3773,85 @@ textarea:focus-visible {
   .stats-page,
   .announcements-page,
   .blog-page {
-    padding: 28px 18px;
-    border-radius: 14px;
+    padding: 22px 10px;
   }
 
   .about-page .section-title {
     font-size: 1.7rem;
   }
+}
+
+.submission-link-card {
+  position: relative;
+  overflow: hidden;
+  min-height: 350px;
+  padding: 44px;
+  border: 2px solid rgba(255, 255, 255, 0.65);
+  border-radius: 20px;
+  box-shadow: 0 14px 30px rgba(21, 128, 61, 0.2);
+  cursor: pointer;
+}
+
+.submission-link-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.submission-link-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.18), transparent 45%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.submission-link-card:hover,
+.submission-link-card:focus-visible {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 24px 44px rgba(21, 128, 61, 0.32);
+  filter: saturate(1.15) brightness(1.05);
+}
+
+.submission-link-card:hover::after,
+.submission-link-card:focus-visible::after {
+  opacity: 1;
+}
+
+.submission-link-card:focus-visible {
+  outline: 4px solid rgba(21, 128, 61, 0.45);
+  outline-offset: 4px;
+}
+
+.submission-link-title {
+  font-size: 1.85rem;
+  letter-spacing: -0.01em;
+}
+
+.submission-link-time {
+  border-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(4px);
+}
+
+.submission-link-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background-color: #FFFFFF;
+  color: #166534;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.22);
+  font-size: 1.8rem;
+  transition: transform 0.25s ease, background-color 0.25s ease;
+}
+
+.submission-link-card:hover .submission-link-arrow,
+.submission-link-card:focus-visible .submission-link-arrow {
+  transform: translateX(6px) scale(1.08);
+  background-color: #D1FAE5;
 }
